@@ -261,7 +261,7 @@
   booktitle = {Proc. IEEE Workshop on Motion and Video Computing WMVC '07},
   year = {2007},
   pages = {12--12},
-  month = {Feb.  },
+  month = {Feb. },
   doi = {10.1109/WMVC.2007.4},
   owner = {chris},
   timestamp = {2009.12.03}
@@ -327,108 +327,6 @@
   citeulike-article-id = {3480910},
   citeulike-linkout-0 = {http://portal.acm.org/citation.cfm?id=1229555.1229562},
   citeulike-linkout-1 = {http://dx.doi.org/10.1177/0278364907073775},
-  comment = {NOTE: These notes were supplemented by looking at Liao's dissertation
-	writeup of the same work.
-	
-	Overview: This is a supervised learning scheme done in several stages...
-	the results from early stages are used to build the structure of
-	the model in subsequent stages. Training is done for 3 people, and
-	tested on a 4th person. For the test person, only GPS pings are used
-	as input.
-	
-	specifics: * GPS traces from 4 people, 6 days per person * \~{}40,000
-	GPS measurements per person * manually labeled all activities and
-	significant places in these traces * used maximum pseudo-likelihood
-	for learning
-	
-	hierarchical graphical model with 3 levels. top level: significant
-	places (e.g. home, work, bus stop, parking lot, friend) midlevel:
-	activity sequence (eg. walk, drive, visit, sleep, get on bus, pickup),
-	bottom level: GPS trace (association to streeet map)
-	
-	* their typical GPS trace consists of approximately one GPS reading
-	per second * GPS readings are segmented spatially; we have one activity
-	node for each spatial segment of GPS pings ** e.g. a 12 hour stay
-	at a single location is represented by a single activity node * if
-	street map is available, segmentation is done in association with
-	the street map (with 10m discretization) * "model can reason explicitly
-	about the duration of a stay, for which dynamic models such as standard
-	DBNs or HMMs have only limited support" [12,32]
-	
-	* two main groups of activities: navigation activities, and significant
-	activities (in a single place, or at a transportation mode switch)
-	* "to determine activities, our model relies heavily on temporal
-	features, such as duration or time of day, and geographic information,
-	such as locations of restaurants, stores, and bus stops." * "significant
-	places are those locations that play a significnat role in the activities
-	of a person: hoe, work, bus stops, parking lots typically used, homes
-	of friends, etc...) model allows different activites to occur at
-	same significant place; also, a significnat place can comprise mutiple
-	different locations, mostly because of signal loss and GPS readings
-	
-	The CRF Model for Activity Recognition: 1) CRF for GPS denoising *
-	break up street segments into 10 meter patches * measurement clique
-	between each ping and all nearby street patches (Gaussian noise model
-	from center of patch) * consistency cliques: put a Gaussian noise
-	model on the \_difference\_ between the GPS displacement and the
-	paired street patch displacement for consecutive pings * smoothness
-	cliques: encourage street patch predictions to be stay on the same
-	street, going in the same direction their conditional model for street
-	patches given GPS pings is given in Eqn 26, bottom of page 10
-	
-	Output of the CRF model is taken as the spatial segmentation of the
-	GPS pings... Hierarchical CRF is based on the segmentation, since
-	one 'activity sequence' is associated with each sequence of points
-	on the same 10m street patch * bottom layer of 3 layer CRF, now it's
-	"local evidence" including: ** temporal information (e.g. time od
-	day, day of week, duration of stay -- these can be discretized) clique
-	functions are all binary indicators, one for every possible combination
-	of temporal feature and activity ** average speed through segment
-	-- discretized ** information extracted from geographic databses,
-	such as whether a patch is on a bus route, close to abus stop, near
-	a restaurant or grovery store; use indicator functions to model this
-	information ** each activity node connected to its neighbors; e.g.
-	extremely unlikely tha ta person will get on bus at one location
-	and drive a car at neighboing location right afterwards (?)
-	
-	* Preliminary CRF\_0: just has activity nodes and local evidence nodes
-	[notes from thesis] ** adjacent activity nodes are connected, and
-	each activity node is connected to each 'ftr' with a pairwise potential
-	** features are *** gps based: streetpatch, timeofday (first timestamp,
-	discretized into Moring, Noon, AFternoon, Evening, Night), dayofweek,
-	duration, *** geo database: nearrestaurant, nearstore, nearbusstop,
-	onbusroute [latter extracted from geographic databaddses] *** average
-	speed thru segment (discretized - 'to allow multimodality')
-	
-	* Significant Places [from thesis] ** from the MAP activity sequence,
-	they then (by hand? they refer to an IsSignificant() function) associate
-	each activity with whether or not it belongs to a significant place
-	(e.g. transport does not connect to a significant place, while getting
-	on / off a bus does ...); * spatial clustering performed on the locations
-	of significant places * the cluster centers are the 'signiciant plces'
-	* edge between each place label and each activity label in its vicinity
-	* NOTE: the 'place nodes' are not dynamic; we find K lat,longs that
-	are the locations of the significant places; what we still ned to
-	infer are the labels for these significant places; e.g. several of
-	the lat,longs can be 'shopping', or 'friend's house, etc... certain
-	place labels are associated with certain types of activities * they
-	want to also add features that count the number of 'home', 'workplace',
-	etc., labels that are used. However, this requires making a clique
-	containing all the places, which can be quite large...
-	
-	generate\_places algorithm: * really not clear -- clustering places
-	associated with the same activity? how can you get any confidence
-	in the activities?
-	
-	* Each place (node at the top level of 3 level CRF) connects to all
-	activities that seem to occur in the same place -- built into the
-	structure of the model * multiple activities may occur at the same
-	place
-	
-	* each GPS associated with a 10m patch on a street edge * [20] inference
-	using loopy belief propagation, and parameter learning using pseudo-likelihoodreferences
-	to chase down: bennewitz [4] learn different motion paths between
-	places, [23] how to figure out types of places;},
   doi = {10.1177/0278364907073775},
   file = {Liao2007.pdf:Liao2007.pdf:PDF},
   issn = {0278-3649},
@@ -661,7 +559,6 @@
 	algorithm in ...},
   citeulike-article-id = {6212085},
   citeulike-linkout-0 = {http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.7.8772},
-  comment = {- history, algorithm, description of two bounds},
   file = {Schapire1999.pdf:Schapire1999.pdf:PDF},
   keywords = {boosting},
   owner = {chris},
@@ -859,4 +756,18 @@
 @comment{jabref-meta: selector_journal:}
 
 @comment{jabref-meta: selector_keywords:}
+
+@comment{jabref-meta: groupsversion:3;}
+
+@comment{jabref-meta: groupstree:
+0 AllEntriesGroup:;
+1 ExplicitGroup:Unread\;0\;Abowd1997\;Bellavista2008\;Bellotti2008\;Ca
+ros2005\;Davies2008\;Dornbush2005\;Eagle2004\;Floreen2008\;Garakani200
+9\;Hein2008\;Lee2007\;Lester2006\;Liao2007\;Liao2007a\;Lukowicz2002\;M
+ahdaviani2007\;Maurer2006\;Miluzzo2009\;Nicolai2006\;Parkka2006\;Patte
+rson2004\;Philipose2003\;Philipose2003a\;Philipose2004\;Rudstroem2004\
+;Schapire1999\;Schilit1994\;Schmidt1999\;Schmidt2008\;Serugendo2008\;S
+hen2004\;Song2005\;Stiefmeier2008\;Tentori2008\;Voida2002\;Wang2009\;W
+yatt2007\;Yang2008\;;
+}
 
