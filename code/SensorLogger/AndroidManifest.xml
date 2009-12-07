@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
      package="uk.co.md87.android.sensorlogger">
-    <application>
-         <activity android:name=".MainActivity" android:label="MainActivity">
+    <application android:label="Sensor Logger">
+         <activity android:name=".MainActivity" android:label="Sensor Logger">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
+
+        <service android:name=".SensorLoggerService" android:label="Sensor Logger Service"/>
     </application>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
 </manifest>

@@ -7,11 +7,16 @@ package uk.co.md87.android.sensorlogger;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
+import android.util.Log;
+import android.widget.TextView;
+import java.util.Arrays;
 
 /**
  *
@@ -19,35 +24,19 @@ import android.os.Bundle;
  */
 public class MainActivity extends Activity {
 
-    private SensorManager manager;
-
-    private final SensorEventListener accelListener = new SensorEventListener() {
-
-        /** {@inheritDoc} */
-        @Override
-        public void onSensorChanged(final SensorEvent event) {
-            // Yay.
-        }
-
-        /** {@inheritDoc} */
-        @Override
-        public void onAccuracyChanged(final Sensor sensor, final int accuracy) {
-            // Don't really care
-        }
-
-    };
+    private static final String TAG = "MainActivity";
 
     /** {@inheritDoc} */
     @Override
     public void onCreate(final Bundle icicle) {
         super.onCreate(icicle);
 
-        manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        startService(new Intent(this, SensorLoggerService.class));
 
-        for (Sensor sensor : manager.getSensorList(SensorManager.SENSOR_ACCELEROMETER)) {
-            manager.registerListener(accelListener, sensor, SensorManager.SENSOR_DELAY_FASTEST);
-        }
-        // ToDo add your GUI initialization code here
+        setContentView(R.layout.main);
+
+        ((TextView) findViewById(R.id.text)).setText(
+                ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId());
     }
 
 }
