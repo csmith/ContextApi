@@ -14,6 +14,10 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.util.Log;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Arrays;
 
 /**
@@ -25,13 +29,21 @@ public class SensorLoggerService extends Service {
     private static final String TAG = "SensorLoggerService";
 
     private SensorManager manager;
+    private FileOutputStream stream;
+    private OutputStreamWriter writer;
 
     private final SensorEventListener accelListener = new SensorEventListener() {
 
         /** {@inheritDoc} */
         @Override
         public void onSensorChanged(final SensorEvent event) {
-            Log.i(TAG, event.sensor.getName() + ": " + Arrays.toString(event.values));
+            try {
+                writer.write(System.currentTimeMillis() + ":" +
+                        event.values[0] + "," + event.values[1]
+                        + "," + event.values[2] + "\n");
+            } catch (IOException ex) {
+
+            }
         }
 
         /** {@inheritDoc} */
@@ -50,6 +62,13 @@ public class SensorLoggerService extends Service {
     @Override
     public void onStart(final Intent intent, final int startId) {
         super.onStart(intent, startId);
+
+        try {
+            stream = openFileOutput("sensors.log", MODE_APPEND | MODE_PRIVATE);
+            writer = new OutputStreamWriter(stream);
+        } catch (FileNotFoundException ex) {
+            return;
+        }
 
         manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
