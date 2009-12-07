@@ -1,1 +1,3 @@
 /papers/*.bak
+/code/*/build
+/code/*/nbproject/private
