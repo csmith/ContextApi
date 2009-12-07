@@ -14,6 +14,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.util.Log;
+import android.widget.Toast;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -41,6 +42,7 @@ public class SensorLoggerService extends Service {
                 writer.write(System.currentTimeMillis() + ":" +
                         event.values[0] + "," + event.values[1]
                         + "," + event.values[2] + "\n");
+                Toast.makeText(getApplicationContext(), "New values!", Toast.LENGTH_SHORT).show();
             } catch (IOException ex) {
 
             }
@@ -64,7 +66,7 @@ public class SensorLoggerService extends Service {
         super.onStart(intent, startId);
 
         try {
-            stream = openFileOutput("sensors.log", MODE_APPEND | MODE_PRIVATE);
+            stream = openFileOutput("sensors.log", MODE_APPEND | MODE_WORLD_READABLE);
             writer = new OutputStreamWriter(stream);
         } catch (FileNotFoundException ex) {
             return;
