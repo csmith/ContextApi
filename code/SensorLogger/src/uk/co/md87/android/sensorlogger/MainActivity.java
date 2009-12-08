@@ -6,31 +6,20 @@
 package uk.co.md87.android.sensorlogger;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.telephony.TelephonyManager;
-import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
 
 /**
  *
  * @author chris
  */
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements OnClickListener {
 
-    private static final String TAG = "MainActivity";
+    static final String VERSION = "0.1";
 
     /** {@inheritDoc} */
     @Override
@@ -41,25 +30,30 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.main);
 
-        int lines = 0;
+        ((Button) findViewById(R.id.start)).setOnClickListener(this);
+        ((Button) findViewById(R.id.upload)).setOnClickListener(this);
 
-        try {
-            String line;
-            BufferedReader reader =
-                new BufferedReader(new InputStreamReader(openFileInput("sensors.log")));
 
-            while ((line = reader.readLine()) != null) {
-                lines++;
+        ((TextView) findViewById(R.id.text)).setText("Welcome to sensor logger v"
+                + VERSION + "..."
+                + "\n\nThis application records any changes in your phone's "
+                + "accelerometer state to a text file, along with the timestamp "
+                + "that the change occured at.\n\n"
+                + "Hit the upload button to upload the data you've recorded so "
+                + "it can be analysed. Thanks.\n\n");
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public void onClick(final View view) {
+        if (view.getId() == R.id.start) {
+            if (!stopService(new Intent(this, SensorLoggerService.class))) {
+                startService(new Intent(this, SensorLoggerService.class));
             }
-        } catch (FileNotFoundException ex) {
-            lines = -1;
-        } catch (IOException ex) {
-            lines = -2;
+        } else if (view.getId() == R.id.upload) {
+            stopService(new Intent(this, SensorLoggerService.class));
+            startService(new Intent(this, UploaderService.class));
         }
-
-        ((TextView) findViewById(R.id.text)).setText(
-                ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId()
-                + " -- " + getFileStreamPath("sensors.log") + " -- " + lines);
     }
 
 }

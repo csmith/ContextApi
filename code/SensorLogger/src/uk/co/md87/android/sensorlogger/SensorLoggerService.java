@@ -13,13 +13,12 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
-import android.util.Log;
 import android.widget.Toast;
+
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.Arrays;
 
 /**
  *
@@ -42,7 +41,6 @@ public class SensorLoggerService extends Service {
                 writer.write(System.currentTimeMillis() + ":" +
                         event.values[0] + "," + event.values[1]
                         + "," + event.values[2] + "\n");
-                Toast.makeText(getApplicationContext(), "New values!", Toast.LENGTH_SHORT).show();
             } catch (IOException ex) {
 
             }
@@ -68,7 +66,11 @@ public class SensorLoggerService extends Service {
         try {
             stream = openFileOutput("sensors.log", MODE_APPEND | MODE_WORLD_READABLE);
             writer = new OutputStreamWriter(stream);
+            writer.write("Hello world");
+            writer.flush();
         } catch (FileNotFoundException ex) {
+            return;
+        } catch (IOException ex) {
             return;
         }
 
@@ -78,7 +80,16 @@ public class SensorLoggerService extends Service {
             manager.registerListener(accelListener, sensor, SensorManager.SENSOR_DELAY_FASTEST);
         }
 
-        Log.i(TAG, "Registered listeners!");
+        Toast.makeText(getApplicationContext(), "Sensor logger service started",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDestroy() {
+        manager.unregisterListener(accelListener);
+
+        Toast.makeText(getApplicationContext(), "Sensor logger service destroyed",
+                Toast.LENGTH_SHORT).show();
     }
 
 }

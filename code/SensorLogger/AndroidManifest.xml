@@ -8,8 +8,10 @@
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-
         <service android:name=".SensorLoggerService" android:label="Sensor Logger Service"/>
+        <service android:name=".UploaderService" android:label="Sensor Uploader Service"/>
     </application>
+
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
