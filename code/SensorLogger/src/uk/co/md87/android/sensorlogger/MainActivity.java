@@ -16,6 +16,12 @@ import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.widget.TextView;
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 
 /**
@@ -35,8 +41,25 @@ public class MainActivity extends Activity {
 
         setContentView(R.layout.main);
 
+        int lines = 0;
+
+        try {
+            String line;
+            BufferedReader reader =
+                new BufferedReader(new InputStreamReader(openFileInput("sensors.log")));
+
+            while ((line = reader.readLine()) != null) {
+                lines++;
+            }
+        } catch (FileNotFoundException ex) {
+            lines = -1;
+        } catch (IOException ex) {
+            lines = -2;
+        }
+
         ((TextView) findViewById(R.id.text)).setText(
-                ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId());
+                ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId()
+                + " -- " + getFileStreamPath("sensors.log") + " -- " + lines);
     }
 
 }
