@@ -66,14 +66,10 @@ public class SensorLoggerService extends Service {
         try {
             stream = openFileOutput("sensors.log", MODE_APPEND | MODE_WORLD_READABLE);
             writer = new OutputStreamWriter(stream);
-            writer.write("Hello world");
-            writer.flush();
         } catch (FileNotFoundException ex) {
             return;
-        } catch (IOException ex) {
-            return;
         }
-
+        
         manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
         for (Sensor sensor : manager.getSensorList(SensorManager.SENSOR_ACCELEROMETER)) {
@@ -88,7 +84,7 @@ public class SensorLoggerService extends Service {
     public void onDestroy() {
         manager.unregisterListener(accelListener);
 
-        Toast.makeText(getApplicationContext(), "Sensor logger service destroyed",
+        Toast.makeText(getApplicationContext(), "Sensor logger service stopped",
                 Toast.LENGTH_SHORT).show();
     }
 
