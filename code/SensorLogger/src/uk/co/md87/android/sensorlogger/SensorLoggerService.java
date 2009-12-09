@@ -39,8 +39,9 @@ public class SensorLoggerService extends Service {
         public void onSensorChanged(final SensorEvent event) {
             try {
                 writer.write(System.currentTimeMillis() + ":" +
-                        event.values[0] + "," + event.values[1]
-                        + "," + event.values[2] + "\n");
+                        event.values[SensorManager.DATA_X] + "," +
+                        event.values[SensorManager.DATA_Y] + "," +
+                        event.values[SensorManager.DATA_Z] + "\n");
             } catch (IOException ex) {
 
             }
@@ -71,10 +72,9 @@ public class SensorLoggerService extends Service {
         }
         
         manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-
-        for (Sensor sensor : manager.getSensorList(SensorManager.SENSOR_ACCELEROMETER)) {
-            manager.registerListener(accelListener, sensor, SensorManager.SENSOR_DELAY_FASTEST);
-        }
+        manager.registerListener(accelListener,
+                manager.getDefaultSensor(SensorManager.SENSOR_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_FASTEST);
 
         Toast.makeText(getApplicationContext(), "Sensor logger service started",
                 Toast.LENGTH_SHORT).show();
