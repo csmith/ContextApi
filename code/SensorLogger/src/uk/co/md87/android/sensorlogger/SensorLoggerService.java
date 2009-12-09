@@ -34,6 +34,8 @@ public class SensorLoggerService extends Service {
 
     private final SensorEventListener accelListener = new SensorEventListener() {
 
+        private int i = 0;
+
         /** {@inheritDoc} */
         @Override
         public void onSensorChanged(final SensorEvent event) {
@@ -42,6 +44,18 @@ public class SensorLoggerService extends Service {
                         event.values[SensorManager.DATA_X] + "," +
                         event.values[SensorManager.DATA_Y] + "," +
                         event.values[SensorManager.DATA_Z] + "\n");
+
+                if (++i == 10) {
+                    writer.flush();
+
+                    if (++i == 1000) {
+                        // Auto upload!
+                        
+                        stopSelf();
+                        startService(new Intent(SensorLoggerService.this,
+                                UploaderService.class));
+                    }
+                }
             } catch (IOException ex) {
 
             }
@@ -73,7 +87,7 @@ public class SensorLoggerService extends Service {
         
         manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         manager.registerListener(accelListener,
-                manager.getDefaultSensor(SensorManager.SENSOR_ACCELEROMETER),
+                manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
                 SensorManager.SENSOR_DELAY_FASTEST);
 
         Toast.makeText(getApplicationContext(), "Sensor logger service started",
