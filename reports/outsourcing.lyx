@@ -1,0 +1,172 @@
+#LyX 1.6.4 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Activity-Aware API for Android Devices: Outsouring Report
+\end_layout
+
+\begin_layout Author
+Chris Smith
+\begin_inset Newline newline
+\end_inset
+
+Supervisor: Naranker Dulay
+\end_layout
+
+\begin_layout Date
+January 2009
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Background
+\end_layout
+
+\begin_layout Standard
+Context- or Activity-Aware devices is an area currently under lots of research.
+ There are many and varied applications of activity-aware devices, ranging
+ from personal fitness
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Consolvo2008"
+
+\end_inset
+
+ and healthcare
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Tentori2008,Song2005"
+
+\end_inset
+
+ to training factory workers
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Stiefmeier2008"
+
+\end_inset
+
+ or merely playing music
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Dornbush2005"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+While this research is going on, there has been a huge expansion in the
+ ownership, use and power of mobile telephones.
+ Mobile telephones are so ubiquitous and now come with such a large sensor
+ platform that they are the obvious choice for implenting activity-aware
+ technologies for use in day-to-day life.
+\end_layout
+
+\begin_layout Subsection
+Applications
+\end_layout
+
+\begin_layout Subsection
+Mobile telephones
+\end_layout
+
+\begin_layout Subsubsection
+Android
+\end_layout
+
+\begin_layout Subsubsection
+iPhone
+\end_layout
+
+\begin_layout Subsection
+Inferring activity
+\end_layout
+
+\begin_layout Subsubsection
+Sensors and devices
+\end_layout
+
+\begin_layout Subsubsection
+Feature detection
+\end_layout
+
+\begin_layout Subsubsection
+Classification
+\end_layout
+
+\begin_layout Subsubsection
+Training
+\end_layout
+
+\begin_layout Section
+Specification
+\end_layout
+
+\begin_layout Section
+Evaluation
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "/home/chris/Uni/project/papers/project"
+options "bibtotoc,savetrees"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

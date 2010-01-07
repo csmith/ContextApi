@@ -12,6 +12,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Binder;
 import android.os.IBinder;
 import android.widget.Toast;
 
@@ -71,7 +72,7 @@ public class SensorLoggerService extends Service {
 
     @Override
     public IBinder onBind(Intent arg0) {
-        return null;
+        return new Binder();
     }
 
     @Override

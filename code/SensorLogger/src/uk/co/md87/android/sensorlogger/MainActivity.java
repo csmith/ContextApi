@@ -39,8 +39,9 @@ public class MainActivity extends Activity implements OnClickListener {
                 + "\n\nThis application records any changes in your phone's "
                 + "accelerometer state to a text file, along with the timestamp "
                 + "that the change occured at.\n\n"
-                + "Hit the upload button to upload the data you've recorded so "
-                + "it can be analysed. Thanks.\n\n");
+                + "Once 1,000 entries have been recorded, the data will be "
+                + "automatically uploaded and erased from the device. You can "
+                + "manually trigger an upload using the button below.\n\n");
     }
 
     /** {@inheritDoc} */
