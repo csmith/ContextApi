@@ -43,7 +43,7 @@
 \begin_body
 
 \begin_layout Title
-Context-Aware API for Android Devices: Outsouring Report
+Context-Aware API for Android Devices: Outsourcing Report
 \end_layout
 
 \begin_layout Author
@@ -93,7 +93,7 @@ Context- or Activity-Aware devices is an area currently under lots of research.
 While this research is going on, there has been a huge expansion in the
  ownership, use and power of mobile telephones.
  Mobile telephones are so ubiquitous and now come with such a large sensor
- platform that they are the obvious choice for implenting activity-aware
+ platform that they are the obvious choice for implementing activity-aware
  technologies for use in day-to-day life.
 \end_layout
 
@@ -112,12 +112,12 @@ Applications
 \begin_layout Standard
 There are many documented applications of activity-aware systems, and current
  research efforts which bring the technology to mobile telephones will only
- serve to lenghten this list.
+ serve to lengthen this list.
 \end_layout
 
 \begin_layout Standard
 The canonical example for activity-awareness, especially on mobile telephones,
- is modelling the user's 
+ is modeling the user's 
 \begin_inset Quotes eld
 \end_inset
 
@@ -133,7 +133,7 @@ key "Siewiorek2003,Raento2005"
 \end_inset
 
 .
- This allows the software to know whether it's appropriate (or 'polite')
+ This allows the software to know whether it's appropriate (or "polite")
  to disturb the user, and can advise the user's contacts when they are busy.
  It can also be used to create a 
 \begin_inset Quotes eld
@@ -151,7 +151,7 @@ key "Hudson2003"
 \end_inset
 
  which can selectively direct calls straight to an answering machine if
- the user is engaged in an 'uninterruptible' activity and the call does
+ the user is engaged in an "uninterpretable" activity and the call does
  not appear to be important.
  These allow the user's mobile telephone to better approximate human behaviour
  - when approaching someone in person it is normally quite easy to determine
@@ -173,7 +173,7 @@ key "Hudson2003"
  requires a static camera fixed in an office to observe user behaviour,
  instead of implementing it directly on a telephone, which obviously constraints
  its usefulness.
- Of the two solutions actually targetted at mobile telephones, one
+ Of the two solutions actually targeted at mobile telephones, one
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Siewiorek2003"
@@ -239,7 +239,7 @@ key "Tentori2008"
 
  allows nurses to remotely monitor the activities of their patients in a
  hospital ward, allowing them to respond to problems and keep up-to-date
- with their patients' wellbeing while not physically present.
+ with their patients' well-being while not physically present.
  Activity-aware applications have also been used to try to encourage users
  to be more healthy; one novel application records the day-to-day fitness
  activities a user performs and uses this as a basis for a virtual 
@@ -642,7 +642,15 @@ key "Hudson2003"
 .
  A tree is constructed such that each node contains a test function, with
  branches for each possible discrete outcome of the function.
- This allows data to be classified with a 'divide and conquer' approach.
+ This allows data to be classified with a 
+\begin_inset Quotes eld
+\end_inset
+
+divide and conquer
+\begin_inset Quotes erd
+\end_inset
+
+ approach.
  While high accuracy is possible in some circumstances
 \begin_inset CommandInset citation
 LatexCommand cite
@@ -820,7 +828,7 @@ key "Han2006"
 status collapsed
 
 \begin_layout Plain Layout
-the eucledian distance is usually used, but any metric will suffice
+the euclidean distance is usually used, but any metric will suffice
 \end_layout
 
 \end_inset
@@ -1038,8 +1046,15 @@ key "Miluzzo2009"
 
 \end_inset
 
- present an evaluation of the iPhone for use in 'people-centric sensing
- applications'.
+ present an evaluation of the iPhone for use in 
+\begin_inset Quotes eld
+\end_inset
+
+people-centric sensing applications
+\begin_inset Quotes erd
+\end_inset
+
+.
  One of the major drawbacks highlighted is that the iPhone does not support
  applications which run in the background.
  This means that any application wishing to perform continuous real-time
@@ -1124,9 +1139,9 @@ context-aware
 \begin_inset Quotes erd
 \end_inset
 
- applications for Android, this context is almost exclusvely limited to
+ applications for Android, this context is almost exclusively limited to
  geolocation.
- This project will therefore produce one of the first publically available
+ This project will therefore produce one of the first publicly available
  activity-aware applications for the Android platform.
 \end_layout
 
@@ -1142,7 +1157,7 @@ name "sec:Location-analysis"
 \end_layout
 
 \begin_layout Standard
-Location-based services are currently underoing an 
+Location-based services are currently undergoing an 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1246,7 +1261,7 @@ s may still occur, or that GSM signal strength could be used instead, but
 \end_layout
 
 \begin_layout Standard
-There is, however, plently of research relating to the use of location data
+There is, however, plenty of research relating to the use of location data
  outdoors.
  One application
 \begin_inset CommandInset citation
@@ -1302,7 +1317,7 @@ device inquiry
 \begin_inset Quotes erd
 \end_inset
 
- message; if a device choses to answer the inquiry, it discloses its unique
+ message; if a device chooses to answer the inquiry, it discloses its unique
  MAC address and device class
 \begin_inset Foot
 status collapsed
@@ -1477,7 +1492,7 @@ is to only use one or two sensors to monitor the user's activity until it
  appears to be transitioning.
  For example, if the user is believed to be walking, the application only
  needs to periodically check either the accelerometer (to confirm the user
- is still making walking motions) or GPS (to confirm the distance travelled
+ is still making walking motions) or GPS (to confirm the distance traveled
  is still consistent with walking) to know that their activity has not changed.
  As soon as the user's behaviour becomes inconsistent with walking, the
  application can bring other sensors online until it has successfully reclassifi
@@ -1601,7 +1616,7 @@ reference "sec:Location-analysis"
  GPS chipsets.
  It may be possible to adapt these algorithms to work instead using the
  GSM signal strength or number of locked GPS satellites.
- The varience of these when inside and outside a building need to be investigate
+ The variance of these when inside and outside a building need to be investigate
 d to determine if this is a feasible approach, or whether an alternate algorithm
  needs to be used.
 \end_layout
@@ -1627,8 +1642,8 @@ walking to the shop
 \begin_inset Quotes erd
 \end_inset
 
-, although the labelling of places may be left to future work.
- Unlabelled places (i.e., something akin to 
+, although the labeling of places may be left to future work.
+ Unlabeled places (i.e., something akin to 
 \begin_inset Quotes eld
 \end_inset
 
@@ -1771,7 +1786,7 @@ enhances the classification with extra contextual data inferred from location
 \end_layout
 
 \begin_layout Itemize
-the user's probable source and destination, if travelling
+the user's probable source and destination, if traveling
 \end_layout
 
 \begin_layout Itemize
@@ -1803,7 +1818,7 @@ The application should provide two different interfaces to retrieve the
 \begin_layout Standard
 The ContentProvider interface exposes data as a table.
  The classifier application should therefore supply a unique ID for each
- possible activity, the name of the activity (if labelled), the time the
+ possible activity, the name of the activity (if labeled), the time the
  activity was started, and the estimated uncertainty in the classification.
  It should also expose relevant details of any context information, such
  as related places (s
@@ -2031,8 +2046,8 @@ The Locale addon and context-aware home screen should be subject to user
  This should take the form of providing the applications to multiple end
  users, allowing them to use them for a period of time (providing instructions
  for certain tasks to complete).
- The users should then be presented with a questionaire which they can use
- to evaluate the functionality, utility and design of the applications.
+ The users should then be presented with a questionnaire which they can
+ use to evaluate the functionality, utility and design of the applications.
 \end_layout
 
 \begin_layout Subsubsection
@@ -2082,7 +2097,7 @@ sitting
 \end_layout
 
 \begin_layout Itemize
-travelling in a vehicle
+traveling in a vehicle
 \end_layout
 
 \begin_layout Standard
