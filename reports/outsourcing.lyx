@@ -98,11 +98,11 @@ While this research is going on, there has been a huge expansion in the
 \end_layout
 
 \begin_layout Standard
-Making a context-aware API available on an open mobile platform such as
- Android will enable developers to start adding context-aware functionality
- to their applications without the extremely large overhead of writing a
- logger and classifier themselves, or re-engineering the application to
- use a context-aware framework if one is available.
+This project aims to make a context-aware API available on an open mobile
+ platform, which will enable developers to start adding context-aware functional
+ity to their applications without the extremely large overhead of writing
+ a logger and classifier themselves, or re-engineering the application to
+ use an existing context-aware framework if one is available.
 \end_layout
 
 \begin_layout Section
@@ -171,7 +171,7 @@ key "Hudson2003"
 \end_inset
 
  requires a static camera fixed in an office to observe user behaviour,
- instead of implementing it directly on a telephone, which obviously constraints
+ instead of implementing it directly on a telephone, which obviously constrains
  its usefulness.
  Of the two solutions actually targeted at mobile telephones, one
 \begin_inset CommandInset citation
@@ -776,7 +776,8 @@ evolved
 \begin_layout Standard
 The drawback of genetic algorithms is the need for a fitness function -
  the network will only ever be as good as the fitness function, and if you
- have a way to define what makes a good network you could hardcode 
+ have a way to define what makes a good network you could in most cases
+ hardcode the solution instead of evolving a network to satisfy it.
 \end_layout
 
 \begin_layout Subsubsection
@@ -1738,6 +1739,7 @@ An Android application which:
 monitors raw sensor data and extracts features from the device's:
 \end_layout
 
+\begin_deeper
 \begin_layout Itemize
 accelerometer sensors
 \end_layout
@@ -1754,10 +1756,12 @@ camera
 microphone
 \end_layout
 
+\end_deeper
 \begin_layout Itemize
 monitors relevant data and extracts features concerning:
 \end_layout
 
+\begin_deeper
 \begin_layout Itemize
 visible Bluetooth devices in proximity to the device
 \end_layout
@@ -1770,6 +1774,7 @@ the current location of the device
 the current GSM signal strength and cell ID
 \end_layout
 
+\end_deeper
 \begin_layout Itemize
 presents the user with a method of optionally annotating this data with
  their current activity
@@ -1785,6 +1790,7 @@ enhances the classification with extra contextual data inferred from location
  or Bluetooth service:
 \end_layout
 
+\begin_deeper
 \begin_layout Itemize
 the user's probable source and destination, if traveling
 \end_layout
@@ -1797,6 +1803,7 @@ the user's current location, if stationary
 the user's company, if detected
 \end_layout
 
+\end_deeper
 \begin_layout Itemize
 attempts to conserve battery life by intelligent management and timing of
  sensor activity
