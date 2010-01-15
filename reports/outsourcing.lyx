@@ -19,7 +19,7 @@
 \paperfontsize default
 \spacing single
 \use_hyperref false
-\papersize default
+\papersize a4paper
 \use_geometry false
 \use_amsmath 1
 \use_esint 1
@@ -28,7 +28,7 @@
 \paperorientation portrait
 \secnumdepth 3
 \tocdepth 3
-\paragraph_separation indent
+\paragraph_separation skip
 \defskip medskip
 \quotes_language english
 \papercolumns 1
@@ -58,10 +58,21 @@ Supervisor: Naranker Dulay
 January 2009
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
 \begin_layout LyX-Code
 \begin_inset CommandInset toc
 LatexCommand tableofcontents
 
+\end_inset
+
+
+\begin_inset Newpage pagebreak
 \end_inset
 
 
@@ -230,7 +241,7 @@ key "Tentori2008"
  hospital ward, allowing them to respond to problems and keep up-to-date
  with their patients' wellbeing while not physically present.
  Activity-aware applications have also been used to try to encourage users
- to be more healthy; one novel application records the day-to-date fitness
+ to be more healthy; one novel application records the day-to-day fitness
  activities a user performs and uses this as a basis for a virtual 
 \begin_inset Quotes eld
 \end_inset
@@ -410,7 +421,7 @@ Accelerometers can be combined with magnetic field sensors to convert the
  This is particularly important when the sensor platform - a mobile telephone
  - can be oriented in different ways while performing the same activity.
  There are, for example, four different ways to comfortably fit a typical
- smartphone into a trousers pocket, made up of two possible orientations
+ smartphone into a trouser pocket, made up of two possible orientations
  around two axis 
 \begin_inset Foot
 status collapsed
@@ -891,7 +902,8 @@ key "Reynolds2008"
 
 , clearly representing a substantial growth in sales and advancements in
  the technology.
- In fact, mobile telephones are the fasted adopted technology in human history
+ In fact, mobile telephones are the fastest adopted technology in human
+ history
 \begin_inset CommandInset citation
 LatexCommand cite
 key "Eagle2004"
@@ -1509,6 +1521,13 @@ The battery life on modern smartphones rarely exceeds 24 hours of typical
  and battery use by sensors and processing algorithms will need to be found.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
 \begin_layout Part
 Specification
 \end_layout
@@ -1704,7 +1723,6 @@ An Android application which:
 monitors raw sensor data and extracts features from the device's:
 \end_layout
 
-\begin_deeper
 \begin_layout Itemize
 accelerometer sensors
 \end_layout
@@ -1721,12 +1739,10 @@ camera
 microphone
 \end_layout
 
-\end_deeper
 \begin_layout Itemize
 monitors relevant data and extracts features concerning:
 \end_layout
 
-\begin_deeper
 \begin_layout Itemize
 visible Bluetooth devices in proximity to the device
 \end_layout
@@ -1739,7 +1755,6 @@ the current location of the device
 the current GSM signal strength and cell ID
 \end_layout
 
-\end_deeper
 \begin_layout Itemize
 presents the user with a method of optionally annotating this data with
  their current activity
@@ -1755,7 +1770,6 @@ enhances the classification with extra contextual data inferred from location
  or Bluetooth service:
 \end_layout
 
-\begin_deeper
 \begin_layout Itemize
 the user's probable source and destination, if travelling
 \end_layout
@@ -1768,7 +1782,6 @@ the user's current location, if stationary
 the user's company, if detected
 \end_layout
 
-\end_deeper
 \begin_layout Itemize
 attempts to conserve battery life by intelligent management and timing of
  sensor activity
@@ -1939,6 +1952,13 @@ ons.
  aware applications, and the specific techniques used in this project.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
 \begin_layout Part
 Evaluation
 \end_layout
@@ -2088,6 +2108,10 @@ Finally, the applications should be evaluated based on their resource usage.
  users to change their normal charging behaviour, and memory usage should
  not be so high as to cause other applications to become sluggish or be
  closed by the operating system.
+\begin_inset Newpage pagebreak
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
