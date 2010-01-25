@@ -36,7 +36,7 @@ public class SensorLoggerService extends Service {
     private OutputStreamWriter writer;
 
     private int i = 0;
-    private float[] accelValues;
+    private float[] accelValues, magValues;
 
     private final SensorEventListener accelListener = new SensorEventListener() {
 
@@ -54,8 +54,28 @@ public class SensorLoggerService extends Service {
 
     };
 
+    private final SensorEventListener magneticListener = new SensorEventListener() {
+
+        /** {@inheritDoc} */
+        @Override
+        public void onSensorChanged(final SensorEvent event) {
+            setMagValues(event.values);
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public void onAccuracyChanged(final Sensor sensor, final int accuracy) {
+            // Don't really care
+        }
+
+    };
+
     public void setAccelValues(float[] accelValues) {
         this.accelValues = accelValues;
+    }
+
+    public void setMagValues(float[] magValues) {
+        this.magValues = magValues;
     }
 
     public void write() {
@@ -63,7 +83,10 @@ public class SensorLoggerService extends Service {
             writer.write(System.currentTimeMillis() + ":" +
                     accelValues[SensorManager.DATA_X] + "," +
                     accelValues[SensorManager.DATA_Y] + "," +
-                    accelValues[SensorManager.DATA_Z] + "\n");
+                    accelValues[SensorManager.DATA_Z] + "," +
+                    magValues[SensorManager.DATA_X] + "," +
+                    magValues[SensorManager.DATA_Y] + "," +
+                    magValues[SensorManager.DATA_Z] + "," + "\n");
 
             if (++i % 50 == 0) {
                 writer.flush();
@@ -102,6 +125,9 @@ public class SensorLoggerService extends Service {
         manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         manager.registerListener(accelListener,
                 manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
+                SensorManager.SENSOR_DELAY_FASTEST);
+        manager.registerListener(magneticListener,
+                manager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
                 SensorManager.SENSOR_DELAY_FASTEST);
 
         Toast.makeText(getApplicationContext(), "Sensor logger service started",
