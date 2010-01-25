@@ -20,6 +20,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  *
@@ -33,33 +35,15 @@ public class SensorLoggerService extends Service {
     private FileOutputStream stream;
     private OutputStreamWriter writer;
 
-    private final SensorEventListener accelListener = new SensorEventListener() {
+    private int i = 0;
+    private float[] accelValues;
 
-        private int i = 0;
+    private final SensorEventListener accelListener = new SensorEventListener() {
 
         /** {@inheritDoc} */
         @Override
         public void onSensorChanged(final SensorEvent event) {
-            try {
-                writer.write(System.currentTimeMillis() + ":" +
-                        event.values[SensorManager.DATA_X] + "," +
-                        event.values[SensorManager.DATA_Y] + "," +
-                        event.values[SensorManager.DATA_Z] + "\n");
-
-                if (++i == 10) {
-                    writer.flush();
-
-                    if (++i == 1000) {
-                        // Auto upload!
-                        
-                        stopSelf();
-                        startService(new Intent(SensorLoggerService.this,
-                                UploaderService.class));
-                    }
-                }
-            } catch (IOException ex) {
-
-            }
+            setAccelValues(event.values);
         }
 
         /** {@inheritDoc} */
@@ -69,6 +53,35 @@ public class SensorLoggerService extends Service {
         }
 
     };
+
+    public void setAccelValues(float[] accelValues) {
+        this.accelValues = accelValues;
+    }
+
+    public void write() {
+        try {
+            writer.write(System.currentTimeMillis() + ":" +
+                    accelValues[SensorManager.DATA_X] + "," +
+                    accelValues[SensorManager.DATA_Y] + "," +
+                    accelValues[SensorManager.DATA_Z] + "\n");
+
+            if (++i % 50 == 0) {
+                writer.flush();
+
+                if (i % 1000 == 0) {
+                    upload();
+                }
+            }
+        } catch (IOException ex) {
+            // Ignore
+        }
+    }
+
+    public void upload() {
+        stopSelf();
+        startService(new Intent(SensorLoggerService.this,
+                UploaderService.class));
+    }
 
     @Override
     public IBinder onBind(Intent arg0) {
@@ -93,6 +106,13 @@ public class SensorLoggerService extends Service {
 
         Toast.makeText(getApplicationContext(), "Sensor logger service started",
                 Toast.LENGTH_SHORT).show();
+
+        new Timer("Data logger").scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                write();
+            }
+        }, 0, 50);
     }
 
     @Override
