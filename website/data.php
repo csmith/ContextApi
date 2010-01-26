@@ -3,14 +3,14 @@
  require('common.php');
 
  if (isset($_GET['graph'])) {
-  $sql = 'SELECT record_data FROM unprocessed WHERE record_id = ' . ((int) $_GET['graph']);
+  $sql = 'SELECT log_data FROM sensorlogger WHERE log_id = ' . ((int) $_GET['graph']);
   $res = mysql_query($sql);
   $row = mysql_fetch_assoc($res);
 
   $datax = array();
   $datay = array();
   $dataz = array();
-  foreach (explode("\n", $row['record_data']) as $line) {
+  foreach (explode("\n", $row['log_data']) as $line) {
    if (preg_match('/([0-9]+):(?:.*?,.*?,.*?,){'.($_GET['ds']-1).'}([0-9\.\-]+),([0-9\.\-]+),([0-9\.\-]+)/', $line, $m)) {
     $datax[] = (double) $m[2];
     $datay[] = (double) $m[3];
@@ -64,7 +64,7 @@
   return;
  }
 
- $sql = 'SELECT * FROM unprocessed';
+ $sql = 'SELECT log_id, log_version, log_time, log_activity, log_data FROM sensorlogger WHERE log_statuscode = 1';
  $res = mysql_query($sql);
 
  echo '<table border="1">';
@@ -79,11 +79,11 @@
   }
 
   echo '<tr>';
-  foreach ($row as $k => $v) { echo '<td>', $k == 'record_data' ? count(explode("\n", $v)) . ' line(s)' : nl2br(htmlentities($v)), '</td>'; }
+  foreach ($row as $k => $v) { echo '<td>', $k == 'log_data' ? count(explode("\n", $v)) . ' line(s)' : nl2br(htmlentities($v)), '</td>'; }
 
   echo '<td>';
-  echo '<img src="data.php?graph=', $row['record_id'], '&amp;ds=1" height="330"><br>';
-  echo '<img src="data.php?graph=', $row['record_id'], '&amp;ds=2" height="330">';
+  echo '<img src="data.php?graph=', $row['log_id'], '&amp;ds=1" height="330">';
+  echo '<br><img src="data.php?graph=', $row['log_id'], '&amp;ds=2" height="330">';
   echo '</td>';
   echo '</tr>';
  }

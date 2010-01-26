@@ -5,6 +5,10 @@
  mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
  mysql_select_db(MYSQL_DB);
 
+ function m($sql) {
+	return mysql_real_escape_string($sql);
+ }
+
  function Oblong($message) {
         $key = trim(file_get_contents('/home/chris/oblong.key'));
         $chan = '#MD87.highvol';
