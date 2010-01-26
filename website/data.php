@@ -68,8 +68,8 @@
   foreach ($row as $k => $v) { echo '<td>', $k == 'record_data' ? count(explode("\n", $v)) . ' line(s)' : nl2br(htmlentities($v)), '</td>'; }
 
   echo '<td>';
-  echo '<img src="data.php?graph=', $row['record_id'], '&amp;ds=1"><br>';
-  echo '<img src="data.php?graph=', $row['record_id'], '&amp;ds=2">';
+  echo '<img src="data.php?graph=', $row['record_id'], '&amp;ds=1" height="330"><br>';
+  echo '<img src="data.php?graph=', $row['record_id'], '&amp;ds=2" height="330">';
   echo '</td>';
   echo '</tr>';
  }
