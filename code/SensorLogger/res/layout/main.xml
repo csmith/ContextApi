@@ -8,17 +8,29 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:text="Hello Android from NetBeans"/>
+    <TextView
+        android:id="@+id/caption"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/text"
+        android:text="Caption"/>
+    <EditText
+        android:id="@+id/entry"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/editbox_background"
+        android:layout_below="@id/caption" />
     <Button
         android:id="@+id/start"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text"
+        android:layout_below="@id/entry"
         android:text="Start/Stop service"/>
     <Button
         android:id="@+id/upload"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/text"
-        android:layout_toRightOf="@+id/start"
+        android:layout_below="@id/entry"
+        android:layout_toRightOf="@id/start"
         android:text="Upload data"/>
 </RelativeLayout>

@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 /**
@@ -21,12 +22,12 @@ public class MainActivity extends Activity implements OnClickListener {
 
     static final String VERSION = "0.1";
 
+    static String ACTIVITY = "Unknown";
+
     /** {@inheritDoc} */
     @Override
     public void onCreate(final Bundle icicle) {
         super.onCreate(icicle);
-
-        startService(new Intent(this, SensorLoggerService.class));
 
         setContentView(R.layout.main);
 
@@ -42,11 +43,14 @@ public class MainActivity extends Activity implements OnClickListener {
                 + "Once 1,000 entries have been recorded, the data will be "
                 + "automatically uploaded and erased from the device. You can "
                 + "manually trigger an upload using the button below.\n\n");
+        ((TextView) findViewById(R.id.caption)).setText("Activity name:");
     }
 
     /** {@inheritDoc} */
     @Override
     public void onClick(final View view) {
+        ACTIVITY = ((EditText) findViewById(R.id.entry)).getText().toString();
+        
         if (view.getId() == R.id.start) {
             if (!stopService(new Intent(this, SensorLoggerService.class))) {
                 startService(new Intent(this, SensorLoggerService.class));

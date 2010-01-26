@@ -46,6 +46,7 @@ public class UploaderService extends Service implements Runnable {
         post.addHeader("x-application", "SensorLogger");
         post.addHeader("x-version", MainActivity.VERSION);
         post.addHeader("x-imei", ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId());
+        post.addHeader("x-activity", MainActivity.ACTIVITY);
 
         try {
             int code = new DefaultHttpClient().execute(post).getStatusLine().getStatusCode();
@@ -55,7 +56,6 @@ public class UploaderService extends Service implements Runnable {
             Log.e("UploaderService", "Unable to upload sensor logs", ex);
         }
 
-        startService(new Intent(this, SensorLoggerService.class));
         stopSelf();
     }
 
