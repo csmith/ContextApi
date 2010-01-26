@@ -55,7 +55,7 @@ public class MainActivity extends Activity implements OnClickListener {
         ACTIVITY = ((EditText) findViewById(R.id.entry)).getText().toString();
         
         if (view.getId() == R.id.start) {
-            if (!stopService(new Intent(this, SensorLoggerService.class))) {
+            if (!SensorLoggerService.STARTED) {
                 startService(new Intent(this, SensorLoggerService.class));
             }
         } else if (view.getId() == R.id.upload) {

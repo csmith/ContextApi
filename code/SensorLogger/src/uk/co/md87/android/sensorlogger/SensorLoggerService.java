@@ -31,6 +31,8 @@ public class SensorLoggerService extends Service {
 
     private static final String TAG = "SensorLoggerService";
 
+    public static boolean STARTED = false;
+
     private SensorManager manager;
     private FileOutputStream stream;
     private OutputStreamWriter writer;
@@ -115,6 +117,8 @@ public class SensorLoggerService extends Service {
     public void onStart(final Intent intent, final int startId) {
         super.onStart(intent, startId);
 
+        STARTED = true;
+
         new Timer("Delay timer").schedule(new TimerTask() {
 
             @Override
@@ -154,6 +158,8 @@ public class SensorLoggerService extends Service {
     @Override
     public void onDestroy() {
         manager.unregisterListener(accelListener);
+
+        STARTED = false;
 
         Toast.makeText(getApplicationContext(), "Sensor logger service stopped",
                 Toast.LENGTH_SHORT).show();
