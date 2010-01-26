@@ -33,4 +33,10 @@
         android:layout_below="@id/entry"
         android:layout_toRightOf="@id/start"
         android:text="Upload data"/>
+    <TextView
+        android:id="@+id/viewcaption"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/upload"
+        android:text="View your uploaded data at:"/>
 </RelativeLayout>

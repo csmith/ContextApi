@@ -6,13 +6,17 @@
 package uk.co.md87.android.sensorlogger;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
+import android.text.util.Linkify;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import java.math.BigInteger;
 
 /**
  *
@@ -20,7 +24,7 @@ import android.widget.TextView;
  */
 public class MainActivity extends Activity implements OnClickListener {
 
-    static final String VERSION = "0.1.2";
+    static final String VERSION = "0.1.3";
 
     static String ACTIVITY = "Unknown";
 
@@ -45,8 +49,32 @@ public class MainActivity extends Activity implements OnClickListener {
                 + "manually trigger an upload using the button below.\n\n"
                 + "Once you press the start button, there will be a 10 second "
                 + "delay for you to put the phone in your pocket etc before monitoring "
-                + "begins.\n\n");
+                + "begins.");
         ((TextView) findViewById(R.id.caption)).setText("Activity name:");
+
+        final String imei = ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
+        final String code = "http://MD87.co.uk/android/p/" + getCode(imei);
+        ((TextView) findViewById(R.id.viewcaption)).setText("View your submitted data online at:\n " + code);
+        Linkify.addLinks(((TextView) findViewById(R.id.viewcaption)), Linkify.WEB_URLS);
+    }
+
+    public String getCode(final String imei) {
+        final String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-=_";
+        final StringBuilder builder = new StringBuilder();
+
+        long val = Long.parseLong(imei);
+
+        while (val > 0) {
+            final long bit = val % chars.length();
+            val = val / chars.length();
+            builder.insert(0, chars.charAt((int) bit));
+        }
+
+        while (builder.length() < 10) {
+            builder.insert(0, "a");
+        }
+
+        return builder.toString();
     }
 
     /** {@inheritDoc} */
