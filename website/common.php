@@ -1,7 +1,9 @@
 <?PHP
 
- mysql_connect('localhost', 'md87_android', 'android73274');
- mysql_select_db('md87_android');
+ require_once('settings.php');
+
+ mysql_connect(MYSQL_HOST, MYSQL_USER, MYSQL_PASS);
+ mysql_select_db(MYSQL_DB);
 
  function Oblong($message) {
         $key = trim(file_get_contents('/home/chris/oblong.key'));
