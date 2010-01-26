@@ -2,7 +2,7 @@
 
  require_once('common.php');
 
- define('VERSION', 18);
+ define('VERSION', 24);
 
  function processSensorLogger($records = true) {
   $sql = $records ? 'SELECT record_id, record_ip, record_headers, record_data FROM unprocessed'
@@ -50,6 +50,7 @@
    } else if (count(explode("\n", $row['record_data'])) < 500) {
     $statuscode = 7;
    } else {
+    // Check for duplicates
     $sql2  = 'SELECT COUNT(*) FROM sensorlogger WHERE LEFT(log_data, ' . strlen($row['record_data']) . ')';
     $sql2 .= ' = LEFT(\'' . m($row['record_data']) . '\', ' . strlen($row['record_data']) . ')';
 
@@ -63,7 +64,25 @@
     if ($num2 > 0) {
      $statuscode = 8;
     } else {
-     $statuscode = 1;
+     $error = false;
+
+     // Check for repeated data
+     $last = array(); $lastcount = array();
+     foreach (explode("\n", $row['record_data']) as $line) {
+      $bits = explode(',', trim(substr($line, strpos($line, ':'))));
+      foreach ($bits as $o => $bit) {
+       if (empty($bit)) { continue; }
+       if ($last[$o] == $bit) { $lastcount[$o]++; } else { $lastcount[$o] = 0; }
+       $last[$o] = $bit;
+      }
+
+      if (max($lastcount) > 200) {
+       $error = true;
+       break;
+      }
+     }
+
+     $statuscode = $error ? 9 : 1;
     }
    }
 
