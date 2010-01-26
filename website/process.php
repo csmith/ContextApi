@@ -2,61 +2,99 @@
 
  require_once('common.php');
 
- define('VERSION', 1);
+ define('VERSION', 11);
 
- $sql = 'SELECT record_id, record_ip, record_headers, record_data FROM unprocessed';
- $res = mysql_query($sql);
+ function processSensorLogger($records = true) {
+  $sql = $records ? 'SELECT record_id, record_ip, record_headers, record_data FROM unprocessed'
+                  : 'SELECT log_id, log_ip AS record_ip, log_headers AS record_headers, log_data '
+		  . 'AS record_data FROM sensorlogger WHERE log_pversion < ' . VERSION;
+  $res = mysql_query($sql);
+  $count = 0;
+  $codes = array();
 
- while ($row = mysql_fetch_assoc($res)) {
-  $ip = $row['record_ip'];
+  while ($row = mysql_fetch_assoc($res)) {
+   $ip = $row['record_ip'];
 
-  $headers = array();
+   $headers = array();
 
-  foreach (explode("\n", $row['record_headers']) as $line) {
-   if (preg_match('/(.*?): (.*)$/', $line, $m)) {
-    $headers[$m[1]] = $m[2];
+   foreach (explode("\n", $row['record_headers']) as $line) {
+    if (preg_match('/(.*?): (.*)$/', $line, $m)) {
+     $headers[$m[1]] = $m[2];
+    }
    }
-  }
 
-  $imei = isset($headers['IMEI']) ? $headers['IMEI'] : '';
-  $activity = isset($headers['ACTIVITY']) ? $headers['ACTIVITY'] : '';
-  $version = isset($headers['VERSION']) ? $headers['VERSION'] : '';
+   if (!isset($headers['APPLICATION']) || $headers['APPLICATION'] != 'SensorLogger') {
+    continue;
+   }
+
+   $imei = isset($headers['IMEI']) ? $headers['IMEI'] : '';
+   $activity = isset($headers['ACTIVITY']) ? $headers['ACTIVITY'] : '';
+   $version = isset($headers['VERSION']) ? $headers['VERSION'] : '';
   
-  if (preg_match('/^([0-9]+)[0-9]{3}:.*/', $row['record_data'], $m)) {
-   $time = (int) $m[1];
-  } else {
-   $time = 0;
+   if (preg_match('/^([0-9]+)[0-9]{3}:.*/', $row['record_data'], $m)) {
+    $time = (int) $m[1];
+   } else {
+    $time = 0;
+   }
+
+   if (empty($imei)) {
+    $statuscode = 2;
+   } else if (empty($activity) || $activity == '<Unknown>') {
+    $statuscode = 3;
+   } else if (empty($version)) {
+    $statuscode = 4;
+   } else if (empty($row['record_data'])) {
+    $statuscode = 5;
+   } else if ($time == 0 || date('Y', $time) < 2010) {
+    $statuscode = 6;
+   } else if (count(explode("\n", $row['record_data'])) < 500) {
+    $statuscode = 7;
+   } else {
+    $sql2  = 'SELECT COUNT(*) FROM sensorlogger WHERE LEFT(log_data, ' . strlen($row['record_data']) . ')';
+    $sql2 .= ' = LEFT(\'' . m($row['record_data']) . '\', ' . strlen($row['record_data']) . ')';
+    if (!$record) { $sql2 .= ' AND log_id <> ' . $row['log_id']; }
+    $res2  = mysql_query($sql2);
+    $num2 = (int) mysql_result($res2, 0);
+
+    if ($num2 > 0) {
+     $statuscode = 8;
+    } else {
+     $statuscode = 1;
+    }
+   }
+
+   $codes[$statuscode]++;
+
+   $pversion = VERSION;
+   $headers = $row['record_headers'];
+   $data = $row['record_data'];
+
+   $sql  = 'INSERT INTO sensorlogger (log_ip, log_imei, log_activity, log_version, ';
+   $sql .= 'log_time, log_statuscode, log_pversion, log_headers, log_data) VALUES (';
+   $sql .= '\'' . m($ip) . '\', \'' . m($imei) . '\', \'' . m($activity) . '\', \'';
+   $sql .= m($version) . '\', ' . ((int) $time) . ', ' . ((int) $statuscode) . ', ';
+   $sql .= ((int) $pversion) . ', \'' . m($headers) . '\', \'' . m($data) . '\')';
+   mysql_query($sql) or die(mysql_error());
+
+   $sql  = $records ? 'DELETE FROM unprocessed WHERE record_id = ' . $row['record_id']
+                    : 'DELETE FROM sensorlogger WHERE log_id = ' . $row['log_id'];
+   mysql_query($sql);
+
+   $count++;
   }
 
-  if (empty($imei)) {
-   $statuscode = 2;
-  } else if (empty($activity) || $activity == '<Unknown>') {
-   $statuscode = 3;
-  } else if (empty($version)) {
-   $statuscode = 4;
-  } else if (empty($row['record_data'])) {
-   $statuscode = 5;
-  } else if ($time == 0 || date('Y', $time) < 2010) {
-   $statuscode = 6;
-  } else if (count(explode("\n", $row['record_data'])) < 50) {
-   $statuscode = 7;
-  } else {
-   $statuscode = 1;
+  if ($count > 1 || !$records && $count > 0) {
+   $codestr = '';
+   asort($codes);
+
+   foreach ($codes as $code => $count) {
+    $codestr .= (!empty($codestr) ? '; ' : '') . $code . ': ' . $count;
+   }
+
+   Oblong("\002[ANDROID]\002 Processed $count " . ($records ? "new" : "existing") . " SensorLogger dataset(s). Status codes: $codestr");
   }
-
-  $pversion = VERSION;
-  $headers = $row['record_headers'];
-  $data = $row['record_data'];
-
-  $sql  = 'INSERT INTO sensorlogger (log_ip, log_imei, log_activity, log_version, ';
-  $sql .= 'log_time, log_statuscode, log_pversion, log_headers, log_data) VALUES (';
-  $sql .= '\'' . m($ip) . '\', \'' . m($imei) . '\', \'' . m($activity) . '\', \'';
-  $sql .= m($version) . '\', ' . ((int) $time) . ', ' . ((int) $statuscode) . ', ';
-  $sql .= ((int) $pversion) . ', \'' . m($headers) . '\', \'' . m($data) . '\')';
-  mysql_query($sql) or die(mysql_error());
-
-  $sql  = 'DELETE FROM unprocessed WHERE record_id = ' . $row['record_id'];
-  mysql_query($sql);
  }
+
+ processSensorLogger(!isset($argv[1]) || $argv[1] != '--update');
 
 ?>
