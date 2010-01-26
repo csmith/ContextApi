@@ -115,13 +115,23 @@ public class SensorLoggerService extends Service {
     public void onStart(final Intent intent, final int startId) {
         super.onStart(intent, startId);
 
-        try {
+        new Timer("Delay timer").schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+                init();
+            }
+        }, 10000);
+    }
+
+    public void init() {
+       try {
             stream = openFileOutput("sensors.log", MODE_APPEND | MODE_WORLD_READABLE);
             writer = new OutputStreamWriter(stream);
         } catch (FileNotFoundException ex) {
             return;
         }
-        
+
         manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         manager.registerListener(accelListener,
                 manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
@@ -130,7 +140,7 @@ public class SensorLoggerService extends Service {
                 manager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
                 SensorManager.SENSOR_DELAY_FASTEST);
 
-        Toast.makeText(getApplicationContext(), "Sensor logger service started",
+        Toast.makeText(getApplicationContext(), "Sensor logger service monitoring...",
                 Toast.LENGTH_SHORT).show();
 
         new Timer("Data logger").scheduleAtFixedRate(new TimerTask() {

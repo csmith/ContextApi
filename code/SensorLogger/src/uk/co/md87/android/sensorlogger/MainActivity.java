@@ -20,7 +20,7 @@ import android.widget.TextView;
  */
 public class MainActivity extends Activity implements OnClickListener {
 
-    static final String VERSION = "0.1";
+    static final String VERSION = "0.1.1";
 
     static String ACTIVITY = "Unknown";
 
@@ -38,11 +38,14 @@ public class MainActivity extends Activity implements OnClickListener {
         ((TextView) findViewById(R.id.text)).setText("Welcome to sensor logger v"
                 + VERSION + "..."
                 + "\n\nThis application records any changes in your phone's "
-                + "accelerometer state to a text file, along with the timestamp "
-                + "that the change occured at.\n\n"
-                + "Once 1,000 entries have been recorded, the data will be "
+                + "accelerometer and magnetic field sensors to a text file, "
+                + "along with the timestamp that the change occured at.\n\n"
+                + "Once 1,000 entries have been recorded (~50 seconds), the data will be "
                 + "automatically uploaded and erased from the device. You can "
-                + "manually trigger an upload using the button below.\n\n");
+                + "manually trigger an upload using the button below.\n\n"
+                + "Once you press the start button, there will be a 10 second "
+                + "delay for you to put the phone in your pocket etc before monitoring "
+                + "begins.\n\n");
         ((TextView) findViewById(R.id.caption)).setText("Activity name:");
     }
 
