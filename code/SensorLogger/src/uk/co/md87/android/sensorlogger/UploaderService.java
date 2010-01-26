@@ -40,21 +40,25 @@ public class UploaderService extends Service implements Runnable {
     public void run() {
         final HttpPost post = new HttpPost("http://chris.smith.name/android/upload");
         final File file = getFileStreamPath("sensors.log");
-        final FileEntity entity = new FileEntity(file, "text/plain");
 
-        post.setEntity(entity);
-        post.addHeader("x-application", "SensorLogger");
-        post.addHeader("x-version", MainActivity.VERSION);
-        post.addHeader("x-imei", ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId());
-        post.addHeader("x-activity", MainActivity.ACTIVITY);
+        if (file.exists() && file.length() > 10) {
+            // The file exists and contains a non-trivial amount of information
+            final FileEntity entity = new FileEntity(file, "text/plain");
 
-        try {
-            int code = new DefaultHttpClient().execute(post).getStatusLine().getStatusCode();
+            post.setEntity(entity);
+            post.addHeader("x-application", "SensorLogger");
+            post.addHeader("x-version", MainActivity.VERSION);
+            post.addHeader("x-imei", ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId());
+            post.addHeader("x-activity", MainActivity.ACTIVITY);
 
-            file.delete();
-        } catch (IOException ex) {
-            Log.e("UploaderService", "Unable to upload sensor logs", ex);
+            try {
+                int code = new DefaultHttpClient().execute(post).getStatusLine().getStatusCode();
+            } catch (IOException ex) {
+                Log.e("UploaderService", "Unable to upload sensor logs", ex);
+            }
         }
+
+        file.delete();
 
         stopSelf();
     }
