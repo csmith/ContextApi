@@ -5,7 +5,7 @@
 
  function Oblong($message) {
         $key = trim(file_get_contents('/home/chris/oblong.key'));
-        $chan = '#MD87';
+        $chan = '#MD87.highvol';
 
         $fp = @fsockopen("oblong.md87.co.uk", 3302, $errno, $errstr, 30);
         if ($fp) {
