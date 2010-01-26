@@ -2,7 +2,7 @@
 
  require_once('common.php');
 
- define('VERSION', 11);
+ define('VERSION', 18);
 
  function processSensorLogger($records = true) {
   $sql = $records ? 'SELECT record_id, record_ip, record_headers, record_data FROM unprocessed'
@@ -52,7 +52,11 @@
    } else {
     $sql2  = 'SELECT COUNT(*) FROM sensorlogger WHERE LEFT(log_data, ' . strlen($row['record_data']) . ')';
     $sql2 .= ' = LEFT(\'' . m($row['record_data']) . '\', ' . strlen($row['record_data']) . ')';
-    if (!$record) { $sql2 .= ' AND log_id <> ' . $row['log_id']; }
+
+    if (!$record) {
+     $sql2 .= ' AND (log_id < ' . $row['log_id'] . ' OR LENGTH(log_data) > ' . strlen($row['record_data']) . ')';
+    }
+
     $res2  = mysql_query($sql2);
     $num2 = (int) mysql_result($res2, 0);
 
@@ -69,16 +73,24 @@
    $headers = $row['record_headers'];
    $data = $row['record_data'];
 
-   $sql  = 'INSERT INTO sensorlogger (log_ip, log_imei, log_activity, log_version, ';
-   $sql .= 'log_time, log_statuscode, log_pversion, log_headers, log_data) VALUES (';
-   $sql .= '\'' . m($ip) . '\', \'' . m($imei) . '\', \'' . m($activity) . '\', \'';
-   $sql .= m($version) . '\', ' . ((int) $time) . ', ' . ((int) $statuscode) . ', ';
-   $sql .= ((int) $pversion) . ', \'' . m($headers) . '\', \'' . m($data) . '\')';
-   mysql_query($sql) or die(mysql_error());
+   if ($records) {
+    $sql  = 'INSERT INTO sensorlogger (log_ip, log_imei, log_activity, log_version, ';
+    $sql .= 'log_time, log_statuscode, log_pversion, log_headers, log_data) VALUES (';
+    $sql .= '\'' . m($ip) . '\', \'' . m($imei) . '\', \'' . m($activity) . '\', \'';
+    $sql .= m($version) . '\', ' . ((int) $time) . ', ' . ((int) $statuscode) . ', ';
+    $sql .= ((int) $pversion) . ', \'' . m($headers) . '\', \'' . m($data) . '\')';
+    mysql_query($sql) or die(mysql_error());
 
-   $sql  = $records ? 'DELETE FROM unprocessed WHERE record_id = ' . $row['record_id']
-                    : 'DELETE FROM sensorlogger WHERE log_id = ' . $row['log_id'];
-   mysql_query($sql);
+    $sql  = 'DELETE FROM unprocessed WHERE record_id = ' . $row['record_id'];
+    mysql_query($sql);
+   } else {
+    $sql  = 'UPDATE sensorlogger SET log_ip = \'' . m($ip) . '\', log_imei = \'';
+    $sql .= m($imei) . '\', log_activity = \'' . m($activity) . '\', log_version = \'';
+    $sql .= m($version) . '\', log_time = ' . ((int) $time) . ', log_statuscode = ';
+    $sql .= ((int) $statuscode) . ', log_pversion = ' . ((int) $pversion) . ', log_headers = \'';
+    $sql .= m($headers) . '\', log_data = \'' . m($data) . '\' WHERE log_id = ' . $row['log_id'];
+    mysql_query($sql);
+   }
 
    $count++;
   }
