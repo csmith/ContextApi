@@ -64,7 +64,7 @@
   return;
  }
 
- $sql = 'SELECT log_id, log_version, log_time, log_activity, log_data FROM sensorlogger WHERE log_statuscode = 1';
+ $sql = 'SELECT log_id, log_imei, log_version, log_time, log_activity, log_data FROM sensorlogger WHERE log_statuscode = 1';
  $res = mysql_query($sql);
 
  echo '<table border="1">';

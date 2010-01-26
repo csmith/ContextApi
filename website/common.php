@@ -21,4 +21,19 @@
         }
  }
 
+ function getStatusCodeReason($code) {
+ 	switch ((int) $code) {
+		case 2: return 'no IMEI code was specified';
+		case 3: return 'no activity was specified';
+		case 4: return 'no application version was specified';
+		case 5: return 'no sensor data was included';
+		case 6: return 'an invalid date was specified';
+		case 7: return 'insufficient sensor data was included';
+		case 8: return 'the sensor data was already submitted (duplicate)';
+		case 9: return 'the sensor data contained long periods of identical values';
+	}
+
+	return 'unknown reason';
+ }
+
 ?>
