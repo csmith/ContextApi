@@ -17,4 +17,6 @@
 
  mysql_query($sql) or die('Error: ' . mysql_error() . '<br>'. $sql);
 
+ Oblong("\002[ANDROID]\002 New data uploaded: " . implode('; ', explode("\n", $headers)));
+
 ?>
