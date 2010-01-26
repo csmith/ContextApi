@@ -1,0 +1,52 @@
+Array
+(
+    [CONTENT_LENGTH] => 22
+    [CONTENT_TYPE] => text/plain
+    [DOCUMENT_ROOT] => /home/chris/websites/chris.smith.name/
+    [GATEWAY_INTERFACE] => CGI/1.1
+    [HTTP_CONNECTION] => Keep-Alive
+    [HTTP_EXPECT] => 100-Continue
+    [HTTP_HOST] => chris.smith.name
+    [HTTP_USER_AGENT] => Apache-HttpClient/UNAVAILABLE (java 1.4)
+    [HTTP_X_APPLICATION] => SensorLogger
+    [HTTP_X_IMEI] => 000000000000000
+    [HTTP_X_VERSION] => 0.1
+    [PATH] => /bin:/usr/bin
+    [QUERY_STRING] => 
+    [REDIRECT_STATUS] => 200
+    [REDIRECT_URL] => /android/upload
+    [REMOTE_ADDR] => 109.170.137.175
+    [REMOTE_PORT] => 40247
+    [REQUEST_METHOD] => POST
+    [REQUEST_URI] => /android/upload
+    [SCRIPT_FILENAME] => /home/chris/websites/chris.smith.name/android/upload.php
+    [SCRIPT_NAME] => /android/upload.php
+    [SERVER_ADDR] => 85.234.138.2
+    [SERVER_ADMIN] => chris87@gmail.com
+    [SERVER_NAME] => chris.smith.name
+    [SERVER_PORT] => 80
+    [SERVER_PROTOCOL] => HTTP/1.1
+    [SERVER_SIGNATURE] => <address>Apache/2.2.12 (Ubuntu) Server at chris.smith.name Port 80</address>
+
+    [SERVER_SOFTWARE] => Apache/2.2.12 (Ubuntu)
+    [PHP_SELF] => /android/upload.php
+    [REQUEST_TIME] => 1260298135
+    [argv] => Array
+        (
+        )
+
+    [argc] => 0
+)
+
+
+Array
+(
+)
+
+
+Array
+(
+)
+
+
+Hello worldHello world

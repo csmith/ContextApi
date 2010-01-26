@@ -1,0 +1,2 @@
+RewriteEngine On
+RewriteRule ^/?(android/)?upload$ /android/upload.php [L]
