@@ -20,7 +20,7 @@ import android.widget.TextView;
  */
 public class MainActivity extends Activity implements OnClickListener {
 
-    static final String VERSION = "0.1.1";
+    static final String VERSION = "0.1.2";
 
     static String ACTIVITY = "Unknown";
 
@@ -33,7 +33,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
         ((Button) findViewById(R.id.start)).setOnClickListener(this);
         ((Button) findViewById(R.id.upload)).setOnClickListener(this);
-
+        ((Button) findViewById(R.id.upload)).setEnabled(false);
 
         ((TextView) findViewById(R.id.text)).setText("Welcome to sensor logger v"
                 + VERSION + "..."

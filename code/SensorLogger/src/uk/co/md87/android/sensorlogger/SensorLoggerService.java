@@ -14,6 +14,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.io.FileNotFoundException;
@@ -37,8 +38,10 @@ public class SensorLoggerService extends Service {
     private FileOutputStream stream;
     private OutputStreamWriter writer;
 
-    private int i = 0;
-    private float[] accelValues, magValues;
+    private Timer timer;
+
+    private volatile int i = 0;
+    private float[] accelValues = new float[3], magValues = new float[3];
 
     private final SensorEventListener accelListener = new SensorEventListener() {
 
@@ -98,7 +101,7 @@ public class SensorLoggerService extends Service {
                 }
             }
         } catch (IOException ex) {
-            // Ignore
+            Log.e(TAG, "Unable to write", ex);
         }
     }
 
@@ -119,17 +122,11 @@ public class SensorLoggerService extends Service {
 
         STARTED = true;
 
-        new Timer("Delay timer").schedule(new TimerTask() {
-
-            @Override
-            public void run() {
-                init();
-            }
-        }, 10000);
+        init();
     }
 
     public void init() {
-       try {
+        try {
             stream = openFileOutput("sensors.log", MODE_APPEND | MODE_WORLD_READABLE);
             writer = new OutputStreamWriter(stream);
         } catch (FileNotFoundException ex) {
@@ -144,20 +141,21 @@ public class SensorLoggerService extends Service {
                 manager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
                 SensorManager.SENSOR_DELAY_FASTEST);
 
-        Toast.makeText(getApplicationContext(), "Sensor logger service monitoring...",
-                Toast.LENGTH_SHORT).show();
+        timer = new Timer("Data logger");
 
-        new Timer("Data logger").scheduleAtFixedRate(new TimerTask() {
+        timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
                 write();
             }
-        }, 0, 50);
+        }, 10000, 50);
     }
 
     @Override
     public void onDestroy() {
         manager.unregisterListener(accelListener);
+
+        timer.cancel();
 
         STARTED = false;
 
