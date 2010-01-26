@@ -1,28 +1,8 @@
 <?PHP
 
- require('common.php');
+ require_once('common.php');
 
  define('VERSION', 1);
-
-/*
-| record_id      | int(5)      | NO   | PRI | NULL    | auto_increment | 
-| record_ip      | varchar(15) | YES  |     | NULL    |                | 
-| record_headers | text        | YES  |     | NULL    |                | 
-| record_data    | text        | YES  |     | NULL    |                | 
-*/
-
-/*
-| log_id         | int(5)       | NO   | PRI | NULL    | auto_increment | 
-| log_ip         | varchar(15)  | YES  |     | NULL    |                | 
-| log_imei       | varchar(16)  | YES  |     | NULL    |                | 
-| log_activity   | varchar(100) | YES  |     | NULL    |                | 
-| log_version    | varchar(10)  | YES  |     | NULL    |                | 
-| log_time       | int(15)      | YES  |     | NULL    |                | 
-| log_statuscode | int(5)       | YES  |     | NULL    |                | 
-| log_pversion   | int(5)       | YES  |     | NULL    |                | 
-| log_headers    | text         | YES  |     | NULL    |                | 
-| log_data       | text         | YES  |     | NULL    |                | 
-*/
 
  $sql = 'SELECT record_id, record_ip, record_headers, record_data FROM unprocessed';
  $res = mysql_query($sql);

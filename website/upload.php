@@ -1,6 +1,6 @@
 <?PHP
 
- require('common.php');
+ require_once('common.php');
 
  $headers = '';
 
@@ -11,12 +11,14 @@
  }
 
  $sql  = 'INSERT INTO unprocessed (record_ip, record_headers, record_data) VALUES (';
- $sql .= '\'' . mysql_real_escape_string($_SERVER['REMOTE_ADDR']) . '\', ';
- $sql .= '\'' . mysql_real_escape_string($headers) . '\', ';
- $sql .= '\'' . mysql_real_escape_string(file_get_contents('php://input')) . '\')';
+ $sql .= '\'' . m($_SERVER['REMOTE_ADDR']) . '\', ';
+ $sql .= '\'' . m($headers) . '\', ';
+ $sql .= '\'' . m(file_get_contents('php://input')) . '\')';
 
  mysql_query($sql) or die('Error: ' . mysql_error() . '<br>'. $sql);
 
  Oblong("\002[ANDROID]\002 New data uploaded: " . implode('; ', explode("\n", $headers)));
+
+ require_once('process.php');
 
 ?>
