@@ -22,7 +22,8 @@
         android:layout_height="wrap_content"
         android:background="@android:drawable/editbox_background"
         android:layout_below="@id/caption"
-        android:layout_marginBottom="15dip"/>
+        android:layout_marginBottom="15dip"
+        android:singleLine="true"/>
     <Button
         android:id="@+id/start"
         android:layout_width="wrap_content"
