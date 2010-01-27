@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:weightSum="100">
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_height="fill_parent"
+        android:layout_width="0px"
+        android:layout_weight="70"
+        android:padding="5px"
+        android:id="@+id/left">
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Hello Android from NetBeans"/>
+        <TextView
+            android:id="@+id/viewcaption"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text"
+            android:layout_marginTop="10dip"
+            android:text="View your uploaded data at:"/>
+    </RelativeLayout>
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_height="fill_parent"
+        android:layout_width="0px"
+        android:padding="5px"
+        android:layout_weight="30">
+        <TextView
+            android:id="@+id/caption"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/text"
+            android:gravity="center"
+            android:text="Caption"/>
+        <EditText
+            android:id="@+id/entry"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:drawable/editbox_background"
+            android:layout_below="@id/caption" />
+        <Button
+            android:id="@+id/start"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/entry"
+            android:layout_marginTop="40dip"
+            android:text="Start recording"/>
+        <Button
+            android:id="@+id/upload"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/start"
+            android:text="Upload data"/>
+    </RelativeLayout>
+</LinearLayout>

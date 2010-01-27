@@ -2,12 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">" 
+    android:layout_height="fill_parent"
+    android:padding="5px">
     <TextView
         android:id="@+id/text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Hello Android from NetBeans"/>
+        android:text="Hello Android from NetBeans"
+        android:layout_marginBottom="15dip"/>
     <TextView
         android:id="@+id/caption"
         android:layout_width="fill_parent"
@@ -19,7 +21,8 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@android:drawable/editbox_background"
-        android:layout_below="@id/caption" />
+        android:layout_below="@id/caption"
+        android:layout_marginBottom="15dip"/>
     <Button
         android:id="@+id/start"
         android:layout_width="wrap_content"
@@ -38,5 +41,6 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/upload"
-        android:text="View your uploaded data at:"/>
+        android:text="View your uploaded data at:"
+        android:layout_marginTop="15dip"/>
 </RelativeLayout>
