@@ -1,13 +1,13 @@
 <?PHP
 
- if (!isset($_GET['imei']) || !ctype_digit($_GET['imei'])) {
-  // TODO: Better error
-  die('Invalid IMEI');
- }
-
- define('IMEI', $_GET['imei']);
-
  require_once('common.php');
+
+ if (isset($_GET['code'])) {
+  define('CODE', htmlentities($_GET['code']));
+  define('IMEI', $_GET['imei'] = decodeIMEI($_GET['code'])); 
+ } else {
+  die('Invalid code specified');
+ }
 
  $sql = 'SELECT log_activity, log_id, log_statuscode FROM sensorlogger WHERE log_imei = \'' . m(IMEI) . '\'';
  $res = mysql_query($sql);
@@ -24,7 +24,7 @@
     </style>
   </head>
   <body style="margin-top: 0; padding-top: 0;">
-    <h1 style="background: url('android.png') no-repeat right; padding-top: 50px; margin-top: 0;">SensorLogger results for <span><?PHP echo IMEI; ?></span></h1>
+    <h1 style="background: url('/android/android.png') no-repeat right; padding-top: 50px; margin-top: 0;">SensorLogger results for <span><?PHP echo IMEI; ?></span></h1>
     <div>
 <?PHP if (($num = mysql_num_rows($res)) == 0) { ?>
      <h2>Welcome</h2>
@@ -87,8 +87,8 @@
  foreach ($data as $datum) {
   echo '<h3>', htmlentities($datum['log_activity']), '</h3>';
   echo '<div style="height: 700px; overflow: auto;">';
-  echo '<img src="data.php?graph=' . $datum['log_id'] . '&amp;ds=1" height="330" alt="Graph of accelerometer data"/><br/>';
-  echo '<img src="data.php?graph=' . $datum['log_id'] . '&amp;ds=2" height="330" alt="Graph of magnetic fielddata"/>';
+  echo '<img src="/android/g/', CODE, '/', $datum['log_id'], '/1" height="330" alt="Graph of accelerometer data"/><br/>';
+  echo '<img src="/android/g/', CODE, '/', $datum['log_id'] . '/2" height="330" alt="Graph of magnetic fielddata"/>';
   echo '</div>';
  }
 ?>

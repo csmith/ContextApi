@@ -36,4 +36,14 @@
 	return 'unknown reason';
  }
 
+ function decodeIMEI($input) {
+	$chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-=_';
+	$tot = '0';
+	for ($i = 0; $i < strlen($_GET['code']); $i++) {
+		$n = strpos($chars, $_GET['code'][$i]);
+		$tot = bcadd($tot, bcmul($n, bcpow(strlen($chars), strlen($_GET['code']) - $i - 1)));
+	}
+	return $tot;
+ }
+
 ?>

@@ -3,7 +3,9 @@
  require('common.php');
 
  if (isset($_GET['graph'])) {
-  $sql = 'SELECT log_data FROM sensorlogger WHERE log_id = ' . ((int) $_GET['graph']);
+  $imei = decodeIMEI($_GET['code']);
+
+  $sql = 'SELECT log_data FROM sensorlogger WHERE log_id = ' . ((int) $_GET['graph']) . ' AND log_imei = \'' . m($imei) . '\'';
   $res = mysql_query($sql);
   $row = mysql_fetch_assoc($res);
 

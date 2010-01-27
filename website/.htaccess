@@ -1,2 +1,11 @@
 RewriteEngine On
 RewriteRule ^/?(android/)?upload$ /android/upload.php [L]
+
+RewriteCond %{HTTP_HOST} =www.md87.co.uk
+RewriteRule ^(.*?)$ http://chris.smith.name/android/$1 [R]
+
+RewriteCond %{HTTP_HOST} =md87.co.uk
+RewriteRule ^(.*?)$ http://chris.smith.name/android/$1 [R]
+
+RewriteRule ^/?p/(.*?)$ /android/portal.php?code=$1
+RewriteRule ^/?g/(.*?)/([0-9]+)/([0-9]+) /android/data.php?code=$1&graph=$2&ds=$3
