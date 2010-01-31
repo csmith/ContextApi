@@ -6,16 +6,35 @@
     <style type="text/css">
      .qr { float: left; clear: left; margin-right: 15px; }
      .qr img { width: 128px; }
+     .app p { margin-left: 143px; }
     </style>
   </head>
   <body style="margin-top: 0; padding-top: 0;">
     <h1 style="background: url('android.png') no-repeat right; padding-top: 50px; margin-top: 0;">Android projects by <span>Chris Smith</span></h1>
     <div>
+     <h2>Context-aware framework</h2>
+     <p>
+      The goal of the context-aware framework is to create an open, easy-to-use
+      framework for application developers to retrieve information about the
+      user's context. This context information includes low-level activites
+      (walking, sitting, running, etc), places (home, work, travelling),
+      nearby people (friends, strangers, etc) and more.
+     </p>
+     <p>
+      At present the project is in a research and data-collection phase. The
+      applications presented below are intended to assist in gathering data
+      which can be analysed to determine suitable algorithms and parameters
+      to perform the detection necessary to correctly classify and extract
+      context information. While they are published on the Android market
+      and freely available to download, they do not provide any benefit to
+      end users, so it is not anticipated that they will be widely used
+      outside a small set of voluntary testers.
+     </p>
      <div class="app">
       <a href="market://details?id=uk.co.md87.android.sensorlogger" class="qr"><img src="SensorLogger.png" alt="SensorLogger.apk QR code"></a>
-      <h2>Sensor logger</h2>
-      <p>Logs changes in accelerometer and magnetic readings and allows them to be uploaded for use in research.</p>
-      <p>When the "start" button is pressed, the application will log sensor data for approximately 50 seconds, and then automatically upload it along with the user-supplied activity description.</p>
+      <h3>Sensor logger</h3>
+      <p>Logs changes in accelerometer and magnetic field readings over a 50 second period. This data is combined with a user-supplied activity description, and uploaded for use in development, training and evaluation of an activity detection algorithm.</p>
+      <p>The application provides a link to a web-based portal where users can see a graph of their uploaded data, and the results of the activity detection algorithm will also be surfaced there.</p>
      </div>
     </div>
     <div id="footer"/>
