@@ -3,10 +3,15 @@
  require('common.php');
 
  if (isset($_GET['graph'])) {
-  $imei = decodeIMEI($_GET['code']);
+  $imei = isset($_GET['imei']) ? $_GET['imei'] : decodeIMEI($_GET['code']);
 
   $sql = 'SELECT log_data FROM sensorlogger WHERE log_id = ' . ((int) $_GET['graph']) . ' AND log_imei = \'' . m($imei) . '\'';
   $res = mysql_query($sql);
+
+  if (mysql_num_rows($res) == 0) {
+   die('Data not found');
+  }
+
   $row = mysql_fetch_assoc($res);
 
   $datax = array();
@@ -84,8 +89,8 @@
   foreach ($row as $k => $v) { echo '<td>', $k == 'log_data' ? count(explode("\n", $v)) . ' line(s)' : nl2br(htmlentities($v)), '</td>'; }
 
   echo '<td>';
-  echo '<img src="data.php?graph=', $row['log_id'], '&amp;ds=1" height="330">';
-  echo '<br><img src="data.php?graph=', $row['log_id'], '&amp;ds=2" height="330">';
+  echo '<img src="data.php?graph=', $row['log_id'], '&amp;ds=1&amp;imei=', $row['log_imei'], '" height="330">';
+  echo '<br><img src="data.php?graph=', $row['log_id'], '&amp;ds=2&amp;imei=', $row['log_imei'], '" height="330">';
   echo '</td>';
   echo '</tr>';
  }
