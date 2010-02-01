@@ -6,7 +6,7 @@
     <style type="text/css">
      .qr { float: left; clear: left; margin-right: 15px; }
      .qr img { width: 128px; }
-     .app p { margin-left: 143px; }
+     .app div { margin-left: 143px; }
     </style>
   </head>
   <body style="margin-top: 0; padding-top: 0;">
@@ -32,9 +32,15 @@
      </p>
      <div class="app">
       <a href="market://details?id=uk.co.md87.android.sensorlogger" class="qr"><img src="SensorLogger.png" alt="SensorLogger.apk QR code"></a>
+      <div>
       <h3>Sensor logger</h3>
       <p>Logs changes in accelerometer and magnetic field readings over a 50 second period. This data is combined with a user-supplied activity description, and uploaded for use in development, training and evaluation of an activity detection algorithm.</p>
       <p>The application provides a link to a web-based portal where users can see a graph of their uploaded data, and the results of the activity detection algorithm will also be surfaced there.</p>
+      <h4>Changelog</h4>
+      <ul>
+       <li><strong>0.1.5 &rarr; 0.1.6</strong>: Fix force close on devices that use MEIDs not IMEI numbers</li>
+      </ul>
+      <div>
      </div>
     </div>
     <div id="footer"/>

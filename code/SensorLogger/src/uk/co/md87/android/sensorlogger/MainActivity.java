@@ -23,7 +23,7 @@ import android.widget.TextView;
  */
 public class MainActivity extends Activity implements OnClickListener {
 
-    static final String VERSION = "0.1.5";
+    static final String VERSION = "0.1.6";
 
     static String ACTIVITY = "Unknown";
 
