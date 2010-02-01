@@ -59,7 +59,8 @@ public class MainActivity extends Activity implements OnClickListener {
         final String chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-=_";
         final StringBuilder builder = new StringBuilder();
 
-        long val = Long.parseLong(imei);
+        long val = Long.decode(imei == null ? "0"
+                : imei.matches("^[0-9]+$") ? imei : ("0x" + imei));
 
         while (val > 0) {
             final long bit = val % chars.length();
