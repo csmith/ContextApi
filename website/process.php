@@ -2,7 +2,7 @@
 
  require_once('common.php');
 
- define('VERSION', 24);
+ define('VERSION', 25);
 
  function processSensorLogger($records = true) {
   $sql = $records ? 'SELECT record_id, record_ip, record_headers, record_data FROM unprocessed'
@@ -28,6 +28,12 @@
    }
 
    $imei = isset($headers['IMEI']) ? $headers['IMEI'] : '';
+
+   if (!ctype_digit($imei) && !empty($imei)) {
+    // It's probably an MEID not an IMEI number
+    $imei = bchexdec($headers['IMEI']);
+   }
+
    $activity = isset($headers['ACTIVITY']) ? $headers['ACTIVITY'] : '';
    $version = isset($headers['VERSION']) ? $headers['VERSION'] : '';
   

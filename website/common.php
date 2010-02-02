@@ -9,6 +9,16 @@
 	return mysql_real_escape_string($sql);
  }
 
+ function bchexdec($hex) {
+	$len = strlen($hex);
+
+	for ($i = 1; $i <= $len; $i++) {
+		$dec = bcadd($dec, bcmul(strval(hexdec($hex[$i - 1])), bcpow('16', strval($len - $i))));
+	}
+
+	return $dec;
+ }
+
  function Oblong($message) {
         $key = trim(file_get_contents('/home/chris/oblong.key'));
         $chan = '#MD87.highvol';
