@@ -32,7 +32,58 @@
 
  }
 
+ # -------------- End of authentication code --------------------------
+
  require('common.php');
+
+ # -------------- Form handling -----------------
+
+ function process_activity_add($args) {
+  $sql  = 'INSERT INTO activities (activity_name, activity_parent) VALUES (\'';
+  $sql .= m($args['name']) . '\', ' . ((int) $args['parent']) . ')';
+  mysql_query($sql);
+ }
+
+ if (isset($_POST['action'])) {
+  $args = array();
+  $action = str_replace('.', '_', $_POST['action']) . '_';
+  foreach ($_POST as $k => $v) {
+   if (substr($k, 0, strlen($action)) == $action) {
+    $args[substr($k, strlen($action))] = $v;
+   }
+  }
+
+  call_user_func('process_' . str_replace('.', '_', $_POST['action']), $args);
+  header('Location: /android/admin.php');
+  exit;
+ }
+
+ # ------------------- End of form handling ----------------------
+
+ $acs = getActivityArray();
+
+?>
+<h1>Activity management</h1>
+
+<h2>Add an activity</h2>
+
+<form action="admin.php" method="post">
+ <input type="hidden" name="action" value="activity.add">
+ <select name="activity.add.parent">
+<?PHP
+ asort($acs);
+
+ foreach ($acs as $id => $name) {
+  echo ' <option value="', $id, '">', htmlentities($name), '</option>';
+ }
+?>
+ </select> / 
+ <input type="text" name="activity.add.name">
+ <input type="submit" value="Add">
+</form>
+
+<h1>Sample management</h1>
+<?PHP
 
  $sql = 'SELECT log_id, log_imei, log_version, log_time, log_activity, log_data FROM sensorlogger WHERE log_statuscode = 1';
  $res = mysql_query($sql);

@@ -31,6 +31,24 @@
         }
  }
 
+ function getActivityArray() {
+	$acs = array();
+	$sql = 'SELECT activity_id, activity_name, activity_parent FROM activities ORDER BY activity_parent';
+	$res = mysql_query($sql);
+
+	while ($row = mysql_fetch_assoc($res)) {
+		$name = $row['activity_name'];
+
+		if (isset($acs[(int) $row['activity_parent']])) {
+			$name = $acs[(int) $row['activity_parent']] . '/' . $name;
+		}
+
+		$acs[(int) $row['activity_id']] = $name;
+	}
+
+	return $acs;
+ }
+
  function getStatusCodeReason($code) {
  	switch ((int) $code) {
 		case 2: return 'no IMEI code was specified';
