@@ -41,7 +41,8 @@ public class SensorLoggerService extends Service {
     private Timer timer;
 
     private volatile int i = 0;
-    private float[] accelValues = new float[3], magValues = new float[3];
+    private float[] accelValues = new float[3],
+            magValues = new float[3], orientationValues = new float[3];
 
     private final SensorEventListener accelListener = new SensorEventListener() {
 
@@ -75,12 +76,32 @@ public class SensorLoggerService extends Service {
 
     };
 
+    private final SensorEventListener orientationListener = new SensorEventListener() {
+
+        /** {@inheritDoc} */
+        @Override
+        public void onSensorChanged(final SensorEvent event) {
+            setOrientationValues(event.values);
+        }
+
+        /** {@inheritDoc} */
+        @Override
+        public void onAccuracyChanged(final Sensor sensor, final int accuracy) {
+            // Don't really care
+        }
+
+    };
+
     public void setAccelValues(float[] accelValues) {
         this.accelValues = accelValues;
     }
 
     public void setMagValues(float[] magValues) {
         this.magValues = magValues;
+    }
+
+    public void setOrientationValues(float[] orientationValues) {
+        this.orientationValues = orientationValues;
     }
 
     public void write() {
@@ -91,7 +112,10 @@ public class SensorLoggerService extends Service {
                     accelValues[SensorManager.DATA_Z] + "," +
                     magValues[SensorManager.DATA_X] + "," +
                     magValues[SensorManager.DATA_Y] + "," +
-                    magValues[SensorManager.DATA_Z] + "," + "\n");
+                    magValues[SensorManager.DATA_Z] + "," +
+                    orientationValues[SensorManager.DATA_X] + "," +
+                    orientationValues[SensorManager.DATA_Y] + "," +
+                    orientationValues[SensorManager.DATA_Z] + "," + "\n");
 
             if (++i % 50 == 0) {
                 writer.flush();
@@ -139,6 +163,9 @@ public class SensorLoggerService extends Service {
                 SensorManager.SENSOR_DELAY_FASTEST);
         manager.registerListener(magneticListener,
                 manager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD),
+                SensorManager.SENSOR_DELAY_FASTEST);
+        manager.registerListener(orientationListener,
+                manager.getDefaultSensor(Sensor.TYPE_ORIENTATION),
                 SensorManager.SENSOR_DELAY_FASTEST);
 
         timer = new Timer("Data logger");
