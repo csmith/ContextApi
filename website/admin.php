@@ -44,6 +44,30 @@
   mysql_query($sql);
  }
 
+ function process_sample_edit($args) {
+  $sql = 'SELECT wc_id, activity_id, log_id, wc_offset FROM windowclassifications';
+  $res = mysql_query($sql);
+  $acs = getActivityArray();
+
+  while ($row = mysql_fetch_assoc($res)) {
+   $name = 'value_' . $row['log_id'] . '_' . $row['wc_offset'];
+   if (isset($args[$name])) {
+    if ((int) $args[$name] == (int) $row['activity_id']) {
+     unset($args[$name]);
+    } else {
+     mysql_query('UPDATE windowclassifications SET activity_id = ' . ((int) $args[$name]) . ' WHERE wc_id = ' . $row['wc_id']);
+    }
+   }
+  }
+
+  foreach ($args as $name => $val) {
+   if ($acs[$val] == 'UNCLASSIFIED/PENDING') { continue; }
+
+   list($value, $log, $offset) = explode('_', $name);
+   mysql_query('INSERT INTO windowclassifications (activity_id, log_id, wc_offset) VALUES ('. ((int) $val) . ', ' . ((int) $log) . ', ' . ((int) $offset) . ')');
+  }
+ }
+
  if (isset($_POST['action'])) {
   $args = array();
   $action = str_replace('.', '_', $_POST['action']) . '_';
@@ -95,6 +119,7 @@
   .windowboxes { margin: 0px; padding: 0px; border-right: 1px solid black; display: inline-block; }
   .windowboxes li { display: inline-block; width: 255px; text-align: center; border: 1px solid black; margin: 0px; padding: 0px; border-right: 0; }
   .windowboxes.odd { padding-left: 128px; }
+  .windowboxes li select { width: 253px; }
 </style>
 <script type="text/javascript">
   function showWindow(id, offset) {
@@ -104,31 +129,57 @@
   function hideWindow(id) {
    showWindow(id, -128);
   }
-</script>
 
+  function classifyAll(select) {
+   var tr = select.parentNode.parentNode;
+   var selects = tr.getElementsByTagName('select');
+
+   for (var i = 0; i < selects.length; i++) {
+    selects[i].value = select.value;
+   }
+  }
+</script>
+<form action="admin.php" method="post">
+ <input type="hidden" name="action" value="sample.edit">
 <?PHP
 
  echo '<table border="1">';
- $first = true;
 
  while ($row = mysql_fetch_assoc($res)) {
-  if ($first) {
-   echo '<tr>';
-   foreach ($row as $k => $v) { echo '<th>', $k, '</th>'; }
-   echo '</tr>';
-   $first = false;
+
+  $sql2 = 'SELECT wc_offset, activity_id FROM windowclassifications WHERE log_id = ' . $row['log_id'];
+  $res2 = mysql_query($sql2);
+  $wcs = array();
+  
+  while ($row2 = mysql_fetch_assoc($res2)) {
+   $wcs[(int) $row2['wc_offset']] = (int) $row2['activity_id'];
   }
 
   $points = 0;
 
-  echo '<tr>';
-  foreach ($row as $k => $v) { echo '<td>', $k == 'log_data' ? ($points = count(explode("\n", $v))) . ' line(s)' : nl2br(htmlentities($v)), '</td>'; }
+  echo '<tr><td><table>';
+  foreach ($row as $k => $v) { echo '<tr><th>', $k, '</th><td>', $k == 'log_data' ? ($points = count(explode("\n", $v))) . ' line(s)' : nl2br(htmlentities($v)), '</td></tr>'; }
 
-  echo '<td>';
+  echo '</table>';
+
+  echo '<select onChange="classifyAll(this)">';
+  echo ' <option value="">Classify all as...</option>';
+   foreach ($acs as $id => $name) {
+    echo '<option value="', $id, '">', htmlentities($name), '</option>';
+   }
+  echo '</select>';
+
+  echo '</td><td>';
 
   echo '<ol class="windowboxes even">';
   for ($i = 0; $i + 128 < $points; $i += 128) {
-   echo '<li onMouseOver="showWindow(', $row['log_id'], ', ', $i, ')" onMouseOut="hideWindow(', $row['log_id'], ')">Window</li>';
+   echo '<li onMouseOver="showWindow(', $row['log_id'], ', ', $i, ')" onMouseOut="hideWindow(', $row['log_id'], ')">';
+   echo '<select name="sample.edit.value_', $row['log_id'], '_', $i, '">';
+   foreach ($acs as $id => $name) {
+    echo '<option value="', $id, '"', (isset($wcs[$i]) && $wcs[$i] == $id) || (!isset($wcs[$i]) && $name == 'UNCLASSIFIED/PENDING') ? ' selected="selected"' : '','>', htmlentities($name), '</option>';
+   }
+   echo '</select>';
+   echo '</li>';
   }
   echo '</ol>';
 
@@ -139,7 +190,13 @@
 
   echo '<ol class="windowboxes odd">';
   for ($i = 64; $i + 128 < $points; $i += 128) {
-   echo '<li onMouseOver="showWindow(', $row['log_id'], ', ', $i, ')" onMouseOut="hideWindow(', $row['log_id'], ')">Window</li>';
+   echo '<li onMouseOver="showWindow(', $row['log_id'], ', ', $i, ')" onMouseOut="hideWindow(', $row['log_id'], ')">';
+   echo '<select name="sample.edit.value_', $row['log_id'], '_', $i, '">';
+   foreach ($acs as $id => $name) {
+    echo '<option value="', $id, '"', (isset($wcs[$i]) && $wcs[$i] == $id) || (!isset($wcs[$i]) && $name == 'UNCLASSIFIED/PENDING') ? ' selected="selected"' : '','>', htmlentities($name), '</option>';
+   }
+   echo '</select>';
+   echo '</li>';
   }
   echo '</ol>';
 
@@ -150,3 +207,5 @@
  echo '</table>';
 
 ?>
+ <input type="submit" value="SUBMIT ALL MODIFICATIONS">
+</form>
