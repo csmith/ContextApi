@@ -84,8 +84,31 @@
   <h2>Your records</h2>
 <?PHP
 
+ $acs = getActivityArray();
+
  foreach ($data as $datum) {
   echo '<h3>', htmlentities($datum['log_activity']), '</h3>';
+
+  $sql = 'SELECT activity_id AS name, COUNT(*) AS num FROM windowclassifications WHERE log_id = ' . $datum['log_id'] . ' GROUP BY activity_id';
+  $res = mysql_query($sql);
+  $cls = array();
+
+  while ($row = mysql_fetch_assoc($res)) {
+   $cls[$row['name']] = $row['num'];
+  }
+
+  if (!empty($cls)) {
+   echo '<p>This sample has been manually classified into the following activities: ';
+
+   $first = true;
+   foreach ($cls as $id => $count) {
+    if ($first) { $first = false; } else { echo '; '; }
+    echo $acs[$id], ' (', $count, ' window', $count == 1 ? '' : 's', ')';
+   }
+
+   echo '</p>';
+  }
+
   echo '<div style="height: 700px; overflow: auto;">';
   echo '<img src="/android/g/', CODE, '/', $datum['log_id'], '/1" height="330" alt="Graph of accelerometer data"/><br/>';
   echo '<img src="/android/g/', CODE, '/', $datum['log_id'] . '/2" height="330" alt="Graph of magnetic fielddata"/>';
