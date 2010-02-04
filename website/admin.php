@@ -44,6 +44,21 @@
   mysql_query($sql);
  }
 
+ function process_activity_delete($args) {
+  $sql = 'DELETE FROM windowclassifications WHERE activity_id = ' . ((int) $args['id']);
+  mysql_query($sql);
+
+  $sql = 'SELECT activity_id FROM activities WHERE activity_parent = ' . ((int) $args['id']);
+  $res = mysql_query($sql);
+
+  while ($row = mysql_fetch_assoc($res)) {
+   process_activity_delete(array('id' => $row['activity_id']));
+  }
+
+  $sql = 'DELETE FROM activities WHERE activity_id = ' . ((int) $args['id']);
+  mysql_query($sql);
+ }
+
  function process_sample_edit($args) {
   $sql = 'SELECT wc_id, activity_id, log_id, wc_offset FROM windowclassifications';
   $res = mysql_query($sql);
@@ -104,6 +119,21 @@
  </select> / 
  <input type="text" name="activity.add.name">
  <input type="submit" value="Add">
+</form>
+
+<h2>Delete an activity</h2>
+
+<form action="admin.php" method="post">
+ <input type="hidden" name="action" value="activity.delete">
+ <select name="activity.delete.id">
+<?PHP
+ asort($acs);
+
+ foreach ($acs as $id => $name) {
+  echo ' <option value="', $id, '">', htmlentities($name), '</option>';
+ }
+?>
+ <input type="submit" value="Delete">
 </form>
 
 <h1>Sample management</h1>
