@@ -66,6 +66,8 @@
    $lastx = $x; $lasty = $y; $lastz = $z;
   }
 
+  header('Expires: ' . date(DateTime::RFC822, strtotime('+10 years')));
+  header('Cache-control: public');
   header('Content-type: image/png');
   imagecolortransparent($im, $w); 
   imagepng($im);
