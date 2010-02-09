@@ -83,6 +83,31 @@
   }
  }
 
+ function process_export($args) {
+  $acs = getActivityArray();
+  $sql = 'SELECT wc_offset, activity_id, log_data FROM activities NATURAL JOIN windowclassifications NATURAL JOIN sensorlogger WHERE log_statuscode = 1 AND (0';
+
+  foreach ($acs as $id => $name) {
+   if (substr($name, 0, 10) == 'CLASSIFIED') {
+    $sql .= ' OR activity_id = ' . $id;
+   }
+  }
+
+  $sql .= ')';
+  $res  = mysql_query($sql);
+
+  header('Content-type: text/plain');
+
+  while ($row = mysql_fetch_assoc($res)) {
+   echo 'Activity: ', $acs[$row['activity_id']], "\n";
+   $data = array_slice(explode("\n", $row['log_data']), $row['wc_offset'], 128);
+   echo implode("\n", $data);
+   echo "\n";
+  }
+
+  exit;
+ }
+
  if (isset($_POST['action'])) {
   $args = array();
   $action = str_replace('.', '_', $_POST['action']) . '_';
@@ -134,6 +159,13 @@
  }
 ?>
  <input type="submit" value="Delete">
+</form>
+
+<h1>Export</h1>
+
+<form action="admin.php" method="post">
+ <input type="hidden" name="action" value="export">
+ <input type="submit" value="Export classified windows">
 </form>
 
 <h1>Sample management</h1>
