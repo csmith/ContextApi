@@ -23,11 +23,11 @@ public class TrainingDataImporter {
         textFile = new TextFile(file);
     }
 
-    public MapList<String, List<Float[]>> getTrainingData() throws IOException {
-        final MapList<String, List<Float[]>> res = new MapList<String, List<Float[]>>();
+    public MapList<String, List<float[]>> getTrainingData() throws IOException {
+        final MapList<String, List<float[]>> res = new MapList<String, List<float[]>>();
 
         String activity = null;
-        List<Float[]> data = null;
+        List<float[]> data = null;
 
         for (String line : textFile.getLines()) {
             if (line.trim().isEmpty()) {
@@ -40,13 +40,13 @@ public class TrainingDataImporter {
                 }
 
                 activity = line.trim().substring(10);
-                data = new ArrayList<Float[]>(100);
+                data = new ArrayList<float[]>(100);
             } else {
                 final String[] parts = line.split(":")[1].split(",");
-                final Float[] values = new Float[parts.length];
+                final float[] values = new float[parts.length];
 
                 for (int i = 0; i < parts.length; i++) {
-                    values[i] = Float.valueOf(parts[i]);
+                    values[i] = Float.parseFloat(parts[i]);
                 }
 
                 data.add(values);
