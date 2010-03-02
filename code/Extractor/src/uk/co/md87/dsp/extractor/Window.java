@@ -5,7 +5,11 @@
 
 package uk.co.md87.dsp.extractor;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
 
 /**
  *
@@ -21,6 +25,16 @@ public class Window {
 
     public List<float[]> getData() {
         return data;
+    }
+
+    public Map<String, Float> getFeatures(final Set<Feature> features) {
+        final Map<String, Float> results = new TreeMap<String, Float>();
+
+        for (Feature feature : features) {
+            results.put(feature.getName(), feature.getValue(this));
+        }
+
+        return results;
     }
 
 }
