@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-     package="uk.co.md87.android.sensorlogger" android:versionCode="12" android:versionName="0.1.6">
+     package="uk.co.md87.android.sensorlogger" android:versionCode="13" android:versionName="0.2.0">
     <application android:label="Sensor Logger" android:icon="@drawable/icon">
          <activity android:name=".MainActivity" android:label="Sensor Logger">
             <intent-filter>
@@ -9,6 +9,7 @@
             </intent-filter>
         </activity>
         <service android:name=".SensorLoggerService" android:label="Sensor Logger Service"/>
+        <service android:name=".ClassifierService" android:label="Sensor Classifier Service"/>
         <service android:name=".UploaderService" android:label="Sensor Uploader Service"/>
     </application>
 

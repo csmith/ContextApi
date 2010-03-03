@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.text.util.Linkify;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -23,7 +24,7 @@ import android.widget.TextView;
  */
 public class MainActivity extends Activity implements OnClickListener {
 
-    static final String VERSION = "0.1.6";
+    static final String VERSION = "0.2";
 
     static String ACTIVITY = "Unknown";
 
@@ -33,6 +34,8 @@ public class MainActivity extends Activity implements OnClickListener {
         super.onCreate(icicle);
 
         setContentView(R.layout.main);
+
+        Log.w("MainActivity", "Button: " + findViewById(R.id.start));
 
         ((Button) findViewById(R.id.start)).setOnClickListener(this);
         ((Button) findViewById(R.id.upload)).setOnClickListener(this);
