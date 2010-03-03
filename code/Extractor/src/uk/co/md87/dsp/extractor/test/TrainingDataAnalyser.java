@@ -36,6 +36,7 @@ public class TrainingDataAnalyser {
         features.addAll(createFeatures(MinimumFeature.class, 6));
         features.addAll(createFeatures(RangeFeature.class, 6));
         features.addAll(createFeatures(MedianFeature.class, 6));
+        features.addAll(createFeatures(AbsoluteMeanFeature.class, 6));
         features.addAll(createFeatures(MeanFeature.class, 6));
 
         System.out.println("@RELATION activity");

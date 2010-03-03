@@ -5,10 +5,9 @@
 
 package uk.co.md87.dsp.extractor;
 
-import java.util.HashMap;
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.TreeMap;
 
 /**
@@ -27,7 +26,7 @@ public class Window {
         return data;
     }
 
-    public Map<String, Float> getFeatures(final Set<Feature> features) {
+    public Map<String, Float> getFeatures(final Collection<Feature> features) {
         final Map<String, Float> results = new TreeMap<String, Float>();
 
         for (Feature feature : features) {
