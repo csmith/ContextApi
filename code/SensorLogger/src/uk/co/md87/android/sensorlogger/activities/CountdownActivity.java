@@ -57,7 +57,6 @@ public class CountdownActivity extends BoundActivity {
             if (time > 0) {
                 handler.postDelayed(task, 500);
             } else {
-                service.setState(3);
                 startActivity(new Intent(this, RecordingActivity.class));
                 finish();
             }

@@ -33,23 +33,7 @@ public class SensorLoggerService extends Service {
     private final SensorLoggerBinder.Stub binder = new SensorLoggerBinder.Stub() {
 
         public void setState(int newState) throws RemoteException {
-            switch (newState) {
-                case 1:
-                    countdown = 10;
-
-                    handler.removeCallbacks(countdownTask);
-                    handler.postDelayed(countdownTask, 1000);
-                    break;
-                case 3:
-                    startService(new Intent(SensorLoggerService.this, RecorderService.class));
-                    break;
-                case 8:
-                    ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(0);
-                    stopSelf();
-                    break;
-            }
-
-            state = newState;
+            doSetState(newState);
         }
 
         public int getCountdownTime() throws RemoteException {
@@ -113,6 +97,8 @@ public class SensorLoggerService extends Service {
         public void run() {
             if (--countdown > 0) {
                 handler.postDelayed(countdownTask, 1000);
+            } else {
+                doSetState(3);
             }
         }
     };
@@ -162,6 +148,26 @@ public class SensorLoggerService extends Service {
     @Override
     public IBinder onBind(final Intent arg0) {
         return binder;
+    }
+
+    void doSetState(final int newState) {
+        switch (newState) {
+            case 1:
+                countdown = 10;
+
+                handler.removeCallbacks(countdownTask);
+                handler.postDelayed(countdownTask, 1000);
+                break;
+            case 3:
+                startService(new Intent(SensorLoggerService.this, RecorderService.class));
+                break;
+            case 8:
+                ((NotificationManager) getSystemService(NOTIFICATION_SERVICE)).cancel(0);
+                stopSelf();
+                break;
+        }
+
+        state = newState;
     }
 
 }

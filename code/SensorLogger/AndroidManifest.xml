@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-     package="uk.co.md87.android.sensorlogger" android:versionCode="13" android:versionName="0.2.0">
+     package="uk.co.md87.android.sensorlogger" android:versionCode="14" android:versionName="0.2.1">
     <application android:label="Sensor Logger" android:icon="@drawable/icon">
         <activity android:name=".activities.IntroActivity" android:label="Sensor Logger">
             <intent-filter>
