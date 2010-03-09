@@ -5,30 +5,32 @@
 
 package uk.co.md87.android.sensorlogger;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
+import android.os.RemoteException;
+import android.util.Log;
+
 import java.util.Map;
 
 /**
  *
  * @author chris
  */
-public class ClassifierService extends Service implements Runnable {
+public class ClassifierService extends BoundService implements Runnable {
 
     private float[] data;
-    private static int i = 0;
 
     @Override
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
 
         data = intent.getFloatArrayExtra("data");
+    }
 
+    @Override
+    protected void serviceBound() {
+        super.serviceBound();
+        
         new Thread(this, "Sensor logger classifier thread").start();
     }
 
@@ -63,7 +65,7 @@ public class ClassifierService extends Service implements Runnable {
         float bestDistance = Float.MAX_VALUE;
         String bestActivity = "UNCLASSIFIED/UNKNOWN";
         
-        for (Map.Entry<Float[], String> entry : SensorLoggerService.model.entrySet()) {
+        for (Map.Entry<Float[], String> entry : RecorderService.model.entrySet()) {
             float distance = 0;
 
             for (int i = 0; i < points.length; i++) {
@@ -76,23 +78,11 @@ public class ClassifierService extends Service implements Runnable {
             }
         }
 
-        String ns = Context.NOTIFICATION_SERVICE;
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(ns);
-
-        int icon = R.drawable.icon;
-        CharSequence tickerText = "Classification complete";
-        long when = System.currentTimeMillis();
-
-        Notification notification = new Notification(icon, tickerText, when);
-        Context context = getApplicationContext();
-        CharSequence contentTitle = "Classified sample #" + ++i + " as...";
-        CharSequence contentText = bestActivity;
-        Intent notificationIntent = new Intent(this, ClassifierService.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
-
-        notification.setLatestEventInfo(context, contentTitle, contentText, contentIntent);
-
-        mNotificationManager.notify(i, notification);
+        try {
+            service.submitClassification(bestActivity);
+        } catch (RemoteException ex) {
+            Log.e(getClass().getName(), "Error submitting classification", ex);
+        }
 
         stopSelf();
     }
