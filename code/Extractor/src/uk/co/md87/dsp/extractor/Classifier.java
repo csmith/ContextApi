@@ -42,11 +42,11 @@ public class Classifier {
         }
     }
 
-    public String classify(final Window window) {
+    public String[] classify(final Window window) {
         final Float[] target = window.getFeatures(features).values().toArray(
                 new Float[features.size()]);
         float best = Float.MAX_VALUE;
-        String bestActivity = "UNCLASSIFIED/UNKNOWN";
+        String bestActivity = "UNCLASSIFIED/UNKNOWN", secondBest = bestActivity;
 
         for (Map.Entry<Float[], String> entry : model.entrySet()) {
             float distance = 0;
@@ -57,11 +57,12 @@ public class Classifier {
 
             if (distance < best) {
                 best = distance;
+                secondBest = bestActivity;
                 bestActivity = entry.getValue();
             }
         }
 
-        return bestActivity;
+        return new String[]{bestActivity,secondBest};
     }
 
 }

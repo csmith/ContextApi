@@ -79,15 +79,18 @@ public class TrainingDataClassifier {
 
                 for (Window window : new Windower(dataset).getWindows()) {
                     if (j++ % 3 != 0) {
-                        continue;
+                        //continue;
                     }
 
-                    String bestActivity = c.classify(window);
+                    String[] bestActivities = c.classify(window);
+                    String bestActivity = bestActivities[0];
 
                     if (bestActivity.equals(activity)) {
                         right++;
                     } else {
-                        System.out.println("Wrong: " + activity + " classified as " + bestActivity);
+                        System.out.println("Wrong: " + activity
+                                + " classified as " + bestActivity
+                                + "; 2nd best: " + bestActivities[1]);
                         wrong++;
                     }
                 }
