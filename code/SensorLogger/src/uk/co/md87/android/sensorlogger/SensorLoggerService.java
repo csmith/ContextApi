@@ -107,7 +107,7 @@ public class SensorLoggerService extends Service {
     String correction = "UNCLASSIFIED/NOTCORRECTED";
     int classCount = 0;
     int countdown = 10;
-    int state = 0;
+    int state = 1;
 
     public String getIMEI() {
         return ((TelephonyManager) getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
@@ -152,7 +152,7 @@ public class SensorLoggerService extends Service {
 
     void doSetState(final int newState) {
         switch (newState) {
-            case 1:
+            case 2:
                 countdown = 10;
 
                 handler.removeCallbacks(countdownTask);

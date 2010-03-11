@@ -54,7 +54,7 @@ public class IntroActivity extends BoundActivity implements OnClickListener {
     @Override
     public void onClick(final View arg0) {
         try {
-            service.setState(1);
+            service.setState(2);
             startActivity(new Intent(this, CountdownActivity.class));
             finish();
         } catch (RemoteException ex) {
