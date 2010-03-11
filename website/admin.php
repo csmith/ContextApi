@@ -98,6 +98,7 @@
   $res  = mysql_query($sql);
 
   header('Content-type: text/plain');
+  header('Content-disposition: attachment; filename=data.txt');
 
   while ($row = mysql_fetch_assoc($res)) {
    echo 'Activity: ', $acs[$row['activity_id']], "\n";
@@ -172,7 +173,7 @@
 <h1>Sample management</h1>
 <?PHP
 
- $sql = 'SELECT log_id, log_imei, log_version, log_time, log_activity, log_data FROM sensorlogger WHERE log_statuscode = 1';
+ $sql = 'SELECT log_id, log_imei, log_version, log_time, log_activity, log_headers, log_data FROM sensorlogger WHERE log_statuscode = 1';
  $res = mysql_query($sql);
 
 ?>
