@@ -35,7 +35,12 @@ public class UploaderService extends BoundService implements Runnable {
         for (String key : intent.getExtras().keySet()) {
             headers.put(key, intent.getStringExtra(key));
         }
+    }
 
+    @Override
+    protected void serviceBound() {
+        super.serviceBound();
+        
         new Thread(this, "Upload thread").start();
     }
 
