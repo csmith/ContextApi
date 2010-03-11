@@ -49,7 +49,7 @@ public class TrainingDataClassifier {
 
                 for (Window window : new Windower(dataset).getWindows()) {
                     if (j++ % 3 == 0) {
-                        continue;
+                        //continue;
                     }
                     
                     model.put(window.getFeatures(features).values().toArray(new Float[4]), activity);
