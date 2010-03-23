@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+    <string name="app_name">ActivityRecorder</string>
+
+    <string name="error_disconnected">Error: disconnected from service</string>
+
+    <string name="service_enabled">Stop background service</string>
+    <string name="service_disabled">Start background service</string>
+</resources>
