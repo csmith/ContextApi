@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
 import android.os.RemoteException;
+import android.util.Log;
 import android.widget.Toast;
 
 import java.util.Map;
@@ -50,7 +51,18 @@ public class ClassifierService extends Service implements Runnable {
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
 
+        Log.i(getClass().getName(), "Starting classifier");
+
         data = intent.getFloatArrayExtra("data");
+
+        new Thread(this).start();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        unbindService(connection);
     }
 
     @Override
@@ -99,7 +111,9 @@ public class ClassifierService extends Service implements Runnable {
 
         classification = bestActivity;
 
-        bindService(new Intent(this, ActivityRecorderActivity.class), connection, BIND_AUTO_CREATE);
+        Log.i(getClass().getName(), "Classification: " + classification);
+
+        bindService(new Intent(this, RecorderService.class), connection, BIND_AUTO_CREATE);
     }
 
 }

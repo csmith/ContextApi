@@ -23,7 +23,6 @@
             android:label="Sensor Logger &gt; Thanks"/>
 
         <service android:name=".SensorLoggerService" android:label="Sensor Logger Service"/>
-
         <service android:name=".RecorderService" android:label="Sensor Logger Service"/>
         <service android:name=".ClassifierService" android:label="Sensor Classifier Service"/>
         <service android:name=".UploaderService" android:label="Sensor Uploader Service"/>

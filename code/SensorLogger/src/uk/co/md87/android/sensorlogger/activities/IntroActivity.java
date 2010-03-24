@@ -14,7 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import uk.co.md87.android.sensorlogger.ExceptionHandler;
+import uk.co.md87.android.common.ExceptionHandler;
 
 import uk.co.md87.android.sensorlogger.R;
 
@@ -30,8 +30,8 @@ public class IntroActivity extends BoundActivity implements OnClickListener {
         super.onCreate(icicle);
 
         Thread.setDefaultUncaughtExceptionHandler(
-                new ExceptionHandler("http://chris.smith.name/android/upload",
-                getVersionName(), getIMEI()));
+                new ExceptionHandler("SensorLogger",
+                "http://chris.smith.name/android/upload", getVersionName(), getIMEI()));
 
         setContentView(R.layout.intro);
 

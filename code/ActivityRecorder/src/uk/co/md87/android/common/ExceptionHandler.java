@@ -3,7 +3,7 @@
  * and open the template in the editor.
  */
 
-package uk.co.md87.android.sensorlogger;
+package uk.co.md87.android.common;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,13 +27,14 @@ public class ExceptionHandler implements UncaughtExceptionHandler {
 
     private UncaughtExceptionHandler defaultUEH;
 
-    private String url, version, imei;
+    private String appname, url, version, imei;
 
     /*
      * if any of the parameters is null, the respective functionality
      * will not be used
      */
-    public ExceptionHandler(String url, String version, String imei) {
+    public ExceptionHandler(String appname, String url, String version, String imei) {
+        this.appname = appname;
         this.url = url;
         this.version = version;
         this.imei = imei;
@@ -58,7 +59,7 @@ public class ExceptionHandler implements UncaughtExceptionHandler {
         DefaultHttpClient httpClient = new DefaultHttpClient();
         HttpPost httpPost = new HttpPost(url);
 
-        httpPost.setHeader("x-application", "SensorLogger-exception");
+        httpPost.setHeader("x-application", appname + "-exception");
         httpPost.setHeader("x-version", version);
         httpPost.setHeader("x-imei", imei);
 

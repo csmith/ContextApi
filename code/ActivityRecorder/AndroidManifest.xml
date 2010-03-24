@@ -13,6 +13,7 @@
         <service android:name=".ClassifierService" android:label="Activity Classification Service"/>
     </application>
 
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-sdk android:minSdkVersion="3" />
 </manifest>

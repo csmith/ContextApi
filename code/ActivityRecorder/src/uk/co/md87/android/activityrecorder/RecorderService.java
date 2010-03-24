@@ -34,6 +34,7 @@ public class RecorderService extends Service {
     private final ActivityRecorderBinder.Stub binder = new ActivityRecorderBinder.Stub() {
 
         public void submitClassification(String classification) throws RemoteException {
+            Log.i(getClass().getName(), "Adding classification: " + classification);
             classifications.put(System.currentTimeMillis(), classification);
         }
 
@@ -100,6 +101,7 @@ public class RecorderService extends Service {
     }
 
     public void sample() {
+        Log.i(getClass().getName(), "Sampling");
         data[(nextSample * 2) % 256] = values[0];
         data[(nextSample * 2 + 1) % 256] = values[1];
         
@@ -118,6 +120,7 @@ public class RecorderService extends Service {
     }
 
     public void analyse(float[] data) {
+        Log.i(getClass().getName(), "Analysing");
         final Intent intent = new Intent(this, ClassifierService.class);
         intent.putExtra("data", data);
         startService(intent);
@@ -160,6 +163,7 @@ public class RecorderService extends Service {
     }
 
     void register() {
+        Log.i(getClass().getName(), "Registering");
         nextSample = 0;
         manager.registerListener(accelListener,
                 manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),
