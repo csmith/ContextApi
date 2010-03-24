@@ -22,8 +22,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-import java.util.Map;
 import uk.co.md87.android.activityrecorder.rpc.ActivityRecorderBinder;
+import uk.co.md87.android.activityrecorder.rpc.Classification;
 import uk.co.md87.android.common.ExceptionHandler;
 
 /**
@@ -93,7 +93,7 @@ public class ActivityRecorderActivity extends Activity {
         ((Button) findViewById(R.id.togglebutton)).setEnabled(false);
         ((Button) findViewById(R.id.togglebutton)).setOnClickListener(clickListener);
         ((ListView) findViewById(R.id.list)).setAdapter(
-                new ArrayAdapter<Map.Entry<Long, String>>(this, R.layout.item));
+                new ArrayAdapter<Classification>(this, R.layout.item));
     }
 
     /** {@inheritDoc} */
@@ -112,11 +112,10 @@ public class ActivityRecorderActivity extends Activity {
             ((Button) findViewById(R.id.togglebutton)).setEnabled(true);
             
             // Hacky
-            ((ArrayAdapter<Map.Entry<Long, String>>) ((ListView) findViewById(R.id.list))
+            ((ArrayAdapter<Classification>) ((ListView) findViewById(R.id.list))
                     .getAdapter()).clear();
-            for (Map.Entry<Long, String> entry : ((Map<Long, String>) service
-                    .getClassifications()).entrySet()) {
-                ((ArrayAdapter<Map.Entry<Long, String>>) ((ListView) findViewById(R.id.list))
+            for (Classification entry : service.getClassifications()) {
+                ((ArrayAdapter<Classification>) ((ListView) findViewById(R.id.list))
                     .getAdapter()).add(entry);
             }
         } catch (RemoteException ex) {

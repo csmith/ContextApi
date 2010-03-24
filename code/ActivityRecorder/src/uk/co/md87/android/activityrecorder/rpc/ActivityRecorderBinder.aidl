@@ -5,6 +5,8 @@
 
 package uk.co.md87.android.activityrecorder.rpc;
 
+import uk.co.md87.android.activityrecorder.rpc.Classification;
+
 /**
  *
  * @author chris
@@ -15,6 +17,6 @@ interface ActivityRecorderBinder {
 
     void submitClassification(String classification);
 
-    Map getClassifications();
+    List<Classification> getClassifications();
 
 }

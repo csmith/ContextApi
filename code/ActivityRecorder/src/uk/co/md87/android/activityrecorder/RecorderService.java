@@ -20,10 +20,12 @@ import android.util.Log;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.ObjectInputStream;
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 import uk.co.md87.android.activityrecorder.rpc.ActivityRecorderBinder;
+import uk.co.md87.android.activityrecorder.rpc.Classification;
 
 /**
  *
@@ -35,10 +37,16 @@ public class RecorderService extends Service {
 
         public void submitClassification(String classification) throws RemoteException {
             Log.i(getClass().getName(), "Adding classification: " + classification);
-            classifications.put(System.currentTimeMillis(), classification);
+
+            if (!classifications.isEmpty() && classification.equals(classifications
+                    .get(classifications.size() - 1).getClassification())) {
+                classifications.get(classifications.size() - 1).updateEnd(System.currentTimeMillis());
+            } else {
+                classifications.add(new Classification(classification, System.currentTimeMillis()));
+            }
         }
 
-        public Map getClassifications() throws RemoteException {
+        public List<Classification> getClassifications() throws RemoteException {
             return classifications;
         }
 
@@ -75,7 +83,7 @@ public class RecorderService extends Service {
 
     boolean running;
     public static Map<Float[], String> model;
-    private final Map<Long, String> classifications = new HashMap<Long, String>();
+    private final List<Classification> classifications = new ArrayList<Classification>();
 
     private final SensorEventListener accelListener = new SensorEventListener() {
 

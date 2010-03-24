@@ -1,15 +1,15 @@
 /*
  * This file is auto-generated.  DO NOT MODIFY.
- * Original file: src/uk/co/md87/android/activityrecorder/rpc/ActivityRecorderBinder.aidl
+ * Original file: uk/co/md87/android/activityrecorder/rpc/ActivityRecorderBinder.aidl
  */
 package uk.co.md87.android.activityrecorder.rpc;
 import java.lang.String;
-import java.util.Map;
 import android.os.RemoteException;
 import android.os.IBinder;
 import android.os.IInterface;
 import android.os.Binder;
 import android.os.Parcel;
+import java.util.List;
 /**
  *
  * @author chris
@@ -73,9 +73,9 @@ return true;
 case TRANSACTION_getClassifications:
 {
 data.enforceInterface(DESCRIPTOR);
-java.util.Map _result = this.getClassifications();
+java.util.List<uk.co.md87.android.activityrecorder.rpc.Classification> _result = this.getClassifications();
 reply.writeNoException();
-reply.writeMap(_result);
+reply.writeTypedList(_result);
 return true;
 }
 }
@@ -128,17 +128,16 @@ _reply.recycle();
 _data.recycle();
 }
 }
-public java.util.Map getClassifications() throws android.os.RemoteException
+public java.util.List<uk.co.md87.android.activityrecorder.rpc.Classification> getClassifications() throws android.os.RemoteException
 {
 android.os.Parcel _data = android.os.Parcel.obtain();
 android.os.Parcel _reply = android.os.Parcel.obtain();
-java.util.Map _result;
+java.util.List<uk.co.md87.android.activityrecorder.rpc.Classification> _result;
 try {
 _data.writeInterfaceToken(DESCRIPTOR);
 mRemote.transact(Stub.TRANSACTION_getClassifications, _data, _reply, 0);
 _reply.readException();
-java.lang.ClassLoader cl = (java.lang.ClassLoader)this.getClass().getClassLoader();
-_result = _reply.readHashMap(cl);
+_result = _reply.createTypedArrayList(uk.co.md87.android.activityrecorder.rpc.Classification.CREATOR);
 }
 finally {
 _reply.recycle();
@@ -153,5 +152,5 @@ static final int TRANSACTION_getClassifications = (IBinder.FIRST_CALL_TRANSACTIO
 }
 public boolean isRunning() throws android.os.RemoteException;
 public void submitClassification(java.lang.String classification) throws android.os.RemoteException;
-public java.util.Map getClassifications() throws android.os.RemoteException;
+public java.util.List<uk.co.md87.android.activityrecorder.rpc.Classification> getClassifications() throws android.os.RemoteException;
 }
