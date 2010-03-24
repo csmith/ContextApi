@@ -167,7 +167,7 @@ public class RecorderService extends Service {
         }
 
         manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        handler.postDelayed(registerRunnable, 60000);
+        handler.postDelayed(registerRunnable, 1000);
     }
 
     void register() {
