@@ -14,6 +14,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.PowerManager;
 import android.os.RemoteException;
 import android.util.Log;
 
@@ -75,6 +76,7 @@ public class RecorderService extends Service {
     private final Handler handler = new Handler();
 
     private SensorManager manager;
+    private PowerManager.WakeLock wl;
 
     private float[] values = new float[2];
 
@@ -143,6 +145,9 @@ public class RecorderService extends Service {
     public void onStart(final Intent intent, final int startId) {
         super.onStart(intent, startId);
 
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "Activity recorder");
+
         running = true;
 
         init();
@@ -171,6 +176,7 @@ public class RecorderService extends Service {
     }
 
     void register() {
+        wl.acquire();
         Log.i(getClass().getName(), "Registering");
         nextSample = 0;
         manager.registerListener(accelListener,
@@ -182,6 +188,7 @@ public class RecorderService extends Service {
 
     void unregister() {
         manager.unregisterListener(accelListener);
+        wl.release();
     }
 
     @Override
