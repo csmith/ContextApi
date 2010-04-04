@@ -1,40 +1,6 @@
 <?PHP
 
- session_start();
-
- $allowedIDs = array(
-	'https://www.google.com/accounts/o8/id?id=AItOawk9b32oBoVvjzwEhvC2GOhsxj0MN2mWoc8', // Me
-	'https://www.google.com/accounts/o8/id?id=AItOawk8LzSeazeZxqMCTVKm-OkUu0mLDLOqBBs', // Simon
-	'https://www.google.com/accounts/o8/id?id=AItOawkM5hzpAq2WOz0DDy3N9PnEtqinHbgNrNI', // Shane
- );
-
- if (isset($_SESSION['openid']['error'])) {
-
-  // Failed OpenID login attempt
-  echo 'ERROR: ',  htmlentities($_SESSION['openid']['error']);
-  unset($_SESSION['openid']['error']);
-  exit;
-
- } else if (isset($_SESSION['openid']['validated']) && $_SESSION['openid']['validated']) {
-
-  if (!in_array($_SESSION['openid']['identity'], $allowedIDs)) {
-   echo 'ERROR: ', htmlentities($_SESSION['openid']['identity']), ' not permitted';
-   exit;
-  }
-
- } else {
-
-  if (!isset($_REQUEST['openid_mode'])) {
-   $_POST['openid_url'] = 'https://www.google.com/accounts/o8/id';
-  }
-
-  require('openid/processor.php');
-  exit;
-
- }
-
- # -------------- End of authentication code --------------------------
-
+ require('auth.php');
  require('common.php');
 
  # -------------- Form handling -----------------

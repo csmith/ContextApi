@@ -4,6 +4,55 @@
 
  define('VERSION', 25);
 
+ function processExceptions($records = true) {
+  $sql = 'SELECT record_id, record_ip, record_headers, record_data FROM unprocessed';
+  $res = mysql_query($sql);
+  $count = 0;
+
+  while ($row = mysql_fetch_assoc($res)) {
+   $ip = $row['record_ip'];
+
+   $headers = array();
+
+   foreach (explode("\n", $row['record_headers']) as $line) {
+    if (preg_match('/(.*?): (.*)$/', $line, $m)) {
+     $headers[$m[1]] = $m[2];
+    }
+   }
+
+   if (!isset($headers['APPLICATION']) || substr($headers['APPLICATION'], -10) != '-exception') {
+    continue;
+   }
+
+   $application = substr($headers['APPLICATION'], 0, -10);
+   $imei = isset($headers['IMEI']) ? $headers['IMEI'] : '';
+
+   if (!ctype_digit($imei) && !empty($imei)) {
+    // It's probably an MEID not an IMEI number
+    $imei = bchexdec($headers['IMEI']);
+   }
+
+   $version = isset($headers['VERSION']) ? $headers['VERSION'] : '';
+   $headers = $row['record_headers'];
+   $data = $row['record_data'];
+
+   $sql  = 'INSERT INTO exceptions (ex_ip, ex_imei, ex_application, ex_version, ';
+   $sql .= 'ex_headers, ex_trace) VALUES (';
+   $sql .= '\'' . m($ip) . '\', \'' . m($imei) . '\', \'' . m($application) . '\', \'';
+   $sql .= m($version) . '\', \'' . m($headers) . '\', \'' . m($data) . '\')';
+   mysql_query($sql) or die(mysql_error());
+
+   $sql  = 'DELETE FROM unprocessed WHERE record_id = ' . $row['record_id'];
+   mysql_query($sql);
+
+   $count++;
+  }
+
+  if ($count > 1 || !$records && $count > 0) {
+   Oblong("\002[ANDROID]\002 Processed $count " . ($records ? "new" : "existing") . " exceptions");
+  }
+ }
+
  function processSensorLogger($records = true) {
   $sql = $records ? 'SELECT record_id, record_ip, record_headers, record_data FROM unprocessed'
                   : 'SELECT log_id, log_ip AS record_ip, log_headers AS record_headers, log_data '
@@ -133,5 +182,6 @@
  }
 
  processSensorLogger(!isset($argv[1]) || $argv[1] != '--update');
+ processExceptions(!isset($argv[1]) || $argv[1] != '--update');
 
 ?>
