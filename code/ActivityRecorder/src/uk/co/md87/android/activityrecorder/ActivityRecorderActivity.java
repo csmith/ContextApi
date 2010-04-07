@@ -22,7 +22,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
-import java.util.Map;
+
 import uk.co.md87.android.activityrecorder.rpc.ActivityRecorderBinder;
 import uk.co.md87.android.activityrecorder.rpc.Classification;
 import uk.co.md87.android.common.ExceptionHandler;

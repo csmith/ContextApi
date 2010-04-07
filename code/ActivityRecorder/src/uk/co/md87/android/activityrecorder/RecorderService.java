@@ -173,10 +173,11 @@ public class RecorderService extends Service {
 
         manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         handler.postDelayed(registerRunnable, 1000);
+
+        wl.acquire();
     }
 
     void register() {
-        wl.acquire();
         Log.i(getClass().getName(), "Registering");
         nextSample = 0;
         manager.registerListener(accelListener,
@@ -188,19 +189,22 @@ public class RecorderService extends Service {
 
     void unregister() {
         manager.unregisterListener(accelListener);
-        wl.release();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
-        
-        running = false;
 
-        handler.removeCallbacks(sampleRunnable);
-        handler.removeCallbacks(registerRunnable);
-        
-        unregister();
+        if (running) {
+            running = false;
+
+            handler.removeCallbacks(sampleRunnable);
+            handler.removeCallbacks(registerRunnable);
+
+            unregister();
+
+            wl.release();
+        }
     }
 
 }
