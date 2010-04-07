@@ -21,7 +21,6 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import uk.co.md87.android.activityrecorder.rpc.ActivityRecorderBinder;
 import uk.co.md87.android.activityrecorder.rpc.Classification;
@@ -46,8 +45,9 @@ public class ActivityRecorderActivity extends Activity {
         }
 
         public void onServiceDisconnected(ComponentName arg0) {
-            Toast.makeText(ActivityRecorderActivity.this,
-                    R.string.error_disconnected, Toast.LENGTH_LONG);
+            service = null;
+            handler.removeCallbacks(updateRunnable);
+            ((Button) findViewById(R.id.togglebutton)).setEnabled(false);
         }
     };
 
@@ -67,12 +67,14 @@ public class ActivityRecorderActivity extends Activity {
                 if (service.isRunning()) {
                     stopService(new Intent(ActivityRecorderActivity.this,
                             RecorderService.class));
+                    unbindService(connection);
+                    bindService(new Intent(ActivityRecorderActivity.this, RecorderService.class),
+                            connection, BIND_AUTO_CREATE);
                 } else {
                     startService(new Intent(ActivityRecorderActivity.this,
                             RecorderService.class));
+                    handler.postDelayed(updateRunnable, 500);
                 }
-
-                updateButton();
             } catch (RemoteException ex) {
                 Log.e(getClass().getName(), "Unable to get service state", ex);
             }
