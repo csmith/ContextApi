@@ -60,6 +60,15 @@ public class ActivityRecorderActivity extends Activity {
         }
     };
 
+    private final Runnable startRunnable = new Runnable() {
+
+        public void run() {
+            startService(new Intent(ActivityRecorderActivity.this,
+                    RecorderService.class));
+            updateRunnable.run();
+        }
+    };
+
     private OnClickListener clickListener = new OnClickListener() {
 
         public void onClick(View arg0) {
@@ -71,9 +80,9 @@ public class ActivityRecorderActivity extends Activity {
                     bindService(new Intent(ActivityRecorderActivity.this, RecorderService.class),
                             connection, BIND_AUTO_CREATE);
                 } else {
-                    startService(new Intent(ActivityRecorderActivity.this,
-                            RecorderService.class));
-                    handler.postDelayed(updateRunnable, 500);
+                    handler.removeCallbacks(updateRunnable);
+                    ((Button) findViewById(R.id.togglebutton)).setEnabled(false);
+                    handler.postDelayed(startRunnable, 500);
                 }
             } catch (RemoteException ex) {
                 Log.e(getClass().getName(), "Unable to get service state", ex);
