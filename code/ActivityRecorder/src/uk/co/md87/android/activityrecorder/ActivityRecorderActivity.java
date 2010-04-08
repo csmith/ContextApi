@@ -6,6 +6,7 @@
 package uk.co.md87.android.activityrecorder;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
@@ -34,6 +35,7 @@ import uk.co.md87.android.common.ExceptionHandler;
 public class ActivityRecorderActivity extends Activity {
 
     ActivityRecorderBinder service = null;
+    ProgressDialog dialog;
 
     final Handler handler = new Handler();
 
@@ -83,6 +85,10 @@ public class ActivityRecorderActivity extends Activity {
                 } else {
                     handler.removeCallbacks(updateRunnable);
                     ((Button) findViewById(R.id.togglebutton)).setEnabled(false);
+
+                    dialog = ProgressDialog.show(ActivityRecorderActivity.this, "Starting service",
+                        "Please wait...", true);
+
                     handler.postDelayed(startRunnable, 500);
                 }
             } catch (RemoteException ex) {
@@ -123,6 +129,11 @@ public class ActivityRecorderActivity extends Activity {
             ((Button) findViewById(R.id.togglebutton)).setText(service.isRunning()
                     ? R.string.service_enabled : R.string.service_disabled);
             ((Button) findViewById(R.id.togglebutton)).setEnabled(true);
+
+            if (dialog != null) {
+                dialog.dismiss();
+                dialog = null;
+            }
             
             final List<Classification> classifications = service.getClassifications();
             final ArrayAdapter<Classification> adapter = (ArrayAdapter<Classification>)
