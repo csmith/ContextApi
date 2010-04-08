@@ -21,6 +21,7 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import java.util.List;
 
 import uk.co.md87.android.activityrecorder.rpc.ActivityRecorderBinder;
 import uk.co.md87.android.activityrecorder.rpc.Classification;
@@ -123,12 +124,28 @@ public class ActivityRecorderActivity extends Activity {
                     ? R.string.service_enabled : R.string.service_disabled);
             ((Button) findViewById(R.id.togglebutton)).setEnabled(true);
             
-            // Hacky
-            ((ArrayAdapter<Classification>) ((ListView) findViewById(R.id.list))
-                    .getAdapter()).clear();
-            for (Classification entry : service.getClassifications()) {
-                ((ArrayAdapter<Classification>) ((ListView) findViewById(R.id.list))
-                    .getAdapter()).add(entry.withContext(this));
+            final List<Classification> classifications = service.getClassifications();
+            final ArrayAdapter<Classification> adapter = (ArrayAdapter<Classification>)
+                    ((ListView) findViewById(R.id.list)).getAdapter();
+
+            if (classifications.isEmpty()) {
+                adapter.clear();
+            } else if (!adapter.isEmpty()) {
+                final Classification myLast = adapter.getItem(adapter.getCount() - 1);
+                final Classification expected = classifications.get(adapter.getCount() - 1);
+
+                if (myLast.getClassification().equals(expected.getClassification())) {
+                    // Just update the end time
+                    myLast.updateEnd(expected.getEnd());
+                    adapter.notifyDataSetChanged();
+                } else {
+                    // Something's gone wrong - the entries should match
+                    adapter.clear();
+                }
+            }
+
+            for (int i = adapter.getCount(); i < classifications.size(); i++) {
+                adapter.add(classifications.get(i).withContext(this));
             }
         } catch (RemoteException ex) {
             Log.e(getClass().getName(), "Unable to get service state", ex);
