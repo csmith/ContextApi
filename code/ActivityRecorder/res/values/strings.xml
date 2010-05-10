@@ -9,11 +9,14 @@
 
     <string name="activity_unknown">Unknown</string>
     <string name="activity_walking">Walking</string>
+    <string name="activity_walking_stairs">Walking (stairs)</string>
     <string name="activity_walking_stairs_up">Walking (up stairs)</string>
     <string name="activity_walking_stairs_down">Walking (down stairs)</string>
     <string name="activity_dancing">Dancing</string>
+    <string name="activity_idle">Idle</string>
     <string name="activity_idle_standing">Standing still</string>
     <string name="activity_idle_sitting">Sitting down</string>
+    <string name="activity_vehicle">Travelling</string>
     <string name="activity_vehicle_bus">Travelling by bus</string>
     <string name="activity_vehicle_car">Travelling by car</string>
 </resources>

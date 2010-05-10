@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.RemoteException;
 import android.util.Log;
 import android.widget.TextView;
+import com.flurry.android.FlurryAgent;
 import java.util.TimerTask;
 
 import uk.co.md87.android.sensorlogger.R;
@@ -57,12 +58,29 @@ public class CountdownActivity extends BoundActivity {
             if (time > 0) {
                 handler.postDelayed(task, 500);
             } else {
+                FlurryAgent.onEvent("countdown_to_recording");
                 startActivity(new Intent(this, RecordingActivity.class));
                 finish();
             }
         } catch (RemoteException ex) {
             Log.e(getClass().getName(), "Error updating countdown", ex);
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FlurryAgent.onStartSession(this, "TFBJJPQUQX3S1Q6IUHA6");
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        FlurryAgent.onEndSession(this);
     }
 
 }

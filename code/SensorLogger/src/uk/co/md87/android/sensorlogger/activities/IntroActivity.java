@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import com.flurry.android.FlurryAgent;
 import uk.co.md87.android.common.ExceptionHandler;
 
 import uk.co.md87.android.sensorlogger.R;
@@ -54,12 +55,30 @@ public class IntroActivity extends BoundActivity implements OnClickListener {
     @Override
     public void onClick(final View arg0) {
         try {
+            FlurryAgent.onEvent("intro_to_countdown");
+
             service.setState(2);
             startActivity(new Intent(this, CountdownActivity.class));
             finish();
         } catch (RemoteException ex) {
             Log.e(getClass().getName(), "Error setting state", ex);
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onStart() {
+        super.onStart();
+        
+        FlurryAgent.onStartSession(this, "TFBJJPQUQX3S1Q6IUHA6");
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        FlurryAgent.onEndSession(this);
     }
 
 }

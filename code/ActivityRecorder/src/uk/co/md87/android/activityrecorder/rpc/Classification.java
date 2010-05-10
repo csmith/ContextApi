@@ -55,7 +55,7 @@ public class Classification implements Parcelable {
         final int length = (int) ((end - start) / 1000);
 
         if (length < 60) {
-            duration = length + " secs";
+            duration = "<1 min";
         } else if (length < 60 * 60) {
             duration = (length / 60) + " mins";
         } else {
@@ -73,8 +73,9 @@ public class Classification implements Parcelable {
     }
 
     public Classification withContext(final Context context) {
-        String name = "activity_" + getClassification().substring(11)
-                .replace("/", "_").toLowerCase();
+        String name = "activity" + (getClassification().length() == 0
+                ? "_unknown" : getClassification().substring(10)
+                .replace("/", "_").toLowerCase());
 
         niceClassification = context.getResources().getText(
                 context.getResources().getIdentifier(name, "string",

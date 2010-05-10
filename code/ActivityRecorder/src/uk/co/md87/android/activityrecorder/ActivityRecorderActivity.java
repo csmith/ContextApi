@@ -22,6 +22,7 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import com.flurry.android.FlurryAgent;
 import java.util.List;
 
 import uk.co.md87.android.activityrecorder.rpc.ActivityRecorderBinder;
@@ -77,12 +78,14 @@ public class ActivityRecorderActivity extends Activity {
         public void onClick(View arg0) {
             try {
                 if (service.isRunning()) {
+                    FlurryAgent.onEvent("recording_stop");
                     stopService(new Intent(ActivityRecorderActivity.this,
                             RecorderService.class));
                     unbindService(connection);
                     bindService(new Intent(ActivityRecorderActivity.this, RecorderService.class),
                             connection, BIND_AUTO_CREATE);
                 } else {
+                    FlurryAgent.onEvent("recording_start");
                     handler.removeCallbacks(updateRunnable);
                     ((Button) findViewById(R.id.togglebutton)).setEnabled(false);
 
@@ -173,6 +176,22 @@ public class ActivityRecorderActivity extends Activity {
 
     public String getIMEI() {
         return ((TelephonyManager) getSystemService(TELEPHONY_SERVICE)).getDeviceId();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FlurryAgent.onStartSession(this, "EMKSQFUWSCW51AKBL2JJ");
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        FlurryAgent.onEndSession(this);
     }
 
 }

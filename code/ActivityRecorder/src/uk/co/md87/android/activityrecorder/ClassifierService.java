@@ -51,7 +51,7 @@ public class ClassifierService extends Service implements Runnable {
     public void onStart(Intent intent, int startId) {
         super.onStart(intent, startId);
 
-        Log.i(getClass().getName(), "Starting classifier");
+        //Log.i(getClass().getName(), "Starting classifier");
 
         data = intent.getFloatArrayExtra("data");
 
@@ -111,7 +111,7 @@ public class ClassifierService extends Service implements Runnable {
 
         classification = bestActivity;
 
-        Log.i(getClass().getName(), "Classification: " + classification);
+        //Log.i(getClass().getName(), "Classification: " + classification);
 
         bindService(new Intent(this, RecorderService.class), connection, BIND_AUTO_CREATE);
     }

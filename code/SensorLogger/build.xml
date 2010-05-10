@@ -18,5 +18,8 @@
 
     <target depends="init,compile,-pre-jar,-dex,-package-res-and-assets,-package-res-no-assets,-package-dex,-build-without-signing,-post-jar" description="Build unsigned JAR." name="unsigned-jar"/>
 
+    <target name="-pre-jar">
+       <unzip src="lib/FlurryAgent.jar" dest="${build.classes.dir}" overwrite="true"/>
+    </target>
 
 </project>

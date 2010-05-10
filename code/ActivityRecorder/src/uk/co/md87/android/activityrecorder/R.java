@@ -25,15 +25,18 @@ public final class R {
         public static final int basic_model=0x7f040000;
     }
     public static final class string {
-        public static final int activity_dancing=0x7f050008;
-        public static final int activity_idle_sitting=0x7f05000a;
-        public static final int activity_idle_standing=0x7f050009;
+        public static final int activity_dancing=0x7f050009;
+        public static final int activity_idle=0x7f05000a;
+        public static final int activity_idle_sitting=0x7f05000c;
+        public static final int activity_idle_standing=0x7f05000b;
         public static final int activity_unknown=0x7f050004;
-        public static final int activity_vehicle_bus=0x7f05000b;
-        public static final int activity_vehicle_car=0x7f05000c;
+        public static final int activity_vehicle=0x7f05000d;
+        public static final int activity_vehicle_bus=0x7f05000e;
+        public static final int activity_vehicle_car=0x7f05000f;
         public static final int activity_walking=0x7f050005;
-        public static final int activity_walking_stairs_down=0x7f050007;
-        public static final int activity_walking_stairs_up=0x7f050006;
+        public static final int activity_walking_stairs=0x7f050006;
+        public static final int activity_walking_stairs_down=0x7f050008;
+        public static final int activity_walking_stairs_up=0x7f050007;
         public static final int app_name=0x7f050000;
         public static final int error_disconnected=0x7f050001;
         public static final int service_disabled=0x7f050003;

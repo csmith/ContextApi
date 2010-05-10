@@ -19,6 +19,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.TextView;
+import com.flurry.android.FlurryAgent;
 import java.util.TimerTask;
 
 import uk.co.md87.android.sensorlogger.R;
@@ -43,6 +44,8 @@ public class ResultsActivity extends BoundActivity {
     private final OnClickListener yesListener = new OnClickListener() {
 
         public void onClick(View arg0) {
+            FlurryAgent.onEvent("results_yes_click");
+
             findViewById(R.id.resultsno).setEnabled(false);
             findViewById(R.id.resultsyes).setEnabled(false);
 
@@ -60,6 +63,8 @@ public class ResultsActivity extends BoundActivity {
             = new DialogInterface.OnClickListener() {
 
         public void onClick(DialogInterface arg0, int arg1) {
+            FlurryAgent.onEvent("results_correction_submitted");
+
             dialog = ProgressDialog.show(ResultsActivity.this, "Please wait",
                     "Submitting...", true);
             
@@ -75,6 +80,8 @@ public class ResultsActivity extends BoundActivity {
     private final OnClickListener noListener = new OnClickListener() {
 
         public void onClick(View arg0) {
+            FlurryAgent.onEvent("results_no_click");
+
             findViewById(R.id.resultsno).setEnabled(false);
             findViewById(R.id.resultsyes).setEnabled(false);
 
@@ -132,6 +139,8 @@ public class ResultsActivity extends BoundActivity {
     void checkStage() {
         try {
             if (service.getState() == 7) {
+                FlurryAgent.onEvent("results_to_thanks");
+
                 service.setState(8);
                 startActivity(new Intent(this, ThanksActivity.class));
                 finish();
@@ -141,6 +150,22 @@ public class ResultsActivity extends BoundActivity {
         } catch (RemoteException ex) {
             Log.e(getClass().getName(), "Unable to get state", ex);
         }
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FlurryAgent.onStartSession(this, "TFBJJPQUQX3S1Q6IUHA6");
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        FlurryAgent.onEndSession(this);
     }
 
 }

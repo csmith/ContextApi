@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
 import android.widget.TextView;
+import com.flurry.android.FlurryAgent;
 
 import uk.co.md87.android.sensorlogger.R;
 
@@ -49,6 +50,22 @@ public class ThanksActivity extends Activity {
         }
 
         return builder.toString();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        FlurryAgent.onStartSession(this, "TFBJJPQUQX3S1Q6IUHA6");
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void onStop() {
+        super.onStop();
+
+        FlurryAgent.onEndSession(this);
     }
 
 }
