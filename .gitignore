@@ -1,6 +1,7 @@
 /papers/*.bak
 /code/*/build
 /code/*/nbproject/private
+/code/*/*.apk
 /reports/*~
 /website/settings.php
 /*.keystore

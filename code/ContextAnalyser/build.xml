@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- You may freely edit this file. See commented blocks below for -->
+<!-- some examples of how to customize the build. -->
+<!-- (If you delete it and reopen the project it will be recreated.) -->
+<project name="ContextAnalyser" default="default" basedir=".">
+    <description>Builds, tests, and runs the project ContextAnalyser.</description>
+    <import file="nbproject/build-impl.xml"/>
+
+    <target depends="init,-package-res-and-assets,-package-res-no-assets,-package-dex" name="-build-without-signing">
+        <exec executable="${apkbuilder}" failonerror="true">
+            <arg value="${basedir}/${dist.apk}"/>
+            <arg value="-u"/>
+            <arg value="-z"/>
+            <arg value="${basedir}/${dist.apk}_"/>
+        </exec>
+        <delete file="${dist.apk}_"/>
+    </target>
+
+    <target depends="init,compile,-pre-jar,-dex,-package-res-and-assets,-package-res-no-assets,-package-dex,-build-without-signing,-post-jar" description="Build unsigned JAR." name="unsigned-jar"/>
+
+    <target name="-pre-jar">
+       <unzip src="lib/FlurryAgent.jar" dest="${build.classes.dir}" overwrite="true"/>
+    </target>
+
+</project>
