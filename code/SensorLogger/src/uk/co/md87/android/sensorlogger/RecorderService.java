@@ -19,12 +19,12 @@ import android.util.Log;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.io.OutputStreamWriter;
 import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import uk.co.md87.android.common.ModelReader;
 
 /**
  *
@@ -187,21 +187,7 @@ public class RecorderService extends BoundService {
             return;
         }
 
-        InputStream is = null;
-        try {
-            is = getResources().openRawResource(R.raw.basic_model);
-            model = (Map<Float[], String>) new ObjectInputStream(is).readObject();
-        } catch (Exception ex) {
-            Log.e(TAG, "Unable to load model", ex);
-        } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (IOException ex) {
-                    
-                }
-            }
-        }
+        model = ModelReader.getModel(this, R.raw.basic_model);
 
         manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         manager.registerListener(accelListener,

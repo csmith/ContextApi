@@ -5,6 +5,7 @@
         <data xmlns="http://www.netbeans.org/ns/android-project/1">
             <name>ContextAnalyser</name>
             <minimum-ant-version>1.7.0</minimum-ant-version>
+            <explicit-platform explicit-source-supported="true"/>
             <source-roots>
                 <root id="src.dir"/>
             </source-roots>
