@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import uk.co.md87.android.common.geo.LocationMonitor;
+import uk.co.md87.android.common.geo.LocationMonitorFactory;
 
 /**
  *
@@ -22,7 +23,7 @@ public class IntroActivity extends Activity {
         super.onCreate(icicle);
         // ToDo add your GUI initialization code here
 
-        final LocationMonitor loc = new LocationMonitor(this);
+        final LocationMonitor loc = new LocationMonitorFactory().getMonitor(this);
         Log.i("IntroActivity 1", String.valueOf(loc.getLat()));
         Log.i("IntroActivity 2", String.valueOf(loc.getLon()));
         Log.i("IntroActivity 3", String.valueOf(loc.getAccuracy()));
