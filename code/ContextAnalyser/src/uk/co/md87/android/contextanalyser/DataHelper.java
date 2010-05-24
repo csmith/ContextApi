@@ -28,6 +28,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.location.Location;
+import android.util.Log;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
@@ -41,10 +44,13 @@ public class DataHelper {
 
     private static final String INSERT_LOCATION = "insert into "
       + LOCATIONS_TABLE + "(name, lat, lon) values (?, ?, ?)";
+    private static final String UPDATE_LOCATION = "update "
+      + LOCATIONS_TABLE + " set name = ? where id = ?";
+    private static final String UNNAMED_QUERY = "name LIKE '%.%,%.%'";
     private static final String LOCATION_QUERY = "lat > %1$s - 0.005 and "
             + "lat < %1$s + 0.005 and lon > %2$s - 0.01 and lon < %2$s + 0.01";
 
-    private final SQLiteStatement insertLocationStatement;
+    private final SQLiteStatement insertLocationStatement, updateLocationStatement;
 
     private final Context context;
     private SQLiteDatabase db;
@@ -55,13 +61,42 @@ public class DataHelper {
         final OpenHelper helper = new OpenHelper(context);
         this.db = helper.getWritableDatabase();
         this.insertLocationStatement = db.compileStatement(INSERT_LOCATION);
+        this.updateLocationStatement = db.compileStatement(UPDATE_LOCATION);
     }
 
     public long addLocation(final String name, final double lat, final double lon) {
+        Log.i(getClass().getSimpleName(), "Adding new place at " + lat + ", " + lon);
         insertLocationStatement.bindString(1, name);
         insertLocationStatement.bindDouble(2, lat);
         insertLocationStatement.bindDouble(3, lon);
         return insertLocationStatement.executeInsert();
+    }
+
+    public void updateLocation(final long id, final String name) {
+        Log.i(getClass().getSimpleName(), "Setting name of place " + id + " to " + name);
+        updateLocationStatement.bindString(1, name);
+        updateLocationStatement.bindLong(2, id);
+        updateLocationStatement.execute();
+    }
+
+    public Map<String, Long> getUnnamedLocations() {
+        final Map<String, Long> results = new HashMap<String, Long>();
+        
+        final Cursor cursor = db.query(LOCATIONS_TABLE,
+                new String[] { "id", "name" },
+                UNNAMED_QUERY, null, null, null, null);
+        
+        if (cursor.moveToFirst()) {
+            do {
+                results.put(cursor.getString(1), cursor.getLong(0));
+            } while (cursor.moveToNext());
+        }
+
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+
+        return results;
     }
 
     public LocationResult findLocation(final double lat, final double lon) {
@@ -115,6 +150,11 @@ public class DataHelper {
 
         public String getName() {
             return name;
+        }
+
+        @Override
+        public String toString() {
+            return "LocationResult{id=" + id + "name=" + name + "lat=" + lat + "lon=" + lon + '}';
         }
 
     }

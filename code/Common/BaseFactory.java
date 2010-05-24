@@ -31,7 +31,7 @@ import android.os.Build;
 public abstract class BaseFactory {
 
     protected boolean shouldUseFake() {
-        return "sdk".equals(Build.PRODUCT);
+        return Build.PRODUCT.endsWith("sdk");
     }
 
 }

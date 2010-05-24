@@ -24,8 +24,16 @@ package uk.co.md87.android.contextanalyser;
 
 import android.app.Service;
 import android.content.Intent;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 
 import java.util.Map;
 
@@ -36,12 +44,15 @@ import uk.co.md87.android.common.accel.AccelReaderFactory;
 import uk.co.md87.android.common.accel.Sampler;
 import uk.co.md87.android.common.geo.LocationMonitor;
 import uk.co.md87.android.common.geo.LocationMonitorFactory;
+import uk.co.md87.android.contextanalyser.DataHelper.LocationResult;
 
 /**
  *
  * @author chris
  */
 public class ContextAnalyserService extends Service {
+
+    private static final int POLLING_DELAY = 60000;
 
     private final Runnable scheduleRunnable = new Runnable() {
 
@@ -57,8 +68,15 @@ public class ContextAnalyserService extends Service {
         }
     };
 
-    public static Map<Float[], String> model;
+    private Map<Float[], String> model;
 
+    private final Map<String, Long> names = new HashMap<String, Long>();
+
+    private double lat = 0, lon = 0;
+    private int locationCount = 0;
+    private LocationResult lastLocation;
+    private Geocoder geocoder;
+    
     private Sampler sampler;
     private Classifier classifier;
     private Aggregator aggregator;
@@ -75,18 +93,86 @@ public class ContextAnalyserService extends Service {
         classifier = new Classifier(ModelReader.getModel(this, R.raw.basic_model).entrySet());
         aggregator = new Aggregator();
         dataHelper = new DataHelper(this);
+        geocoder = new Geocoder(this);
 
-        handler.postDelayed(scheduleRunnable, 60000);
+        names.putAll(dataHelper.getUnnamedLocations());
+
+        handler.postDelayed(scheduleRunnable, POLLING_DELAY);
     }
     
     public void poll() {
-        handler.postDelayed(scheduleRunnable, 60000);
+        handler.postDelayed(scheduleRunnable, POLLING_DELAY);
+
+        Log.v(getClass().getSimpleName(), "Polling...");
 
         sampler.start();
+        
+        pollLocation();
+        pollGeolocation();
+    }
+
+    protected void pollLocation() {
+        final double newLat = locationMonitor.getLat();
+        final double newLon = locationMonitor.getLon();
+        final float[] distance = new float[1];
+        Location.distanceBetween(newLat, newLon, lat, lon, distance);
+
+        if ((lat == 0 && lon == 0) || distance[0] > 500) {
+            // New location
+            lat = newLat;
+            lon = newLon;
+            locationCount = 1;
+            lastLocation = dataHelper.findLocation(lat, lon);
+
+            Log.i(getClass().getSimpleName(), "Location: " + lastLocation);
+        } else {
+            // Existing location
+
+            if (++locationCount > 2 && lastLocation == null) {
+                // But we don't know it yet - add it!
+                final String name = lat + "," + lon;
+
+                final long id = dataHelper.addLocation(name, lat, lon);
+                lastLocation = dataHelper.findLocation(lat, lon);
+
+                Log.i(getClass().getSimpleName(), "Location (new): " + lastLocation);
+
+                names.put(name, id);
+            }
+        }
+    }
+
+    protected void pollGeolocation() {
+        final Iterator<Map.Entry<String, Long>> it = names.entrySet().iterator();
+        while (it.hasNext()) {
+            final Map.Entry<String, Long> tuple = it.next();
+
+            Log.v(getClass().getSimpleName(), "Attempting to geocode " + tuple.getKey());
+            
+            final String[] parts = tuple.getKey().split(",", 2);
+
+            try {
+                final List<Address> addresses = geocoder.getFromLocation(
+                        Double.parseDouble(parts[0]), Double.parseDouble(parts[1]), 1);
+
+                if (addresses != null && !addresses.isEmpty()) {
+                    // We found a nice address
+
+                    dataHelper.updateLocation(tuple.getValue(),
+                            addresses.get(0).getAddressLine(0));
+
+                    it.remove();
+                }
+            } catch (IOException ex) {
+                // Do nothing
+            }
+        }
     }
 
     public void analyse() {
         aggregator.addClassification(classifier.classify(sampler.getData()));
+
+        Log.v(getClass().getSimpleName(), "Aggregator says: " + aggregator.getClassification());
     }
 
     @Override
