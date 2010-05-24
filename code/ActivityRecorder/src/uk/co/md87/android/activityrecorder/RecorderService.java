@@ -38,6 +38,7 @@ import uk.co.md87.android.common.Aggregator;
 import uk.co.md87.android.common.ModelReader;
 import uk.co.md87.android.common.accel.AccelReader;
 import uk.co.md87.android.common.accel.AccelReaderFactory;
+import uk.co.md87.android.common.accel.Sampler;
 
 /**
  *
@@ -63,59 +64,35 @@ public class RecorderService extends Service {
 
     };
 
-    private final Runnable sampleRunnable = new Runnable() {
-
-        public void run() {
-            final float[] values = reader.getSample();
-
-            data[nextSample * 2] = values[0];
-            data[nextSample * 2 + 1] = values[1];
-
-            if (++nextSample == 128) {
-                float[] cache = new float[256];
-                System.arraycopy(data, 0, cache, 0, 256);
-                analyse(cache);
-
-                reader.stopSampling();
-                return;
-            }
-
-            handler.postDelayed(sampleRunnable, 50);
-        }
-        
-    };
-
     private final Runnable registerRunnable = new Runnable() {
 
         public void run() {
             //Log.i(getClass().getName(), "Registering");
-            nextSample = 0;
-
-            reader.startSampling();
-
-            handler.postDelayed(sampleRunnable, 50);
+            sampler.start();
+            
             handler.postDelayed(registerRunnable, 30000);
+        }
+
+    };
+
+    private final Runnable analyseRunnable = new Runnable() {
+
+        public void run() {
+            final Intent intent = new Intent(RecorderService.this, ClassifierService.class);
+            intent.putExtra("data", sampler.getData());
+            startService(intent);
         }
 
     };
 
     final Handler handler = new Handler();
 
-    float[] data = new float[256];
-    volatile int nextSample = 0;
-
     boolean running;
     final Aggregator aggregator = new Aggregator();
     AccelReader reader;
+    Sampler sampler;
     public static Map<Float[], String> model;
     private final List<Classification> classifications = new ArrayList<Classification>();
-
-    public void analyse(float[] data) {
-        //Log.i(getClass().getName(), "Analysing");
-        final Intent intent = new Intent(this, ClassifierService.class);
-        intent.putExtra("data", data);
-        startService(intent);
-    }
 
     @Override
     public IBinder onBind(Intent arg0) {
@@ -129,6 +106,7 @@ public class RecorderService extends Service {
         running = true;
 
         reader = new AccelReaderFactory().getReader(this);
+        sampler = new Sampler(handler, reader, analyseRunnable);
 
         init();
     }
@@ -162,10 +140,11 @@ public class RecorderService extends Service {
         if (running) {
             running = false;
 
-            handler.removeCallbacks(sampleRunnable);
+            if (sampler != null) {
+                sampler.stop();
+            }
+            
             handler.removeCallbacks(registerRunnable);
-
-            reader.stopSampling();
         }
     }
 
