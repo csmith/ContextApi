@@ -26,8 +26,16 @@ import android.app.Service;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
+
 import java.util.Map;
+
+import uk.co.md87.android.common.Aggregator;
+import uk.co.md87.android.common.Classifier;
 import uk.co.md87.android.common.ModelReader;
+import uk.co.md87.android.common.accel.AccelReaderFactory;
+import uk.co.md87.android.common.accel.Sampler;
+import uk.co.md87.android.common.geo.LocationMonitor;
+import uk.co.md87.android.common.geo.LocationMonitorFactory;
 
 /**
  *
@@ -35,35 +43,57 @@ import uk.co.md87.android.common.ModelReader;
  */
 public class ContextAnalyserService extends Service {
 
-    private final Runnable minuteRunnable = new Runnable() {
+    private final Runnable scheduleRunnable = new Runnable() {
 
         public void run() {
             poll();
         }
     };
 
+    private final Runnable analyseRunnable = new Runnable() {
+
+        public void run() {
+            analyse();
+        }
+    };
+
     public static Map<Float[], String> model;
 
+    private Sampler sampler;
+    private Classifier classifier;
+    private Aggregator aggregator;
+    private LocationMonitor locationMonitor;
+    private DataHelper dataHelper;
     private Handler handler = new Handler();
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        model = ModelReader.getModel(this, R.raw.basic_model);
-        
-        handler.postDelayed(minuteRunnable, 60000);
+        locationMonitor = new LocationMonitorFactory().getMonitor(this);
+        sampler = new Sampler(handler, new AccelReaderFactory().getReader(this), analyseRunnable);
+        classifier = new Classifier(ModelReader.getModel(this, R.raw.basic_model).entrySet());
+        aggregator = new Aggregator();
+        dataHelper = new DataHelper(this);
+
+        handler.postDelayed(scheduleRunnable, 60000);
     }
     
     public void poll() {
-        handler.postDelayed(minuteRunnable, 60000);
+        handler.postDelayed(scheduleRunnable, 60000);
+
+        sampler.start();
+    }
+
+    public void analyse() {
+        aggregator.addClassification(classifier.classify(sampler.getData()));
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
 
-        handler.removeCallbacks(minuteRunnable);
+        handler.removeCallbacks(scheduleRunnable);
     }
 
     @Override
