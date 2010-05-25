@@ -34,6 +34,7 @@ import android.util.Log;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -80,10 +81,11 @@ public class ContextAnalyserService extends Service {
     private Map<Float[], String> model;
 
     private final Map<String, Long> names = new HashMap<String, Long>();
+    private final List<String> activityLog = new LinkedList<String>();
 
     private double lat = 0, lon = 0;
     private int locationCount = 0;
-    private Place lastLocation;
+    private Place location, lastLocation;
     private Geocoder geocoder;
     private String lastActivity = "";
     
@@ -136,7 +138,7 @@ public class ContextAnalyserService extends Service {
         } else {
             // Existing location
 
-            if (++locationCount > 2 && lastLocation == null) {
+            if (++locationCount > 2 && location == null) {
                 // But we don't know it yet - add it!
                 final String name = lat + "," + lon;
 
@@ -175,17 +177,20 @@ public class ContextAnalyserService extends Service {
     }
 
     public void updateLastLocation() {
-        final long oldId = lastLocation == null ? -1 : lastLocation.getId();
-        lastLocation = dataHelper.findLocation(lat, lon);
+        lastLocation = location;
+        location = dataHelper.findLocation(lat, lon);
 
-        if (lastLocation != null) {
-            Log.i(getClass().getSimpleName(), "New location, broadcasting: " + lastLocation);
+        if (location != null) {
+            Log.i(getClass().getSimpleName(), "New location, broadcasting: " + location);
+            Log.i(getClass().getSimpleName(), "Activity log to here: " + activityLog);
 
             final Intent intent = new Intent(CONTEXT_CHANGED_INTENT);
             intent.putExtra("type", CONTEXT_PLACE);
-            intent.putExtra("old", oldId);
-            intent.putExtra("new", lastLocation.getId());
+            intent.putExtra("old", lastLocation == null ? -1 : lastLocation.getId());
+            intent.putExtra("new", location.getId());
             sendBroadcast(intent, Manifest.permission.RECEIVE_UPDATES);
+
+            activityLog.clear();
         }
     }
 
@@ -195,6 +200,11 @@ public class ContextAnalyserService extends Service {
         final String newActivity = aggregator.getClassification();
 
         Log.v(getClass().getSimpleName(), "Aggregator says: " + newActivity);
+
+        if (location == null && lastLocation != null) {
+            // We're going somewhere - record the activity
+            activityLog.add(newActivity);
+        }
 
         if (!newActivity.equals(lastActivity)) {
             Log.i(getClass().getSimpleName(), "Broadcasting activity change");
