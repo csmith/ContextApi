@@ -44,7 +44,6 @@ import uk.co.md87.android.common.accel.AccelReaderFactory;
 import uk.co.md87.android.common.accel.Sampler;
 import uk.co.md87.android.common.geo.LocationMonitor;
 import uk.co.md87.android.common.geo.LocationMonitorFactory;
-import uk.co.md87.android.contextanalyser.DataHelper.LocationResult;
 
 /**
  *
@@ -81,7 +80,7 @@ public class ContextAnalyserService extends Service {
 
     private double lat = 0, lon = 0;
     private int locationCount = 0;
-    private LocationResult lastLocation;
+    private Place lastLocation;
     private Geocoder geocoder;
     private String lastActivity = "";
     

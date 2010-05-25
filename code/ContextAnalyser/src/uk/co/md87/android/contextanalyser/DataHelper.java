@@ -100,7 +100,7 @@ public class DataHelper {
         return results;
     }
 
-    public LocationResult findLocation(final double lat, final double lon) {
+    public Place findLocation(final double lat, final double lon) {
         final Cursor cursor = db.query(LOCATIONS_TABLE,
                 new String[] { "_id", "name", "lat", "lon" },
                 String.format(LOCATION_QUERY, lat, lon), null, null, null, null);
@@ -111,7 +111,7 @@ public class DataHelper {
                 Location.distanceBetween(lat, lon, cursor.getDouble(2), cursor.getDouble(3), res);
 
                 if (res[0] <= 500) {
-                    return new LocationResult(cursor.getLong(0), cursor.getString(1),
+                    return new Place(cursor.getLong(0), cursor.getString(1),
                             cursor.getDouble(2), cursor.getDouble(3));
                 }
             } while (cursor.moveToNext());
@@ -122,43 +122,6 @@ public class DataHelper {
         }
 
         return null;
-    }
-
-    public static class LocationResult {
-
-        private final long id;
-        private final String name;
-        private final double lat, lon;
-
-        public LocationResult(long id, String name, double lat, double lon) {
-            this.id = id;
-            this.name = name;
-            this.lat = lat;
-            this.lon = lon;
-        }
-
-        public long getId() {
-            return id;
-        }
-
-        public double getLat() {
-            return lat;
-        }
-
-        public double getLon() {
-            return lon;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        @Override
-        public String toString() {
-            return "LocationResult{id=" + id + " name=" + name + " lat=" + lat
-                    + " lon=" + lon + '}';
-        }
-
     }
 
     private static class OpenHelper extends SQLiteOpenHelper {
