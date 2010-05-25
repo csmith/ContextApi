@@ -13,4 +13,7 @@ public final class Manifest {
         public static final String RECEIVE_UPDATES="uk.co.md87.android.contextanalyser.RECEIVE_UPDATES";
         public static final String WRITE_PLACES="uk.co.md87.android.contextanalyser.WRITE_PLACES";
     }
+    public static final class permission_group {
+        public static final String CONTEXT="uk.co.md87.android.contextanalyser.CONTEXT";
+    }
 }

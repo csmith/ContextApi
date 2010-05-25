@@ -16,4 +16,8 @@
     <string name="permdesc_writePlaces">Allows the application to
         modify the list of places that the context analyser knows about.</string>
 
+    <string name="permgrouplabel">Context permissions</string>
+    <string name="permgroupdesc">Permissions related to the context analyser
+        service and its API.</string>
+
 </resources>
