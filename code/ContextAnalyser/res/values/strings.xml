@@ -3,8 +3,17 @@
     <string name="app_name">ContextAnalyser</string>
 
     <string name="permlab_receiveUpdates">receive context updates</string>
-    <string name="permdesc_receiveUpdates">Allows the application to query and
+    <string name="permdesc_receiveUpdates">Allows the application to
         receive updates about your current context, which includes your
-        location and activity.</string>
+        (symbolic) location and activity.</string>
+
+    <string name="permlab_readPlaces">retrieve your places</string>
+    <string name="permdesc_readPlaces">Allows the application to
+        retrieve a list of places you have been, and to convert symbolic
+        locations into physical co-ordinates</string>
+
+    <string name="permlab_writePlaces">modify your places</string>
+    <string name="permdesc_writePlaces">Allows the application to
+        modify the list of places that the context analyser knows about.</string>
 
 </resources>

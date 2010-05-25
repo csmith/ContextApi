@@ -12,12 +12,22 @@
         <service android:name=".ContextAnalyserService" android:label="Context Analyser Service"/>
 
         <provider android:name="uk.co.md87.android.contextanalyser.PlacesContentProvider"
-            android:authorities="uk.co.md87.android.contextanalyser.placescontentprovider" />
+            android:authorities="uk.co.md87.android.contextanalyser.placescontentprovider"
+            android:readPermission="uk.co.md87.android.contextanalyser.READ_PLACES"
+            android:writePermission="uk.co.md87.android.contextanalyser.WRITE_PLACES"/>
     </application>
 
     <permission android:name="uk.co.md87.android.contextanalyser.RECEIVE_UPDATES"
         android:label="@string/permlab_receiveUpdates"
         android:description="@string/permdesc_receiveUpdates"
+        android:protectionLevel="dangerous" />
+    <permission android:name="uk.co.md87.android.contextanalyser.READ_PLACES"
+        android:label="@string/permlab_readPlaces"
+        android:description="@string/permdesc_readPlaces"
+        android:protectionLevel="dangerous" />
+    <permission android:name="uk.co.md87.android.contextanalyser.WRITE_PLACES"
+        android:label="@string/permlab_writePlaces"
+        android:description="@string/permdesc_writePlaces"
         android:protectionLevel="dangerous" />
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
