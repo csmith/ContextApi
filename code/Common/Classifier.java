@@ -27,7 +27,11 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 /**
- *
+ * Extracts basic features and applies a K-Nearest Network algorithm to an
+ * array of data in order to determine the classification. The data consists
+ * of two interleaved data sets, and each set has two features extracted -
+ * the range and the mean.
+ * 
  * @author chris
  */
 public class Classifier {

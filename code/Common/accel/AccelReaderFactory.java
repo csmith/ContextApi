@@ -25,6 +25,7 @@ package uk.co.md87.android.common.accel;
 import android.content.Context;
 
 /**
+ * A factory which can produce an appropriate {@link AccelReader}.
  *
  * @author chris
  */

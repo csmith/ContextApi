@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Facilitates accessing the SQLite database used for storing places.
  *
  * @author chris
  */

@@ -26,7 +26,8 @@ import android.content.Context;
 import uk.co.md87.android.common.BaseFactory;
 
 /**
- *
+ * A factory which can create relevant {@link LocationMonitor} instances.
+ * 
  * @author chris
  */
 public class LocationMonitorFactory extends BaseFactory {

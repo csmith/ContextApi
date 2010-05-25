@@ -23,7 +23,8 @@
 package uk.co.md87.android.common.geo;
 
 /**
- *
+ * Interface implemented by classes which can monitor the user's location.
+ * 
  * @author chris
  */
 public interface LocationMonitor {

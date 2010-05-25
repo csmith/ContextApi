@@ -25,6 +25,8 @@ package uk.co.md87.android.common;
 import android.os.Build;
 
 /**
+ * Base class for sensor factory which facilitates switching to fake sources
+ * when running from an emulator.
  *
  * @author chris
  */

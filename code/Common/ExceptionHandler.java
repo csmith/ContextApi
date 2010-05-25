@@ -38,6 +38,8 @@ import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 
 /**
+ * An exception handler which reports any uncaught exceptions to the context
+ * API's website, in order to facilitate remote diagnostics of user errors.
  *
  * @author chris
  */
@@ -47,10 +49,6 @@ public class ExceptionHandler implements UncaughtExceptionHandler {
 
     private String appname, url, version, imei;
 
-    /*
-     * if any of the parameters is null, the respective functionality
-     * will not be used
-     */
     public ExceptionHandler(String appname, String url, String version, String imei) {
         this.appname = appname;
         this.url = url;
@@ -85,11 +83,10 @@ public class ExceptionHandler implements UncaughtExceptionHandler {
         nvps.add(new BasicNameValuePair("filename", filename));
         nvps.add(new BasicNameValuePair("stacktrace", stacktrace));
         try {
-            httpPost.setEntity(
-                    new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
+            httpPost.setEntity(new UrlEncodedFormEntity(nvps, HTTP.UTF_8));
             httpClient.execute(httpPost);
         } catch (IOException e) {
-            e.printStackTrace();
+            // Do nothing
         }
     }
 }

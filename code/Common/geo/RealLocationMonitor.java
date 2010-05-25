@@ -29,6 +29,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 
 /**
+ * A {@link LocationMonitor} implementation that uses the device's coarse
+ * (network) location provider as a data source.
  *
  * @author chris
  */

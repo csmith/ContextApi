@@ -23,7 +23,9 @@
 package uk.co.md87.android.contextanalyser;
 
 /**
- *
+ * A place is a named location which has some significance for the user. Most
+ * places come about when the user remains stationary for a period of time.
+ * 
  * @author chris
  */
 public class Place {

@@ -23,7 +23,8 @@
 package uk.co.md87.android.common.geo;
 
 /**
- *
+ * A dummy location monitor for use in emulator testing.
+ * 
  * @author chris
  */
 public class FakeLocationMonitor implements LocationMonitor {

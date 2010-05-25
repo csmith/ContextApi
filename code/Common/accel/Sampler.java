@@ -25,6 +25,10 @@ package uk.co.md87.android.common.accel;
 import android.os.Handler;
 
 /**
+ * A utility class which handles sampling accelerometer data from an
+ * {@link AccelReader}. The Sampler takes 128 samples with a 50ms delay between
+ * each sample. When the Sampler has finished, it executes a runnable so that
+ * the data may be retrieved and analysed.
  *
  * @author chris
  */

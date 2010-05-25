@@ -46,6 +46,9 @@ import uk.co.md87.android.common.geo.LocationMonitor;
 import uk.co.md87.android.common.geo.LocationMonitorFactory;
 
 /**
+ * Background service which monitors and aggregates various sources of
+ * contextual information, including current activity and place. Changes in
+ * activity or other context cause the service to emit a broadcast Intent.
  *
  * @author chris
  */

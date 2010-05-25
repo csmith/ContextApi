@@ -26,6 +26,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * Aggregates a stream of classifications and performs averaging in order to
+ * smooth out results. Each classification supplied to the aggregator is used
+ * to alter the 'probabilities' of that classification holding. These
+ * probabilities are calculated hierarchically, and the aggregator can in some
+ * cases produce a result that is not in itself a normal activity because of
+ * this (for example, it may classify unclear data as
+ * <code>CLASSIFIED/VEHICLE</code>, rather than as a sub-type as expected).
  *
  * @author chris
  */

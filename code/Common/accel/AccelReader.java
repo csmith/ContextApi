@@ -23,7 +23,8 @@
 package uk.co.md87.android.common.accel;
 
 /**
- *
+ * Interface implemented by classes which can sample accelerometer data.
+ * 
  * @author chris
  */
 public interface AccelReader {

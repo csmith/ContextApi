@@ -30,6 +30,8 @@ import android.hardware.SensorManager;
 import android.os.PowerManager;
 
 /**
+ * An accelerometer reader which reads real data from the device's
+ * accelerometer.
  *
  * @author chris
  */

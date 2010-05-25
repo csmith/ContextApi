@@ -30,6 +30,8 @@ import java.io.ObjectInputStream;
 import java.util.Map;
 
 /**
+ * Provides a static method to read model data stored in a 'raw' resource
+ * as a serialised map.
  *
  * @author chris
  */
