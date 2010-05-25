@@ -22,6 +22,8 @@
 
 package uk.co.md87.android.contextanalyser;
 
+import android.net.Uri;
+
 /**
  * A place is a named location which has some significance for the user. Most
  * places come about when the user remains stationary for a period of time.
@@ -34,6 +36,10 @@ public class Place {
     public static final String NAME = "name";
     public static final String LATITUDE = "lat";
     public static final String LONGITUDE = "lon";
+
+    public static final Uri CONTENT_URI = Uri.parse("content://"
+                + PlacesContentProvider.AUTHORITY + "/places");
+    public static final String CONTENT_TYPE = "vnd.contextanalyser.location";
 
     private final long id;
     private final String name;

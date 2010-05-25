@@ -10,6 +10,9 @@
         </activity>
 
         <service android:name=".ContextAnalyserService" android:label="Context Analyser Service"/>
+
+        <provider android:name="uk.co.md87.android.contextanalyser.PlacesContentProvider"
+            android:authorities="uk.co.md87.android.contextanalyser.placescontentprovider" />
     </application>
 
     <permission android:name="uk.co.md87.android.contextanalyser.RECEIVE_UPDATES"

@@ -40,7 +40,7 @@ import java.util.Map;
  */
 public class DataHelper {
 
-    private static final String LOCATIONS_TABLE = "locations";
+    public static final String LOCATIONS_TABLE = "locations";
     private static final String DATABASE_NAME = "contextapi.db";
     private static final int DATABASE_VERSION = 2;
 
@@ -64,6 +64,10 @@ public class DataHelper {
         this.db = helper.getWritableDatabase();
         this.insertLocationStatement = db.compileStatement(INSERT_LOCATION);
         this.updateLocationStatement = db.compileStatement(UPDATE_LOCATION);
+    }
+
+    public SQLiteDatabase getDatabase() {
+        return db;
     }
 
     public long addLocation(final String name, final double lat, final double lon) {
