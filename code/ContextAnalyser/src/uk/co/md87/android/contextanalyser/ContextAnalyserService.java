@@ -30,11 +30,11 @@ import android.location.Location;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-
 import java.util.Map;
 
 import uk.co.md87.android.common.Aggregator;
@@ -51,6 +51,13 @@ import uk.co.md87.android.contextanalyser.DataHelper.LocationResult;
  * @author chris
  */
 public class ContextAnalyserService extends Service {
+
+    public static final String ACTIVITY_CHANGED_INTENT
+            = "uk.co.md87.android.contextanalyser.ACTIVITY_CHANGED";
+    public static final String CONTEXT_CHANGED_INTENT
+            = "uk.co.md87.android.contextanalyser.CONTEXT_CHANGED";
+
+    public static final int CONTEXT_PLACE = 1;
 
     private static final int POLLING_DELAY = 60000;
 
@@ -76,6 +83,7 @@ public class ContextAnalyserService extends Service {
     private int locationCount = 0;
     private LocationResult lastLocation;
     private Geocoder geocoder;
+    private String lastActivity = "";
     
     private Sampler sampler;
     private Classifier classifier;
@@ -122,9 +130,7 @@ public class ContextAnalyserService extends Service {
             lat = newLat;
             lon = newLon;
             locationCount = 1;
-            lastLocation = dataHelper.findLocation(lat, lon);
-
-            Log.i(getClass().getSimpleName(), "Location: " + lastLocation);
+            updateLastLocation();
         } else {
             // Existing location
 
@@ -133,11 +139,8 @@ public class ContextAnalyserService extends Service {
                 final String name = lat + "," + lon;
 
                 final long id = dataHelper.addLocation(name, lat, lon);
-                lastLocation = dataHelper.findLocation(lat, lon);
-
-                Log.i(getClass().getSimpleName(), "Location (new): " + lastLocation);
-
                 names.put(name, id);
+                updateLastLocation();
             }
         }
     }
@@ -169,10 +172,38 @@ public class ContextAnalyserService extends Service {
         }
     }
 
+    public void updateLastLocation() {
+        final long oldId = lastLocation == null ? -1 : lastLocation.getId();
+        lastLocation = dataHelper.findLocation(lat, lon);
+
+        if (lastLocation != null) {
+            Log.i(getClass().getSimpleName(), "New location, broadcasting: " + lastLocation);
+
+            final Intent intent = new Intent(CONTEXT_CHANGED_INTENT);
+            intent.putExtra("type", CONTEXT_PLACE);
+            intent.putExtra("old", oldId);
+            intent.putExtra("new", lastLocation.getId());
+            sendBroadcast(intent);
+        }
+    }
+
     public void analyse() {
         aggregator.addClassification(classifier.classify(sampler.getData()));
 
-        Log.v(getClass().getSimpleName(), "Aggregator says: " + aggregator.getClassification());
+        final String newActivity = aggregator.getClassification();
+
+        Log.v(getClass().getSimpleName(), "Aggregator says: " + newActivity);
+
+        if (!newActivity.equals(lastActivity)) {
+            Log.i(getClass().getSimpleName(), "Broadcasting activity change");
+
+            final Intent intent = new Intent(ACTIVITY_CHANGED_INTENT);
+            intent.putExtra("old", lastActivity);
+            intent.putExtra("new", newActivity);
+            sendBroadcast(intent);
+
+            lastActivity = newActivity;
+        }
     }
 
     @Override
