@@ -154,7 +154,8 @@ public class DataHelper {
 
         @Override
         public String toString() {
-            return "LocationResult{id=" + id + "name=" + name + "lat=" + lat + "lon=" + lon + '}';
+            return "LocationResult{id=" + id + " name=" + name + " lat=" + lat
+                    + " lon=" + lon + '}';
         }
 
     }
