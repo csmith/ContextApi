@@ -12,6 +12,11 @@
         <service android:name=".ContextAnalyserService" android:label="Context Analyser Service"/>
     </application>
 
+    <permission android:name="uk.co.md87.android.contextanalyser.RECEIVE_UPDATES"
+        android:label="@string/permlab_receiveUpdates"
+        android:description="@string/permdesc_receiveUpdates"
+        android:protectionLevel="dangerous" />
+
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>

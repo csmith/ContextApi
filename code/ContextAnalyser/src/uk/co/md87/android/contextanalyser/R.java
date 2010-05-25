@@ -21,5 +21,7 @@ public final class R {
     }
     public static final class string {
         public static final int app_name=0x7f050000;
+        public static final int permdesc_receiveUpdates=0x7f050002;
+        public static final int permlab_receiveUpdates=0x7f050001;
     }
 }

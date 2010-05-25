@@ -183,7 +183,7 @@ public class ContextAnalyserService extends Service {
             intent.putExtra("type", CONTEXT_PLACE);
             intent.putExtra("old", oldId);
             intent.putExtra("new", lastLocation.getId());
-            sendBroadcast(intent);
+            sendBroadcast(intent, Manifest.permission.RECEIVE_UPDATES);
         }
     }
 
@@ -200,7 +200,7 @@ public class ContextAnalyserService extends Service {
             final Intent intent = new Intent(ACTIVITY_CHANGED_INTENT);
             intent.putExtra("old", lastActivity);
             intent.putExtra("new", newActivity);
-            sendBroadcast(intent);
+            sendBroadcast(intent, Manifest.permission.RECEIVE_UPDATES);
 
             lastActivity = newActivity;
         }

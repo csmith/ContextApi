@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
     <string name="app_name">ContextAnalyser</string>
+
+    <string name="permlab_receiveUpdates">receive context updates</string>
+    <string name="permdesc_receiveUpdates">Allows the application to query and
+        receive updates about your current context, which includes your
+        location and activity.</string>
+
 </resources>
