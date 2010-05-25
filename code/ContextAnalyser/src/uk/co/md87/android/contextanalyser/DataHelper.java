@@ -29,6 +29,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.location.Location;
 import android.util.Log;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,12 +41,12 @@ public class DataHelper {
 
     private static final String LOCATIONS_TABLE = "locations";
     private static final String DATABASE_NAME = "contextapi.db";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String INSERT_LOCATION = "insert into "
       + LOCATIONS_TABLE + "(name, lat, lon) values (?, ?, ?)";
     private static final String UPDATE_LOCATION = "update "
-      + LOCATIONS_TABLE + " set name = ? where id = ?";
+      + LOCATIONS_TABLE + " set name = ? where _id = ?";
     private static final String UNNAMED_QUERY = "name LIKE '%.%,%.%'";
     private static final String LOCATION_QUERY = "lat > %1$s - 0.005 and "
             + "lat < %1$s + 0.005 and lon > %2$s - 0.01 and lon < %2$s + 0.01";
@@ -83,7 +84,7 @@ public class DataHelper {
         final Map<String, Long> results = new HashMap<String, Long>();
         
         final Cursor cursor = db.query(LOCATIONS_TABLE,
-                new String[] { "id", "name" },
+                new String[] { "_id", "name" },
                 UNNAMED_QUERY, null, null, null, null);
         
         if (cursor.moveToFirst()) {
@@ -101,7 +102,7 @@ public class DataHelper {
 
     public LocationResult findLocation(final double lat, final double lon) {
         final Cursor cursor = db.query(LOCATIONS_TABLE,
-                new String[] { "id", "name", "lat", "lon" },
+                new String[] { "_id", "name", "lat", "lon" },
                 String.format(LOCATION_QUERY, lat, lon), null, null, null, null);
 
         if (cursor.moveToFirst()) {
@@ -170,14 +171,18 @@ public class DataHelper {
         @Override
         public void onCreate(final SQLiteDatabase db) {
             db.execSQL("CREATE TABLE " + LOCATIONS_TABLE
-                    + " (id INTEGER PRIMARY KEY, name TEXT, lon REAL, lat REAL)");
+                    + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, lon REAL, lat REAL)");
         }
 
         /** {@inheritDoc} */
         @Override
         public void onUpgrade(final SQLiteDatabase db, final int oldVersion,
                 final int newVersion) {
-            // Do nothing. Yet.
+            Log.i(getClass().getSimpleName(), "Upgrading DB " + oldVersion + "->" + newVersion);
+            if (oldVersion <= 1) {
+                db.execSQL("DROP TABLE " + LOCATIONS_TABLE);
+                onCreate(db);
+            }
         }
 
     }
