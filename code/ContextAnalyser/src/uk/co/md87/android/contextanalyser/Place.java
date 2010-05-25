@@ -28,6 +28,11 @@ package uk.co.md87.android.contextanalyser;
  */
 public class Place {
 
+    public static final String _ID = "_id";
+    public static final String NAME = "name";
+    public static final String LATITUDE = "lat";
+    public static final String LONGITUDE = "lon";
+
     private final long id;
     private final String name;
     private final double lat;

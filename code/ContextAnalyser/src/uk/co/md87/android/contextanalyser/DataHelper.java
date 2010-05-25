@@ -84,7 +84,7 @@ public class DataHelper {
         final Map<String, Long> results = new HashMap<String, Long>();
         
         final Cursor cursor = db.query(LOCATIONS_TABLE,
-                new String[] { "_id", "name" },
+                new String[] { Place._ID, Place.NAME },
                 UNNAMED_QUERY, null, null, null, null);
         
         if (cursor.moveToFirst()) {
@@ -102,7 +102,7 @@ public class DataHelper {
 
     public Place findLocation(final double lat, final double lon) {
         final Cursor cursor = db.query(LOCATIONS_TABLE,
-                new String[] { "_id", "name", "lat", "lon" },
+                new String[] { Place._ID, Place.NAME, Place.LATITUDE, Place.LONGITUDE },
                 String.format(LOCATION_QUERY, lat, lon), null, null, null, null);
 
         if (cursor.moveToFirst()) {
