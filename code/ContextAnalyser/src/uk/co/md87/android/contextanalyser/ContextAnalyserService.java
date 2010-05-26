@@ -62,6 +62,8 @@ public class ContextAnalyserService extends Service {
             = "uk.co.md87.android.contextanalyser.ACTIVITY_CHANGED";
     public static final String CONTEXT_CHANGED_INTENT
             = "uk.co.md87.android.contextanalyser.CONTEXT_CHANGED";
+    public static final String PREDICTION_AVAILABLE_INTENT
+            = "uk.co.md87.android.contextanalyser.PREDICTION_AVAILABLE";
 
     public static final int CONTEXT_PLACE = 1;
 
@@ -227,8 +229,12 @@ public class ContextAnalyserService extends Service {
     protected void checkPredictions() {
         final Collection<Journey> journeys = dataHelper.findJourneys(lastLocation);
         final List<JourneyStep> mySteps = JourneyUtil.getSteps(activityLog);
+        final Map<Long, Integer> predictions = new HashMap<Long, Integer>();
 
         int total = 0;
+        int count = 0;
+        int best = 0;
+        long bestTarget = -1;
         final Iterator<Journey> it = journeys.iterator();
         while (it.hasNext()) {
             final Journey journey = it.next();
@@ -242,12 +248,30 @@ public class ContextAnalyserService extends Service {
 
             if (JourneyUtil.isCompatible(mySteps, theirSteps)) {
                 total += journey.getNumber();
+                count++;
+
+                int last = predictions.containsKey(journey.getEnd())
+                        ? predictions.get(journey.getEnd()) : 0;
+                last += journey.getNumber();
+
+                if (last > best) {
+                    best = last;
+                    bestTarget = journey.getEnd();
+                }
+
+                predictions.put(journey.getEnd(), last);
             } else {
                 it.remove();
             }
         }
 
         Log.i(getClass().getSimpleName(), "Predictions: " + journeys);
+
+        final Intent intent = new Intent(PREDICTION_AVAILABLE_INTENT);
+        intent.putExtra("count", count);
+        intent.putExtra("best_target", bestTarget);
+        intent.putExtra("best_probability", (float) best / total);
+        sendBroadcast(intent, Manifest.permission.RECEIVE_UPDATES);
     }
 
     @Override
