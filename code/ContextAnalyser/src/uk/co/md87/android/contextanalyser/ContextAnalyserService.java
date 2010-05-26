@@ -79,8 +79,6 @@ public class ContextAnalyserService extends Service {
         }
     };
 
-    private Map<Float[], String> model;
-
     private final Map<String, Long> names = new HashMap<String, Long>();
     private final List<String> activityLog = new LinkedList<String>();
 
