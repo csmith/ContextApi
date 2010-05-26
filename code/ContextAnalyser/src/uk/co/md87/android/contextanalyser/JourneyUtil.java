@@ -52,23 +52,29 @@ public class JourneyUtil {
             }
         }
 
-        steps.add(new JourneyStep(last, count));
+        if (last != null) {
+            steps.add(new JourneyStep(last, count));
+        }
 
         return steps;
     }
 
     public static boolean isCompatible(final List<JourneyStep> incomplete,
             final List<JourneyStep> target) {
+        if (target.size() < incomplete.size()) {
+            return false;
+        }
+        
         for (int i = 0; i < incomplete.size(); i++) {
             final JourneyStep targetStep = target.get(i);
             final JourneyStep incompleteStep = incomplete.get(i);
 
-            if (targetStep.getActivity().equals(incompleteStep.getActivity()) ||
+            if (!targetStep.getActivity().equals(incompleteStep.getActivity()) ||
                     // ^ One of the activities is different
                     (i < incomplete.size() - 1 && incompleteStep.getRepetitions()
-                    < targetStep.getRepetitions() * 0.5) ||
+                    < Math.floor(targetStep.getRepetitions() * 0.5)) ||
                     // ^ Or a completed step is too short
-                    (incompleteStep.getRepetitions() > targetStep.getRepetitions() * 1.5)
+                    (incompleteStep.getRepetitions() > Math.ceil(targetStep.getRepetitions() * 1.5))
                     // ^ Or any step is too long
                     ) {
                 return false;
