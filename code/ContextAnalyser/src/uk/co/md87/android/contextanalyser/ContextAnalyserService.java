@@ -274,6 +274,9 @@ public class ContextAnalyserService extends Service {
 
                 predictions.put(journey.getEnd(), last);
             } else {
+                Log.d(getClass().getSimpleName(), "Journey " + journey + " incompatible");
+                Log.d(getClass().getSimpleName(), "Their steps: " + theirSteps);
+                Log.d(getClass().getSimpleName(), "My steps: " + mySteps);
                 it.remove();
             }
         }

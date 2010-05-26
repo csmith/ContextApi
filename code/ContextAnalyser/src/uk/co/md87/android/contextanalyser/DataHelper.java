@@ -214,7 +214,7 @@ public class DataHelper {
         long previous = 0;
         while (results.containsKey(previous)) {
             final JourneyStep step = results.get(previous);
-            ordered.add(step);
+            ordered.add(0, step);
             previous = step.getId();
         }
 

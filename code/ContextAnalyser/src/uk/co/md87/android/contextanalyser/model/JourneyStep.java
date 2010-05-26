@@ -90,4 +90,9 @@ public class JourneyStep {
         return hash;
     }
 
+    @Override
+    public String toString() {
+        return "JourneyStep{" + activity + " * " + repetitions + '}';
+    }
+
 }
