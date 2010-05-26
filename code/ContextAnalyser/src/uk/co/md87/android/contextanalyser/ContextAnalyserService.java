@@ -65,6 +65,8 @@ public class ContextAnalyserService extends Service {
     public static final String PREDICTION_AVAILABLE_INTENT
             = "uk.co.md87.android.contextanalyser.PREDICTION_AVAILABLE";
 
+    public static final int LOCATION_REPEATS = 2;
+
     public static final int CONTEXT_PLACE = 1;
 
     private static final int POLLING_DELAY = 10000;
@@ -136,17 +138,17 @@ public class ContextAnalyserService extends Service {
             lat = newLat;
             lon = newLon;
             locationCount = 1;
-            updateLastLocation();
+            updateLastLocation(false);
         } else {
             // Existing location
 
-            if (++locationCount > 2 && location == null) {
+            if (++locationCount > LOCATION_REPEATS && location == null) {
                 // But we don't know it yet - add it!
                 final String name = lat + "," + lon;
 
                 final long id = dataHelper.addLocation(name, lat, lon);
                 names.put(name, id);
-                updateLastLocation();
+                updateLastLocation(true);
             }
         }
     }
@@ -178,16 +180,27 @@ public class ContextAnalyserService extends Service {
         }
     }
 
-    public void updateLastLocation() {
+    public void updateLastLocation(final boolean added) {
         location = dataHelper.findLocation(lat, lon);
 
         if (location != null) {
             if ((lastLocation == null || !lastLocation.equals(location))) {
                 Log.i(getClass().getSimpleName(), "New location, broadcasting: " + location);
 
-                if (lastLocation != null && !activityLog.isEmpty()) {
-                    Log.i(getClass().getSimpleName(), "Activity log to here: " + activityLog);
-                    dataHelper.addJourney(lastLocation, location, activityLog);
+                if (lastLocation != null) {
+                    if (added) {
+                        // The place was newly added, so for the final N
+                        // elements, the user has been at the place.
+                        
+                        for (int i = 0; i < Math.min(LOCATION_REPEATS, activityLog.size()); i++) {
+                            activityLog.remove(activityLog.size() - 1);
+                        }
+                    }
+
+                    if (!activityLog.isEmpty()) {
+                        Log.i(getClass().getSimpleName(), "Activity log to here: " + activityLog);
+                        dataHelper.addJourney(lastLocation, location, activityLog);
+                    }
                 }
 
                 final Intent intent = new Intent(CONTEXT_CHANGED_INTENT);
