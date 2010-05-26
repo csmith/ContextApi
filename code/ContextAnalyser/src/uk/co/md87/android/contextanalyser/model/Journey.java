@@ -65,4 +65,10 @@ public class Journey {
         return number;
     }
 
+    @Override
+    public String toString() {
+        return "Journey{" + "id=" + id + " start=" + start + " end=" + end
+                + " steps=" + steps + " number=" + number + '}';
+    }
+
 }

@@ -32,6 +32,7 @@ import android.os.IBinder;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -44,6 +45,8 @@ import uk.co.md87.android.common.aggregator.AutoAggregator;
 import uk.co.md87.android.common.aggregator.AutoAggregatorFactory;
 import uk.co.md87.android.common.geo.LocationMonitor;
 import uk.co.md87.android.common.geo.LocationMonitorFactory;
+import uk.co.md87.android.contextanalyser.model.Journey;
+import uk.co.md87.android.contextanalyser.model.JourneyStep;
 import uk.co.md87.android.contextanalyser.model.Place;
 
 /**
@@ -205,6 +208,8 @@ public class ContextAnalyserService extends Service {
         if (location == null && lastLocation != null) {
             // We're going somewhere - record the activity
             activityLog.add(newActivity);
+
+            checkPredictions();
         }
 
         if (!newActivity.equals(lastActivity)) {
@@ -217,6 +222,32 @@ public class ContextAnalyserService extends Service {
 
             lastActivity = newActivity;
         }
+    }
+
+    protected void checkPredictions() {
+        final Collection<Journey> journeys = dataHelper.findJourneys(lastLocation);
+        final List<JourneyStep> mySteps = JourneyUtil.getSteps(activityLog);
+
+        int total = 0;
+        final Iterator<Journey> it = journeys.iterator();
+        while (it.hasNext()) {
+            final Journey journey = it.next();
+
+            if (journey.getSteps() < mySteps.size()) {
+                it.remove();
+                continue;
+            }
+
+            final List<JourneyStep> theirSteps = dataHelper.getSteps(journey);
+
+            if (JourneyUtil.isCompatible(mySteps, theirSteps)) {
+                total += journey.getNumber();
+            } else {
+                it.remove();
+            }
+        }
+
+        Log.i(getClass().getSimpleName(), "Predictions: " + journeys);
     }
 
     @Override

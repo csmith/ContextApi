@@ -53,7 +53,7 @@ public class DataHelper {
     public static final String JOURNEYSTEPS_TABLE = "journeysteps";
 
     private static final String DATABASE_NAME = "contextapi.db";
-    private static final int DATABASE_VERSION = 6;
+    private static final int DATABASE_VERSION = 7;
 
     private static final String INSERT_LOCATION = "insert into "
       + LOCATIONS_TABLE + "(name, lat, lon) values (?, ?, ?)";
@@ -157,7 +157,7 @@ public class DataHelper {
     }
 
     public void addJourney(final Place start, final Place end, final List<String> activities) {
-        final List<JourneyStep> steps = getSteps(activities);
+        final List<JourneyStep> steps = JourneyUtil.getSteps(activities);
         final Collection<Journey> journeys = findJourneys(start, end);
 
         for (Journey journey : journeys) {
@@ -187,30 +187,6 @@ public class DataHelper {
             insertJourneyStepStatement.bindLong(4, next);
             next = insertJourneyStepStatement.executeInsert();
         }
-    }
-
-    protected static List<JourneyStep> getSteps(final List<String> activities) {
-        final List<JourneyStep> steps = new LinkedList<JourneyStep>();
-
-        String last = null;
-        int count = 0;
-
-        for (String activity : activities) {
-            if (activity.equals(last)) {
-                count++;
-            } else {
-                if (last != null) {
-                    steps.add(new JourneyStep(last, count));
-                }
-
-                count = 1;
-                last = activity;
-            }
-        }
-
-        steps.add(new JourneyStep(last, count));
-
-        return steps;
     }
 
     public List<JourneyStep> getSteps(final Journey journey) {
@@ -290,7 +266,7 @@ public class DataHelper {
                     + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, lon REAL, lat REAL)");
             db.execSQL("CREATE TABLE " + JOURNEYS_TABLE
                     + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, start INTEGER,"
-                    + " end INTEGER, steps INTEGER)");
+                    + " end INTEGER, steps INTEGER, number INTEGER)");
             db.execSQL("CREATE TABLE " + JOURNEYSTEPS_TABLE
                     + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, activity TEXT,"
                     + " repetitions INTEGER, journey INTEGER, next INTEGER)");
@@ -304,7 +280,7 @@ public class DataHelper {
             if (oldVersion <= 2) {
                 db.execSQL("DROP TABLE " + LOCATIONS_TABLE);
                 onCreate(db);
-            } else if (oldVersion <= 6) {
+            } else if (oldVersion <= 7) {
                 db.execSQL("DROP TABLE " + LOCATIONS_TABLE);
                 db.execSQL("DROP TABLE " + JOURNEYS_TABLE);
                 db.execSQL("DROP TABLE " + JOURNEYSTEPS_TABLE);
