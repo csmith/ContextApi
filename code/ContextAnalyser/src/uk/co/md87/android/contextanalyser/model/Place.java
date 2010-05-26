@@ -20,9 +20,11 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.android.contextanalyser;
+package uk.co.md87.android.contextanalyser.model;
 
 import android.net.Uri;
+
+import uk.co.md87.android.contextanalyser.PlacesContentProvider;
 
 /**
  * A place is a named location which has some significance for the user. Most

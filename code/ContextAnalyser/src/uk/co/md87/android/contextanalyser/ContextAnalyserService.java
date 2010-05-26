@@ -22,6 +22,7 @@
 
 package uk.co.md87.android.contextanalyser;
 
+import uk.co.md87.android.contextanalyser.model.Place;
 import android.app.Service;
 import android.content.Intent;
 import android.location.Address;

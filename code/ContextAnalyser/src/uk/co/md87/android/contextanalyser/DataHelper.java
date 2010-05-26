@@ -30,8 +30,13 @@ import android.database.sqlite.SQLiteStatement;
 import android.location.Location;
 import android.util.Log;
 
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+
+import uk.co.md87.android.contextanalyser.model.Journey;
+import uk.co.md87.android.contextanalyser.model.Place;
 
 /**
  * Facilitates accessing the SQLite database used for storing places and
@@ -55,6 +60,8 @@ public class DataHelper {
     private static final String UNNAMED_QUERY = "name LIKE '%.%,%.%'";
     private static final String LOCATION_QUERY = "lat > %1$s - 0.005 and "
             + "lat < %1$s + 0.005 and lon > %2$s - 0.01 and lon < %2$s + 0.01";
+    private static final String JOURNEY_START_QUERY = "start = %1$s";
+    private static final String JOURNEY_BOTH_QUERY = JOURNEY_START_QUERY + " AND end = %1$s";
 
     private final SQLiteStatement insertLocationStatement, updateLocationStatement;
 
@@ -106,6 +113,39 @@ public class DataHelper {
         return results;
     }
 
+    public Collection<Journey> findJourneys(final Place start) {
+        return findJourneys(start, null);
+    }
+
+    public Collection<Journey> findJourneys(final Place start,
+            final Place end) {
+        final Collection<Journey> results = new LinkedList<Journey>();
+
+        final String query;
+        if (end == null) {
+            query = String.format(JOURNEY_START_QUERY, start.getId());
+        } else {
+            query = String.format(JOURNEY_BOTH_QUERY, start.getId(), end.getId());
+        }
+
+        final Cursor cursor = db.query(JOURNEYS_TABLE,
+                new String[] { "_id", "start", "end", "steps", "first" },
+                query, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                results.add(new Journey(cursor.getLong(0), cursor.getLong(1),
+                        cursor.getLong(2), cursor.getInt(3), cursor.getLong(4)));
+            } while (cursor.moveToNext());
+        }
+
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+
+        return results;
+    }
+
     public Place findLocation(final double lat, final double lon) {
         final Cursor cursor = db.query(LOCATIONS_TABLE,
                 new String[] { Place._ID, Place.NAME, Place.LATITUDE, Place.LONGITUDE },
@@ -146,7 +186,7 @@ public class DataHelper {
                     + " end INTEGER, steps INTEGER, first INTEGER)");
             db.execSQL("CREATE TABLE " + JOURNEYSTEPS_TABLE
                     + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, activity TEXT,"
-                    + " repetitions INTEGER, next INTEGER)");
+                    + " repetitions INTEGER, journey INTEGER, next INTEGER)");
         }
 
         /** {@inheritDoc} */
