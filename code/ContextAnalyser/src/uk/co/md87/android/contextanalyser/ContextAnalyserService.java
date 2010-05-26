@@ -176,21 +176,28 @@ public class ContextAnalyserService extends Service {
     }
 
     public void updateLastLocation() {
-        lastLocation = location;
         location = dataHelper.findLocation(lat, lon);
 
         if (location != null) {
-            Log.i(getClass().getSimpleName(), "New location, broadcasting: " + location);
-            Log.i(getClass().getSimpleName(), "Activity log to here: " + activityLog);
+            if ((lastLocation == null || !lastLocation.equals(location))) {
+                Log.i(getClass().getSimpleName(), "New location, broadcasting: " + location);
 
-            final Intent intent = new Intent(CONTEXT_CHANGED_INTENT);
-            intent.putExtra("type", CONTEXT_PLACE);
-            intent.putExtra("old", lastLocation == null ? -1 : lastLocation.getId());
-            intent.putExtra("new", location.getId());
-            sendBroadcast(intent, Manifest.permission.RECEIVE_UPDATES);
+                if (lastLocation != null) {
+                    Log.i(getClass().getSimpleName(), "Activity log to here: " + activityLog);
+                    dataHelper.addJourney(lastLocation, location, activityLog);
+                }
+
+                final Intent intent = new Intent(CONTEXT_CHANGED_INTENT);
+                intent.putExtra("type", CONTEXT_PLACE);
+                intent.putExtra("old", lastLocation == null ? -1 : lastLocation.getId());
+                intent.putExtra("new", location.getId());
+                sendBroadcast(intent, Manifest.permission.RECEIVE_UPDATES);
+            }
 
             activityLog.clear();
         }
+
+        lastLocation = location;
     }
 
     public void analyse() {
