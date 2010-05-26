@@ -182,7 +182,7 @@ public class ContextAnalyserService extends Service {
             if ((lastLocation == null || !lastLocation.equals(location))) {
                 Log.i(getClass().getSimpleName(), "New location, broadcasting: " + location);
 
-                if (lastLocation != null) {
+                if (lastLocation != null && !activityLog.isEmpty()) {
                     Log.i(getClass().getSimpleName(), "Activity log to here: " + activityLog);
                     dataHelper.addJourney(lastLocation, location, activityLog);
                 }
