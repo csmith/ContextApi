@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.android.common;
+package uk.co.md87.android.common.aggregator;
 
 import java.util.HashMap;
 import java.util.Map;

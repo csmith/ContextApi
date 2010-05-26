@@ -38,11 +38,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import uk.co.md87.android.common.Aggregator;
-import uk.co.md87.android.common.Classifier;
 import uk.co.md87.android.common.ModelReader;
 import uk.co.md87.android.common.accel.AccelReaderFactory;
-import uk.co.md87.android.common.accel.Sampler;
+import uk.co.md87.android.common.aggregator.AutoAggregator;
+import uk.co.md87.android.common.aggregator.AutoAggregatorFactory;
 import uk.co.md87.android.common.geo.LocationMonitor;
 import uk.co.md87.android.common.geo.LocationMonitorFactory;
 import uk.co.md87.android.contextanalyser.model.Place;
@@ -63,7 +62,7 @@ public class ContextAnalyserService extends Service {
 
     public static final int CONTEXT_PLACE = 1;
 
-    private static final int POLLING_DELAY = 60000;
+    private static final int POLLING_DELAY = 10000;
 
     private final Runnable scheduleRunnable = new Runnable() {
 
@@ -87,10 +86,8 @@ public class ContextAnalyserService extends Service {
     private Place location, lastLocation;
     private Geocoder geocoder;
     private String lastActivity = "";
-    
-    private Sampler sampler;
-    private Classifier classifier;
-    private Aggregator aggregator;
+
+    private AutoAggregator aggregator;
     private LocationMonitor locationMonitor;
     private DataHelper dataHelper;
     private Handler handler = new Handler();
@@ -100,9 +97,10 @@ public class ContextAnalyserService extends Service {
         super.onCreate();
 
         locationMonitor = new LocationMonitorFactory().getMonitor(this);
-        sampler = new Sampler(handler, new AccelReaderFactory().getReader(this), analyseRunnable);
-        classifier = new Classifier(ModelReader.getModel(this, R.raw.basic_model).entrySet());
-        aggregator = new Aggregator();
+
+        aggregator = new AutoAggregatorFactory().getAutoAggregator(this, handler,
+                new AccelReaderFactory().getReader(this),
+                ModelReader.getModel(this, R.raw.basic_model).entrySet(), analyseRunnable);
         dataHelper = new DataHelper(this);
         geocoder = new Geocoder(this);
 
@@ -116,10 +114,10 @@ public class ContextAnalyserService extends Service {
 
         Log.v(getClass().getSimpleName(), "Polling...");
 
-        sampler.start();
-        
         pollLocation();
         pollGeolocation();
+
+        aggregator.start();
     }
 
     protected void pollLocation() {
@@ -195,14 +193,11 @@ public class ContextAnalyserService extends Service {
             }
 
             activityLog.clear();
+            lastLocation = location;
         }
-
-        lastLocation = location;
     }
 
     public void analyse() {
-        aggregator.addClassification(classifier.classify(sampler.getData()));
-
         final String newActivity = aggregator.getClassification();
 
         Log.v(getClass().getSimpleName(), "Aggregator says: " + newActivity);

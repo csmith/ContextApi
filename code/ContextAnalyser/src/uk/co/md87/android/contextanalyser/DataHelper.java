@@ -53,14 +53,14 @@ public class DataHelper {
     public static final String JOURNEYSTEPS_TABLE = "journeysteps";
 
     private static final String DATABASE_NAME = "contextapi.db";
-    private static final int DATABASE_VERSION = 4;
+    private static final int DATABASE_VERSION = 5;
 
     private static final String INSERT_LOCATION = "insert into "
       + LOCATIONS_TABLE + "(name, lat, lon) values (?, ?, ?)";
     private static final String INSERT_JOURNEY = "insert into "
       + JOURNEYS_TABLE + "(start, end, steps) values (?, ?, ?)";
     private static final String INSERT_JOURNEYSTEP = "insert into "
-      + JOURNEYSTEPS_TABLE + "(activity, reptitions, journey, next) values (?, ?, ?, ?)";
+      + JOURNEYSTEPS_TABLE + "(activity, repetitions, journey, next) values (?, ?, ?, ?)";
     private static final String UPDATE_LOCATION = "update "
       + LOCATIONS_TABLE + " set name = ? where _id = ?";
     private static final String UNNAMED_QUERY = "name LIKE '%.%,%.%'";
@@ -299,7 +299,7 @@ public class DataHelper {
             if (oldVersion <= 2) {
                 db.execSQL("DROP TABLE " + LOCATIONS_TABLE);
                 onCreate(db);
-            } else if (oldVersion <= 3) {
+            } else if (oldVersion <= 5) {
                 db.execSQL("DROP TABLE " + LOCATIONS_TABLE);
                 db.execSQL("DROP TABLE " + JOURNEYS_TABLE);
                 db.execSQL("DROP TABLE " + JOURNEYSTEPS_TABLE);
