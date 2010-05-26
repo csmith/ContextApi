@@ -116,9 +116,7 @@ public class DataHelper {
             } while (cursor.moveToNext());
         }
 
-        if (cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
+        closeCursor(cursor);
 
         return results;
     }
@@ -149,9 +147,7 @@ public class DataHelper {
             } while (cursor.moveToNext());
         }
 
-        if (cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
+        closeCursor(cursor);
 
         return results;
     }
@@ -230,9 +226,7 @@ public class DataHelper {
             } while (cursor.moveToNext());
         }
 
-        if (cursor != null && !cursor.isClosed()) {
-            cursor.close();
-        }
+        closeCursor(cursor);
 
         final List<JourneyStep> ordered = new LinkedList<JourneyStep>();
 
@@ -257,17 +251,25 @@ public class DataHelper {
                 Location.distanceBetween(lat, lon, cursor.getDouble(2), cursor.getDouble(3), res);
 
                 if (res[0] <= 500) {
-                    return new Place(cursor.getLong(0), cursor.getString(1),
+                    final Place place = new Place(cursor.getLong(0), cursor.getString(1),
                             cursor.getDouble(2), cursor.getDouble(3));
+
+                    closeCursor(cursor);
+                    
+                    return place;
                 }
             } while (cursor.moveToNext());
         }
 
+        closeCursor(cursor);
+
+        return null;
+    }
+
+    private static void closeCursor(final Cursor cursor) {
         if (cursor != null && !cursor.isClosed()) {
             cursor.close();
         }
-
-        return null;
     }
 
     private static class OpenHelper extends SQLiteOpenHelper {
