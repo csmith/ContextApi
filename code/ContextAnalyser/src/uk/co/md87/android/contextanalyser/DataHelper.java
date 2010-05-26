@@ -53,7 +53,7 @@ public class DataHelper {
     public static final String JOURNEYSTEPS_TABLE = "journeysteps";
 
     private static final String DATABASE_NAME = "contextapi.db";
-    private static final int DATABASE_VERSION = 7;
+    private static final int DATABASE_VERSION = 8;
 
     private static final String INSERT_LOCATION = "insert into "
       + LOCATIONS_TABLE + "(name, lat, lon) values (?, ?, ?)";
@@ -270,6 +270,19 @@ public class DataHelper {
             db.execSQL("CREATE TABLE " + JOURNEYSTEPS_TABLE
                     + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, activity TEXT,"
                     + " repetitions INTEGER, journey INTEGER, next INTEGER)");
+
+            createTriggers(db);
+        }
+
+        public void createTriggers(final SQLiteDatabase db) {
+            db.execSQL("CREATE TRIGGER fkd_journeys_place_id BEFORE DELETE ON "
+                    + LOCATIONS_TABLE + " FOR EACH ROW BEGIN "
+                    + "DELETE FROM " + JOURNEYS_TABLE + " WHERE start = OLD._id"
+                    + " OR end = OLD._id; END;");
+            db.execSQL("CREATE TRIGGER fkd_journey_steps_journey_id BEFORE DELETE ON "
+                    + JOURNEYS_TABLE + " FOR EACH ROW BEGIN "
+                    + "DELETE FROM " + JOURNEYSTEPS_TABLE + " WHERE journey = OLD._id"
+                    + "; END;");
         }
 
         /** {@inheritDoc} */
@@ -285,6 +298,8 @@ public class DataHelper {
                 db.execSQL("DROP TABLE " + JOURNEYS_TABLE);
                 db.execSQL("DROP TABLE " + JOURNEYSTEPS_TABLE);
                 onCreate(db);
+            } else if (oldVersion <= 8) {
+                createTriggers(db);
             }
         }
 
