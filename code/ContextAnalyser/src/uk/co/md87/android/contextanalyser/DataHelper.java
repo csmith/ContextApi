@@ -34,15 +34,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Facilitates accessing the SQLite database used for storing places.
+ * Facilitates accessing the SQLite database used for storing places and
+ * journeys.
  *
  * @author chris
  */
 public class DataHelper {
 
     public static final String LOCATIONS_TABLE = "locations";
+    public static final String JOURNEYS_TABLE = "journeys";
+    public static final String JOURNEYSTEPS_TABLE = "journeysteps";
+
     private static final String DATABASE_NAME = "contextapi.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     private static final String INSERT_LOCATION = "insert into "
       + LOCATIONS_TABLE + "(name, lat, lon) values (?, ?, ?)";
@@ -54,12 +58,9 @@ public class DataHelper {
 
     private final SQLiteStatement insertLocationStatement, updateLocationStatement;
 
-    private final Context context;
     private SQLiteDatabase db;
 
     public DataHelper(final Context context) {
-        this.context = context;
-
         final OpenHelper helper = new OpenHelper(context);
         this.db = helper.getWritableDatabase();
         this.insertLocationStatement = db.compileStatement(INSERT_LOCATION);
@@ -140,6 +141,12 @@ public class DataHelper {
         public void onCreate(final SQLiteDatabase db) {
             db.execSQL("CREATE TABLE " + LOCATIONS_TABLE
                     + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, lon REAL, lat REAL)");
+            db.execSQL("CREATE TABLE " + JOURNEYS_TABLE
+                    + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, start INTEGER,"
+                    + " end INTEGER, steps INTEGER, first INTEGER)");
+            db.execSQL("CREATE TABLE " + JOURNEYSTEPS_TABLE
+                    + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, activity TEXT,"
+                    + " repetitions INTEGER, next INTEGER)");
         }
 
         /** {@inheritDoc} */
@@ -147,7 +154,7 @@ public class DataHelper {
         public void onUpgrade(final SQLiteDatabase db, final int oldVersion,
                 final int newVersion) {
             Log.i(getClass().getSimpleName(), "Upgrading DB " + oldVersion + "->" + newVersion);
-            if (oldVersion <= 1) {
+            if (oldVersion <= 2) {
                 db.execSQL("DROP TABLE " + LOCATIONS_TABLE);
                 onCreate(db);
             }
