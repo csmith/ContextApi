@@ -22,6 +22,10 @@
 
 package uk.co.md87.android.contextanalyser.model;
 
+import android.net.Uri;
+
+import uk.co.md87.android.contextanalyser.JourneysContentProvider;
+
 /**
  * A journey is a sequence of actions which were observed as the user travelled
  * between one known {@link Place} and another.
@@ -29,6 +33,16 @@ package uk.co.md87.android.contextanalyser.model;
  * @author chris
  */
 public class Journey {
+
+    public static final String _ID = "_id";
+    public static final String START = "start";
+    public static final String END = "end";
+    public static final String STEPS = "steps";
+    public static final String NUMBER = "number";
+
+    public static final Uri CONTENT_URI = Uri.parse("content://"
+                + JourneysContentProvider.AUTHORITY + "/journeys");
+    public static final String CONTENT_TYPE = "vnd.contextanalyser.journey";
 
     private final long id;
     private final long start;

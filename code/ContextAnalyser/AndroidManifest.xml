@@ -15,6 +15,11 @@
             android:authorities="uk.co.md87.android.contextanalyser.placescontentprovider"
             android:readPermission="uk.co.md87.android.contextanalyser.READ_PLACES"
             android:writePermission="uk.co.md87.android.contextanalyser.WRITE_PLACES"/>
+
+        <provider android:name="uk.co.md87.android.contextanalyser.JourneysContentProvider"
+            android:authorities="uk.co.md87.android.contextanalyser.journeyscontentprovider"
+            android:readPermission="uk.co.md87.android.contextanalyser.READ_JOURNEYS"
+            android:writePermission="uk.co.md87.android.contextanalyser.WRITE_JOURNEYS"/>
     </application>
 
     <permission-group android:description="@string/permgroupdesc"
@@ -34,6 +39,16 @@
     <permission android:name="uk.co.md87.android.contextanalyser.WRITE_PLACES"
         android:label="@string/permlab_writePlaces"
         android:description="@string/permdesc_writePlaces"
+        android:permissionGroup="uk.co.md87.android.contextanalyser.CONTEXT"
+        android:protectionLevel="dangerous" />
+    <permission android:name="uk.co.md87.android.contextanalyser.READ_JOURNEYS"
+        android:label="@string/permlab_readJourneys"
+        android:description="@string/permdesc_readJourneys"
+        android:permissionGroup="uk.co.md87.android.contextanalyser.CONTEXT"
+        android:protectionLevel="dangerous" />
+    <permission android:name="uk.co.md87.android.contextanalyser.WRITE_JOURNEYS"
+        android:label="@string/permlab_writeJourneys"
+        android:description="@string/permdesc_writeJourneys"
         android:permissionGroup="uk.co.md87.android.contextanalyser.CONTEXT"
         android:protectionLevel="dangerous" />
     <permission android:name="uk.co.md87.android.contextanalyser.BROADCAST"

@@ -140,8 +140,8 @@ public class DataHelper {
             query = String.format(JOURNEY_BOTH_QUERY, start.getId(), end.getId());
         }
 
-        final Cursor cursor = db.query(JOURNEYS_TABLE,
-                new String[] { "_id", "start", "end", "steps", "number" },
+        final Cursor cursor = db.query(JOURNEYS_TABLE, new String[] { Journey._ID,
+                Journey.START, Journey.END, Journey.STEPS, Journey.NUMBER },
                 query, null, null, null, null);
 
         if (cursor.moveToFirst()) {
@@ -196,7 +196,8 @@ public class DataHelper {
         final String query = String.format(JOURNEY_STEPS_QUERY, journey.getId());
 
         final Cursor cursor = db.query(JOURNEYSTEPS_TABLE,
-                new String[] { "_id", "activity", "repetitions", "next" },
+                new String[] { JourneyStep._ID, JourneyStep.ACTIVITY,
+                JourneyStep.REPETITIONS, JourneyStep.NEXT },
                 query, null, null, null, null);
 
         if (cursor.moveToFirst()) {

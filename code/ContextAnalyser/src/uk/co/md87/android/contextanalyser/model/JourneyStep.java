@@ -22,6 +22,9 @@
 
 package uk.co.md87.android.contextanalyser.model;
 
+import android.net.Uri;
+import uk.co.md87.android.contextanalyser.JourneysContentProvider;
+
 /**
  * A journey step is a single activity which occurred one or more times in a
  * {@link Journey}. The activity may be repeated any number of times in a row.
@@ -29,6 +32,16 @@ package uk.co.md87.android.contextanalyser.model;
  * @author chris
  */
 public class JourneyStep {
+
+    public static final String _ID = "_id";
+    public static final String ACTIVITY = "activity";
+    public static final String REPETITIONS = "repetitions";
+    public static final String JOURNEY = "journey";
+    public static final String NEXT = "next";
+
+    public static final Uri CONTENT_URI = Uri.parse("content://"
+                + JourneysContentProvider.AUTHORITY + "/steps");
+    public static final String CONTENT_TYPE = "vnd.contextanalyser.journeystep";
 
     private final long id;
     private final String activity;

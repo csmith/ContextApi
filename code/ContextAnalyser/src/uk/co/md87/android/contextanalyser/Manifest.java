@@ -10,8 +10,10 @@ package uk.co.md87.android.contextanalyser;
 public final class Manifest {
     public static final class permission {
         public static final String BROADCAST="uk.co.md87.android.contextanalyser.BROADCAST";
+        public static final String READ_JOURNEYS="uk.co.md87.android.contextanalyser.READ_JOURNEYS";
         public static final String READ_PLACES="uk.co.md87.android.contextanalyser.READ_PLACES";
         public static final String RECEIVE_UPDATES="uk.co.md87.android.contextanalyser.RECEIVE_UPDATES";
+        public static final String WRITE_JOURNEYS="uk.co.md87.android.contextanalyser.WRITE_JOURNEYS";
         public static final String WRITE_PLACES="uk.co.md87.android.contextanalyser.WRITE_PLACES";
     }
     public static final class permission_group {
