@@ -53,16 +53,18 @@ public class DataHelper {
     public static final String JOURNEYSTEPS_TABLE = "journeysteps";
 
     private static final String DATABASE_NAME = "contextapi.db";
-    private static final int DATABASE_VERSION = 5;
+    private static final int DATABASE_VERSION = 6;
 
     private static final String INSERT_LOCATION = "insert into "
       + LOCATIONS_TABLE + "(name, lat, lon) values (?, ?, ?)";
     private static final String INSERT_JOURNEY = "insert into "
-      + JOURNEYS_TABLE + "(start, end, steps) values (?, ?, ?)";
+      + JOURNEYS_TABLE + "(start, end, steps, number) values (?, ?, ?, 1)";
     private static final String INSERT_JOURNEYSTEP = "insert into "
       + JOURNEYSTEPS_TABLE + "(activity, repetitions, journey, next) values (?, ?, ?, ?)";
     private static final String UPDATE_LOCATION = "update "
       + LOCATIONS_TABLE + " set name = ? where _id = ?";
+    private static final String UPDATE_JOURNEY = "update "
+      + JOURNEYS_TABLE + " set number = number + 1 WHERE _id = ?";
     private static final String UNNAMED_QUERY = "name LIKE '%.%,%.%'";
     private static final String LOCATION_QUERY = "lat > %1$s - 0.005 and "
             + "lat < %1$s + 0.005 and lon > %2$s - 0.01 and lon < %2$s + 0.01";
@@ -71,7 +73,8 @@ public class DataHelper {
     private static final String JOURNEY_BOTH_QUERY = JOURNEY_START_QUERY + " AND end = %1$s";
 
     private final SQLiteStatement insertLocationStatement, insertJourneyStatement,
-            insertJourneyStepStatement, updateLocationStatement;
+            insertJourneyStepStatement, updateLocationStatement,
+            updateJourneyStatement;
 
     private SQLiteDatabase db;
 
@@ -82,6 +85,7 @@ public class DataHelper {
         this.updateLocationStatement = db.compileStatement(UPDATE_LOCATION);
         this.insertJourneyStatement = db.compileStatement(INSERT_JOURNEY);
         this.insertJourneyStepStatement = db.compileStatement(INSERT_JOURNEYSTEP);
+        this.updateJourneyStatement = db.compileStatement(UPDATE_JOURNEY);
     }
 
     public SQLiteDatabase getDatabase() {
@@ -137,13 +141,13 @@ public class DataHelper {
         }
 
         final Cursor cursor = db.query(JOURNEYS_TABLE,
-                new String[] { "_id", "start", "end", "steps" },
+                new String[] { "_id", "start", "end", "steps", "number" },
                 query, null, null, null, null);
 
         if (cursor.moveToFirst()) {
             do {
                 results.add(new Journey(cursor.getLong(0), cursor.getLong(1),
-                        cursor.getLong(2), cursor.getInt(3)));
+                        cursor.getLong(2), cursor.getInt(3), cursor.getInt(4)));
             } while (cursor.moveToNext());
         }
 
@@ -161,7 +165,8 @@ public class DataHelper {
                 final List<JourneyStep> theirSteps = getSteps(journey);
 
                 if (theirSteps.equals(steps)) {
-                    // TODO: Increment journey count/time/etc
+                    updateJourneyStatement.bindLong(1, journey.getId());
+                    updateJourneyStatement.execute();
                     return;
                 }
             }
@@ -299,7 +304,7 @@ public class DataHelper {
             if (oldVersion <= 2) {
                 db.execSQL("DROP TABLE " + LOCATIONS_TABLE);
                 onCreate(db);
-            } else if (oldVersion <= 5) {
+            } else if (oldVersion <= 6) {
                 db.execSQL("DROP TABLE " + LOCATIONS_TABLE);
                 db.execSQL("DROP TABLE " + JOURNEYS_TABLE);
                 db.execSQL("DROP TABLE " + JOURNEYSTEPS_TABLE);
