@@ -36,6 +36,10 @@ public class JourneyStep {
     private final long journey;
     private final long next;
 
+    public JourneyStep(final String activity, final int repetitions) {
+        this(-1, activity, repetitions, -1, -1);
+    }
+
     public JourneyStep(final long id, final String activity,
             final int repetitions, final long journey, final long next) {
         this.id = id;
@@ -63,6 +67,27 @@ public class JourneyStep {
 
     public int getRepetitions() {
         return repetitions;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public boolean equals(final Object obj) {
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        
+        final JourneyStep other = (JourneyStep) obj;
+        return this.activity.equals(other.getActivity())
+                && this.repetitions == other.getRepetitions();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + this.activity.hashCode();
+        hash = 37 * hash + this.repetitions;
+        return hash;
     }
 
 }

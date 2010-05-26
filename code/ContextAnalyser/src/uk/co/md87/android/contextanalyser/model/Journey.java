@@ -34,23 +34,17 @@ public class Journey {
     private final long start;
     private final long end;
     private final int steps;
-    private final long first;
 
     public Journey(final long id, final long start, final long end,
-            final int steps, final long first) {
+            final int steps) {
         this.id = id;
         this.start = start;
         this.end = end;
         this.steps = steps;
-        this.first = first;
     }
 
     public long getEnd() {
         return end;
-    }
-
-    public long getFirst() {
-        return first;
     }
 
     public long getId() {

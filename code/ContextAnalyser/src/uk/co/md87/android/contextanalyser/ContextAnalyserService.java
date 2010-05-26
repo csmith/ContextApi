@@ -22,7 +22,6 @@
 
 package uk.co.md87.android.contextanalyser;
 
-import uk.co.md87.android.contextanalyser.model.Place;
 import android.app.Service;
 import android.content.Intent;
 import android.location.Address;
@@ -46,6 +45,7 @@ import uk.co.md87.android.common.accel.AccelReaderFactory;
 import uk.co.md87.android.common.accel.Sampler;
 import uk.co.md87.android.common.geo.LocationMonitor;
 import uk.co.md87.android.common.geo.LocationMonitorFactory;
+import uk.co.md87.android.contextanalyser.model.Place;
 
 /**
  * Background service which monitors and aggregates various sources of

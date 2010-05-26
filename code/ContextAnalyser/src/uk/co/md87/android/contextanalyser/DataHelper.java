@@ -33,9 +33,11 @@ import android.util.Log;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import uk.co.md87.android.contextanalyser.model.Journey;
+import uk.co.md87.android.contextanalyser.model.JourneyStep;
 import uk.co.md87.android.contextanalyser.model.Place;
 
 /**
@@ -51,19 +53,25 @@ public class DataHelper {
     public static final String JOURNEYSTEPS_TABLE = "journeysteps";
 
     private static final String DATABASE_NAME = "contextapi.db";
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     private static final String INSERT_LOCATION = "insert into "
       + LOCATIONS_TABLE + "(name, lat, lon) values (?, ?, ?)";
+    private static final String INSERT_JOURNEY = "insert into "
+      + JOURNEYS_TABLE + "(start, end, steps) values (?, ?, ?)";
+    private static final String INSERT_JOURNEYSTEP = "insert into "
+      + JOURNEYSTEPS_TABLE + "(activity, reptitions, journey, next) values (?, ?, ?, ?)";
     private static final String UPDATE_LOCATION = "update "
       + LOCATIONS_TABLE + " set name = ? where _id = ?";
     private static final String UNNAMED_QUERY = "name LIKE '%.%,%.%'";
     private static final String LOCATION_QUERY = "lat > %1$s - 0.005 and "
             + "lat < %1$s + 0.005 and lon > %2$s - 0.01 and lon < %2$s + 0.01";
+    private static final String JOURNEY_STEPS_QUERY = "journey = %1$s";
     private static final String JOURNEY_START_QUERY = "start = %1$s";
     private static final String JOURNEY_BOTH_QUERY = JOURNEY_START_QUERY + " AND end = %1$s";
 
-    private final SQLiteStatement insertLocationStatement, updateLocationStatement;
+    private final SQLiteStatement insertLocationStatement, insertJourneyStatement,
+            insertJourneyStepStatement, updateLocationStatement;
 
     private SQLiteDatabase db;
 
@@ -72,6 +80,8 @@ public class DataHelper {
         this.db = helper.getWritableDatabase();
         this.insertLocationStatement = db.compileStatement(INSERT_LOCATION);
         this.updateLocationStatement = db.compileStatement(UPDATE_LOCATION);
+        this.insertJourneyStatement = db.compileStatement(INSERT_JOURNEY);
+        this.insertJourneyStepStatement = db.compileStatement(INSERT_JOURNEYSTEP);
     }
 
     public SQLiteDatabase getDatabase() {
@@ -129,13 +139,13 @@ public class DataHelper {
         }
 
         final Cursor cursor = db.query(JOURNEYS_TABLE,
-                new String[] { "_id", "start", "end", "steps", "first" },
+                new String[] { "_id", "start", "end", "steps" },
                 query, null, null, null, null);
 
         if (cursor.moveToFirst()) {
             do {
                 results.add(new Journey(cursor.getLong(0), cursor.getLong(1),
-                        cursor.getLong(2), cursor.getInt(3), cursor.getLong(4)));
+                        cursor.getLong(2), cursor.getInt(3)));
             } while (cursor.moveToNext());
         }
 
@@ -144,6 +154,96 @@ public class DataHelper {
         }
 
         return results;
+    }
+
+    public void addJourney(final Place start, final Place end, final List<String> activities) {
+        final List<JourneyStep> steps = getSteps(activities);
+        final Collection<Journey> journeys = findJourneys(start, end);
+
+        for (Journey journey : journeys) {
+            if (journey.getSteps() == steps.size()) {
+                final List<JourneyStep> theirSteps = getSteps(journey);
+
+                if (theirSteps.equals(steps)) {
+                    // TODO: Increment journey count/time/etc
+                    return;
+                }
+            }
+        }
+
+        insertJourneyStatement.bindLong(1, start.getId());
+        insertJourneyStatement.bindLong(2, end.getId());
+        insertJourneyStatement.bindLong(3, steps.size());
+        final long id = insertJourneyStatement.executeInsert();
+
+        long next = 0;
+        for (int i = steps.size() - 1; i >= 0; i--) {
+            final JourneyStep step = steps.get(i);
+
+            insertJourneyStepStatement.bindString(1, step.getActivity());
+            insertJourneyStepStatement.bindLong(2, step.getRepetitions());
+            insertJourneyStepStatement.bindLong(3, id);
+            insertJourneyStepStatement.bindLong(4, next);
+            next = insertJourneyStepStatement.executeInsert();
+        }
+    }
+
+    protected static List<JourneyStep> getSteps(final List<String> activities) {
+        final List<JourneyStep> steps = new LinkedList<JourneyStep>();
+
+        String last = null;
+        int count = 0;
+
+        for (String activity : activities) {
+            if (activity.equals(last)) {
+                count++;
+            } else {
+                if (last != null) {
+                    steps.add(new JourneyStep(last, count));
+                }
+
+                count = 1;
+                last = activity;
+            }
+        }
+
+        steps.add(new JourneyStep(last, count));
+
+        return steps;
+    }
+
+    public List<JourneyStep> getSteps(final Journey journey) {
+        final Map<Long, JourneyStep> results
+                = new HashMap<Long, JourneyStep>(journey.getSteps());
+
+        final String query = String.format(JOURNEY_STEPS_QUERY, journey.getId());
+
+        final Cursor cursor = db.query(JOURNEYSTEPS_TABLE,
+                new String[] { "_id", "activity", "repetitions", "next" },
+                query, null, null, null, null);
+
+        if (cursor.moveToFirst()) {
+            do {
+                results.put(cursor.getLong(3),
+                        new JourneyStep(cursor.getLong(0), cursor.getString(1),
+                        cursor.getInt(2), journey.getId(), cursor.getLong(3)));
+            } while (cursor.moveToNext());
+        }
+
+        if (cursor != null && !cursor.isClosed()) {
+            cursor.close();
+        }
+
+        final List<JourneyStep> ordered = new LinkedList<JourneyStep>();
+
+        long previous = 0;
+        while (results.containsKey(previous)) {
+            final JourneyStep step = results.get(previous);
+            ordered.add(step);
+            previous = step.getId();
+        }
+
+        return ordered;
     }
 
     public Place findLocation(final double lat, final double lon) {
@@ -183,7 +283,7 @@ public class DataHelper {
                     + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, lon REAL, lat REAL)");
             db.execSQL("CREATE TABLE " + JOURNEYS_TABLE
                     + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, start INTEGER,"
-                    + " end INTEGER, steps INTEGER, first INTEGER)");
+                    + " end INTEGER, steps INTEGER)");
             db.execSQL("CREATE TABLE " + JOURNEYSTEPS_TABLE
                     + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, activity TEXT,"
                     + " repetitions INTEGER, journey INTEGER, next INTEGER)");
@@ -196,6 +296,11 @@ public class DataHelper {
             Log.i(getClass().getSimpleName(), "Upgrading DB " + oldVersion + "->" + newVersion);
             if (oldVersion <= 2) {
                 db.execSQL("DROP TABLE " + LOCATIONS_TABLE);
+                onCreate(db);
+            } else if (oldVersion <= 3) {
+                db.execSQL("DROP TABLE " + LOCATIONS_TABLE);
+                db.execSQL("DROP TABLE " + JOURNEYS_TABLE);
+                db.execSQL("DROP TABLE " + JOURNEYSTEPS_TABLE);
                 onCreate(db);
             }
         }
