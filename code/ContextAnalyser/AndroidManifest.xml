@@ -36,10 +36,16 @@
         android:description="@string/permdesc_writePlaces"
         android:permissionGroup="uk.co.md87.android.contextanalyser.CONTEXT"
         android:protectionLevel="dangerous" />
+    <permission android:name="uk.co.md87.android.contextanalyser.BROADCAST"
+        android:label="@string/permlab_broadcast"
+        android:description="@string/permdesc_broadcast"
+        android:permissionGroup="uk.co.md87.android.contextanalyser.CONTEXT"
+        android:protectionLevel="dangerous" />
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="uk.co.md87.android.contextanalyser.BROADCAST" />
     <uses-sdk android:minSdkVersion="3" />
 </manifest>

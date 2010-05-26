@@ -20,4 +20,8 @@
     <string name="permgroupdesc">Permissions related to the context analyser
         service and its API.</string>
 
+    <string name="permlab_broadcast">Make broadcasts</string>
+    <string name="permdesc_broadcast">Allows the application to make
+        context-related broadcasts.</string>
+
 </resources>
