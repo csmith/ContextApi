@@ -192,7 +192,7 @@ public class ContextAnalyserService extends Service {
                         // The place was newly added, so for the final N
                         // elements, the user has been at the place.
                         
-                        for (int i = 0; i < Math.min(LOCATION_REPEATS, activityLog.size()); i++) {
+                        for (int i = 0; i < Math.min(LOCATION_REPEATS + 1, activityLog.size()); i++) {
                             activityLog.remove(activityLog.size() - 1);
                         }
                     }
