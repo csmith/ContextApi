@@ -29,7 +29,7 @@ import org.junit.runners.Parameterized.Parameters;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-import uk.co.md87.android.contextanalyser.model.JourneyStep;
+import uk.co.md87.android.common.model.JourneyStep;
 import static org.junit.Assert.*;
 
 /**

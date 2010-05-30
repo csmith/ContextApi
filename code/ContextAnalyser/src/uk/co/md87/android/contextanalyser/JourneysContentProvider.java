@@ -29,8 +29,8 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.net.Uri;
-import uk.co.md87.android.contextanalyser.model.Journey;
-import uk.co.md87.android.contextanalyser.model.JourneyStep;
+import uk.co.md87.android.common.model.Journey;
+import uk.co.md87.android.common.model.JourneyStep;
 
 /**
  * A content provider for journeys and journey steps.

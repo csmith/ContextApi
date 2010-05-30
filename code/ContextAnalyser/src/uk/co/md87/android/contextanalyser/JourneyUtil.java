@@ -24,7 +24,7 @@ package uk.co.md87.android.contextanalyser;
 
 import java.util.LinkedList;
 import java.util.List;
-import uk.co.md87.android.contextanalyser.model.JourneyStep;
+import uk.co.md87.android.common.model.JourneyStep;
 
 /**
  * Provides utility methods relating to journeys.

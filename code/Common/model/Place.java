@@ -20,7 +20,7 @@
  * SOFTWARE.
  */
 
-package uk.co.md87.android.contextanalyser.model;
+package uk.co.md87.android.common.model;
 
 import android.net.Uri;
 

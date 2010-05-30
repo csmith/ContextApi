@@ -30,7 +30,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.net.Uri;
 
-import uk.co.md87.android.contextanalyser.model.Place;
+import uk.co.md87.android.common.model.Place;
 
 /**
  * A content provider for places.

@@ -36,9 +36,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import uk.co.md87.android.contextanalyser.model.Journey;
-import uk.co.md87.android.contextanalyser.model.JourneyStep;
-import uk.co.md87.android.contextanalyser.model.Place;
+import uk.co.md87.android.common.model.Journey;
+import uk.co.md87.android.common.model.JourneyStep;
+import uk.co.md87.android.common.model.Place;
 
 /**
  * Facilitates accessing the SQLite database used for storing places and
