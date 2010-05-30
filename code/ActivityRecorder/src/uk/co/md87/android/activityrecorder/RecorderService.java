@@ -34,11 +34,11 @@ import java.util.Map;
 
 import uk.co.md87.android.activityrecorder.rpc.ActivityRecorderBinder;
 import uk.co.md87.android.activityrecorder.rpc.Classification;
-import uk.co.md87.android.common.Aggregator;
 import uk.co.md87.android.common.ModelReader;
 import uk.co.md87.android.common.accel.AccelReader;
 import uk.co.md87.android.common.accel.AccelReaderFactory;
 import uk.co.md87.android.common.accel.Sampler;
+import uk.co.md87.android.common.aggregator.Aggregator;
 
 /**
  *
