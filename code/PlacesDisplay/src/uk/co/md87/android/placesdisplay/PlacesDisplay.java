@@ -24,6 +24,7 @@ package uk.co.md87.android.placesdisplay;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import com.flurry.android.FlurryAgent;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
@@ -46,6 +47,8 @@ public class PlacesDisplay extends MapActivity {
         super.onCreate(icicle);
 
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
+
+        FlurryAgent.onStartSession(this, "XXXXGE95S8R54R6M7S6X");
         
         setContentView(R.layout.main);
 
@@ -80,6 +83,13 @@ public class PlacesDisplay extends MapActivity {
     @Override
     protected boolean isRouteDisplayed() {
         return false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        FlurryAgent.onEndSession(this);
     }
 
 }

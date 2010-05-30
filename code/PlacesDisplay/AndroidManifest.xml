@@ -13,6 +13,7 @@
         <uses-library android:name="com.google.android.maps" />
     </application>
 
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="uk.co.md87.android.contextanalyser.READ_PLACES"/>
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-sdk android:minSdkVersion="3" />
