@@ -176,7 +176,7 @@ public class DataHelper {
             if (journey.getSteps() == steps.size()) {
                 final List<JourneyStep> theirSteps = getSteps(journey);
 
-                if (theirSteps.equals(steps)) {
+                if (JourneyUtil.isCompatible(steps, theirSteps)) {
                     updateJourneyStatement.bindLong(1, journey.getId());
                     updateJourneyStatement.execute();
                     return;
