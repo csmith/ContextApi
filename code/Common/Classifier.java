@@ -43,20 +43,9 @@ public class Classifier {
     }
 
     public String classify(final float[] data) {
-        float oddTotal = 0, evenTotal = 0;
-        float oddMin = Float.MAX_VALUE, oddMax = Float.MIN_VALUE;
-        float evenMin = Float.MAX_VALUE, evenMax = Float.MIN_VALUE;
-
-        for (int i = 0; i < 128; i++) {
-            evenTotal += data[i * 2];
-            oddTotal += data[i * 2 + 1];
-
-            evenMin = Math.min(evenMin, data[i * 2]);
-            oddMin = Math.min(oddMin, data[i * 2 + 1]);
-
-            evenMax = Math.max(evenMax, data[i * 2]);
-            oddMax = Math.max(oddMax, data[i * 2 + 1]);
-        }
+        final float oddTotal = data[5], evenTotal = data[2];
+        final float oddMin = data[3], oddMax = data[4];
+        final float evenMin = data[0], evenMax = data[1];
 
         final float[] points = {
             Math.abs(evenTotal / 128),

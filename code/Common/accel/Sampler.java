@@ -38,7 +38,7 @@ public class Sampler implements Runnable {
     private final AccelReader reader;
     private final Runnable finishedRunnable;
 
-    private float[] data;
+    private final float[] data = new float[6];
     private int nextSample;
 
     public Sampler(final Handler handler, final AccelReader reader,
@@ -49,7 +49,12 @@ public class Sampler implements Runnable {
     }
 
     public void start() {
-        data = new float[256];
+        data[0] = Float.MAX_VALUE;
+        data[1] = Float.MIN_VALUE;
+        data[2] = 0;
+        data[3] = Float.MAX_VALUE;
+        data[4] = Float.MIN_VALUE;
+        data[5] = 0;
         nextSample = 0;
 
         reader.startSampling();
@@ -66,8 +71,13 @@ public class Sampler implements Runnable {
     public void run() {
         final float[] values = reader.getSample();
 
-        data[nextSample * 2] = values[0];
-        data[nextSample * 2 + 1] = values[1];
+        data[0] = Math.min(data[0], values[0]);
+        data[1] = Math.max(data[1], values[0]);
+        data[2] += values[0];
+
+        data[3] = Math.min(data[3], values[1]);
+        data[4] = Math.max(data[4], values[1]);
+        data[5] += values[1];
 
         if (++nextSample == 128) {
             reader.stopSampling();
