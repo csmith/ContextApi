@@ -22,6 +22,9 @@
 
 package uk.co.md87.android.placesdisplay;
 
+import android.content.ContentResolver;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -29,6 +32,7 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 import java.util.List;
+import uk.co.md87.android.common.model.Place;
 
 /**
  * Activity which displays all known places on a map.
@@ -51,11 +55,24 @@ public class PlacesDisplay extends MapActivity {
                 .getDrawable(R.drawable.icon));
         List<Overlay> mapOverlays = mapView.getOverlays();
 
-        GeoPoint point = new GeoPoint(19240000,-99120000);
-        OverlayItem overlayitem = new OverlayItem(point, "Hola, Mundo!", "I'm in Mexico City!");
+        final Cursor cursor = managedQuery(Place.CONTENT_URI,
+                new String[] { Place.LATITUDE, Place.LONGITUDE },
+                null, null, null);
 
-        overlay.addOverlay(overlayitem);
+        if (cursor.moveToFirst()) {
+            final int latitudeColumn = cursor.getColumnIndex(Place.LATITUDE);
+            final int longitudeColumn = cursor.getColumnIndex(Place.LONGITUDE);
+            do {
+                final double latitude = cursor.getDouble(latitudeColumn);
+                final double longitude = cursor.getDouble(longitudeColumn);
 
+                GeoPoint point = new GeoPoint((int) (latitude * 1000000),
+                        (int) (longitude * 1000000));
+                OverlayItem overlayitem = new OverlayItem(point, "Hola, Mundo!", "I'm in Mexico City!");
+
+                overlay.addOverlay(overlayitem);
+            } while (cursor.moveToNext());
+        }
         mapOverlays.add(overlay);
     }
 
