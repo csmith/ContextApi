@@ -22,9 +22,7 @@
 
 package uk.co.md87.android.placesdisplay;
 
-import android.content.ContentResolver;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -32,6 +30,7 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 import java.util.List;
+import uk.co.md87.android.common.ExceptionHandler;
 import uk.co.md87.android.common.model.Place;
 
 /**
@@ -45,6 +44,8 @@ public class PlacesDisplay extends MapActivity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
         
         setContentView(R.layout.main);
 
