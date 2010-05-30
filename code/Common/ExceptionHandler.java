@@ -22,6 +22,9 @@
 
 package uk.co.md87.android.common;
 
+import android.content.Context;
+import android.content.pm.PackageManager.NameNotFoundException;
+import android.telephony.TelephonyManager;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -55,6 +58,33 @@ public class ExceptionHandler implements UncaughtExceptionHandler {
         this.version = version;
         this.imei = imei;
         this.defaultUEH = Thread.getDefaultUncaughtExceptionHandler();
+    }
+
+    public ExceptionHandler(Context context) {
+        this(getAppName(context), "http://chris.smith.name/android/upload",
+                getVersionName(context), getIMEI(context));
+    }
+
+    private static String getVersionName(final Context context) {
+        try {
+            return context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionName;
+        } catch (NameNotFoundException ex) {
+            return "Unknown";
+        }
+    }
+
+    private static String getAppName(final Context context) {
+        try {
+            return context.getPackageManager().getApplicationLabel(context
+                    .getPackageManager().getPackageInfo(context.getPackageName(), 0)
+                    .applicationInfo).toString().replaceAll("[^A-Za-z]", "");
+        } catch (NameNotFoundException ex) {
+            return "Unknown";
+        }
+    }
+
+    private static String getIMEI(final Context context) {
+        return ((TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE)).getDeviceId();
     }
 
     public void uncaughtException(Thread t, Throwable e) {

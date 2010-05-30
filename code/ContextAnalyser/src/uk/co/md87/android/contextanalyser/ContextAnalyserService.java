@@ -108,9 +108,7 @@ public class ContextAnalyserService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        Thread.setDefaultUncaughtExceptionHandler(
-                new ExceptionHandler("ContextAnalyser",
-                "http://chris.smith.name/android/upload", getVersionName(), getIMEI()));
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
         locationMonitor = new LocationMonitorFactory().getMonitor(this);
 
@@ -125,18 +123,6 @@ public class ContextAnalyserService extends Service {
         handler.postDelayed(scheduleRunnable, POLLING_DELAY);
 
         FlurryAgent.onStartSession(this, "MKB8YES3C6CFB86PXYXK");
-    }
-
-    public String getVersionName() {
-        try {
-            return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-        } catch (NameNotFoundException ex) {
-            return "Unknown";
-        }
-    }
-
-    public String getIMEI() {
-        return ((TelephonyManager) getSystemService(TELEPHONY_SERVICE)).getDeviceId();
     }
     
     public void poll() {

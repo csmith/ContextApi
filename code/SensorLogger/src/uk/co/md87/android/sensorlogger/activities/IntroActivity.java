@@ -48,25 +48,11 @@ public class IntroActivity extends BoundActivity implements OnClickListener {
     public void onCreate(final Bundle icicle) {
         super.onCreate(icicle);
 
-        Thread.setDefaultUncaughtExceptionHandler(
-                new ExceptionHandler("SensorLogger",
-                "http://chris.smith.name/android/upload", getVersionName(), getIMEI()));
+        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
         setContentView(R.layout.intro);
 
         ((Button) findViewById(R.id.introstart)).setOnClickListener(this);
-    }
-
-    public String getVersionName() {
-        try {
-            return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
-        } catch (NameNotFoundException ex) {
-            return "Unknown";
-        }
-    }
-
-    public String getIMEI() {
-        return ((TelephonyManager) getSystemService(TELEPHONY_SERVICE)).getDeviceId();
     }
 
     /** {@inheritDoc} */
