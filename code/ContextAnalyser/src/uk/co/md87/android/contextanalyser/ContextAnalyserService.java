@@ -24,11 +24,13 @@ package uk.co.md87.android.contextanalyser;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Handler;
 import android.os.IBinder;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import com.flurry.android.FlurryAgent;
 
@@ -39,6 +41,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import uk.co.md87.android.common.ExceptionHandler;
 
 import uk.co.md87.android.common.ModelReader;
 import uk.co.md87.android.common.accel.AccelReaderFactory;
@@ -105,6 +108,10 @@ public class ContextAnalyserService extends Service {
     public void onCreate() {
         super.onCreate();
 
+        Thread.setDefaultUncaughtExceptionHandler(
+                new ExceptionHandler("ContextAnalyser",
+                "http://chris.smith.name/android/upload", getVersionName(), getIMEI()));
+
         locationMonitor = new LocationMonitorFactory().getMonitor(this);
 
         aggregator = new AutoAggregatorFactory().getAutoAggregator(this, handler,
@@ -118,6 +125,18 @@ public class ContextAnalyserService extends Service {
         handler.postDelayed(scheduleRunnable, POLLING_DELAY);
 
         FlurryAgent.onStartSession(this, "MKB8YES3C6CFB86PXYXK");
+    }
+
+    public String getVersionName() {
+        try {
+            return getPackageManager().getPackageInfo(getPackageName(), 0).versionName;
+        } catch (NameNotFoundException ex) {
+            return "Unknown";
+        }
+    }
+
+    public String getIMEI() {
+        return ((TelephonyManager) getSystemService(TELEPHONY_SERVICE)).getDeviceId();
     }
     
     public void poll() {
