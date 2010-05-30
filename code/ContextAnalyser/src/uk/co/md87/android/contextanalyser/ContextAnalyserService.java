@@ -30,6 +30,7 @@ import android.location.Location;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+import com.flurry.android.FlurryAgent;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -115,6 +116,8 @@ public class ContextAnalyserService extends Service {
         names.putAll(dataHelper.getUnnamedLocations());
 
         handler.postDelayed(scheduleRunnable, POLLING_DELAY);
+
+        FlurryAgent.onStartSession(this, "MKB8YES3C6CFB86PXYXK");
     }
     
     public void poll() {
@@ -219,6 +222,7 @@ public class ContextAnalyserService extends Service {
                 intent.putExtra("old", lastLocation == null ? -1 : lastLocation.getId());
                 intent.putExtra("new", location.getId());
                 sendBroadcast(intent, Manifest.permission.RECEIVE_UPDATES);
+                FlurryAgent.onEvent("broadcast_context_location");
             }
 
             activityLog.clear();
@@ -245,6 +249,7 @@ public class ContextAnalyserService extends Service {
             intent.putExtra("old", lastActivity);
             intent.putExtra("new", newActivity);
             sendBroadcast(intent, Manifest.permission.RECEIVE_UPDATES);
+            FlurryAgent.onEvent("broadcast_activity");
 
             lastActivity = newActivity;
         }
@@ -299,6 +304,7 @@ public class ContextAnalyserService extends Service {
         intent.putExtra("best_target", bestTarget);
         intent.putExtra("best_probability", (float) best / total);
         sendBroadcast(intent, Manifest.permission.RECEIVE_UPDATES);
+        FlurryAgent.onEvent("broadcast_prediction");
     }
 
     @Override
@@ -306,6 +312,7 @@ public class ContextAnalyserService extends Service {
         super.onDestroy();
 
         handler.removeCallbacks(scheduleRunnable);
+        FlurryAgent.onEndSession(this);
     }
 
     @Override
