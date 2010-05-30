@@ -22,15 +22,24 @@
 
 package uk.co.md87.android.placesdisplay;
 
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+
 import com.flurry.android.FlurryAgent;
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
+
 import java.util.List;
+
 import uk.co.md87.android.common.ExceptionHandler;
 import uk.co.md87.android.common.model.Place;
 
@@ -49,6 +58,39 @@ public class PlacesDisplay extends MapActivity {
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
         FlurryAgent.onStartSession(this, "XXXXGE95S8R54R6M7S6X");
+
+        final String pkg = "uk.co.md87.android.contextanalyser";
+
+        try {
+            getPackageManager().getApplicationInfo(pkg, 0);
+        } catch (NameNotFoundException ex) {
+            FlurryAgent.onEvent("analyser_not_installed");
+            Builder builder = new Builder(this);
+            builder.setTitle("Context Analyser needed");
+            builder.setMessage("This application requires the 'Context Analyser'"
+                    + " application to be installed. Would you like "
+                    + "to install it now?");
+            builder.setPositiveButton("Install", new OnClickListener() {
+
+                public void onClick(DialogInterface arg0, int arg1) {
+                    FlurryAgent.onEvent("launch_market");
+                    startActivity(new Intent(Intent.ACTION_VIEW,
+                            Uri.parse("market://search?q=pname:" + pkg)));
+                    finish();
+                }
+            });
+
+            builder.setNegativeButton("Quit", new OnClickListener() {
+
+                public void onClick(DialogInterface arg0, int arg1) {
+                    FlurryAgent.onEvent("abort_install");
+                    finish();
+                }
+            });
+
+            builder.show();
+            return;
+        }
         
         setContentView(R.layout.main);
 
