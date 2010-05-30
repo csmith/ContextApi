@@ -53,16 +53,19 @@ public class DataHelper {
     public static final String JOURNEYSTEPS_TABLE = "journeysteps";
 
     private static final String DATABASE_NAME = "contextapi.db";
-    private static final int DATABASE_VERSION = 8;
+    private static final int DATABASE_VERSION = 9;
 
     private static final String INSERT_LOCATION = "insert into "
-      + LOCATIONS_TABLE + "(name, lat, lon) values (?, ?, ?)";
+      + LOCATIONS_TABLE + "(name, lat, lon, duration, times, lastvisit) values (?, ?, ?, 0, 0, 0)";
     private static final String INSERT_JOURNEY = "insert into "
       + JOURNEYS_TABLE + "(start, end, steps, number) values (?, ?, ?, 1)";
     private static final String INSERT_JOURNEYSTEP = "insert into "
       + JOURNEYSTEPS_TABLE + "(activity, repetitions, journey, next) values (?, ?, ?, ?)";
     private static final String UPDATE_LOCATION = "update "
       + LOCATIONS_TABLE + " set name = ? where _id = ?";
+    private static final String UPDATE_LOCATION_VISIT = "update "
+      + LOCATIONS_TABLE + " set times = times + 1, duration = duration + ?, "
+      + "lastvisit = ? WHERE _id = ?";
     private static final String UPDATE_JOURNEY = "update "
       + JOURNEYS_TABLE + " set number = number + 1 WHERE _id = ?";
     private static final String UNNAMED_QUERY = "name LIKE '%.%,%.%'";
@@ -74,7 +77,7 @@ public class DataHelper {
 
     private final SQLiteStatement insertLocationStatement, insertJourneyStatement,
             insertJourneyStepStatement, updateLocationStatement,
-            updateJourneyStatement;
+            updateLocationVisitStatement, updateJourneyStatement;
 
     private SQLiteDatabase db;
 
@@ -83,6 +86,7 @@ public class DataHelper {
         this.db = helper.getWritableDatabase();
         this.insertLocationStatement = db.compileStatement(INSERT_LOCATION);
         this.updateLocationStatement = db.compileStatement(UPDATE_LOCATION);
+        this.updateLocationVisitStatement = db.compileStatement(UPDATE_LOCATION_VISIT);
         this.insertJourneyStatement = db.compileStatement(INSERT_JOURNEY);
         this.insertJourneyStepStatement = db.compileStatement(INSERT_JOURNEYSTEP);
         this.updateJourneyStatement = db.compileStatement(UPDATE_JOURNEY);
@@ -154,6 +158,14 @@ public class DataHelper {
         closeCursor(cursor);
 
         return results;
+    }
+
+    public void recordVisit(final Place place, final long start, final long end) {
+        final long seconds = (end - start) / 1000;
+        updateLocationVisitStatement.bindLong(1, seconds);
+        updateLocationVisitStatement.bindLong(2, end / 1000);
+        updateLocationVisitStatement.bindLong(3, place.getId());
+        updateLocationVisitStatement.execute();
     }
 
     public void addJourney(final Place start, final Place end, final List<String> activities) {
@@ -264,7 +276,9 @@ public class DataHelper {
         @Override
         public void onCreate(final SQLiteDatabase db) {
             db.execSQL("CREATE TABLE " + LOCATIONS_TABLE
-                    + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, lon REAL, lat REAL)");
+                    + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, "
+                    + "lon REAL, lat REAL, duration INTEGER, times INTEGER, "
+                    + "lastvisit INTEGER)");
             db.execSQL("CREATE TABLE " + JOURNEYS_TABLE
                     + " (_id INTEGER PRIMARY KEY AUTOINCREMENT, start INTEGER,"
                     + " end INTEGER, steps INTEGER, number INTEGER)");
@@ -294,13 +308,19 @@ public class DataHelper {
             if (oldVersion <= 2) {
                 db.execSQL("DROP TABLE " + LOCATIONS_TABLE);
                 onCreate(db);
-            } else if (oldVersion <= 7) {
+            } else if (oldVersion <= 6) {
                 db.execSQL("DROP TABLE " + LOCATIONS_TABLE);
                 db.execSQL("DROP TABLE " + JOURNEYS_TABLE);
                 db.execSQL("DROP TABLE " + JOURNEYSTEPS_TABLE);
                 onCreate(db);
-            } else if (oldVersion <= 8) {
+            } else if (oldVersion <= 7) {
                 createTriggers(db);
+            }
+            
+            if (oldVersion > 6 && oldVersion <= 8) {
+                db.execSQL("ALTER TABLE " + LOCATIONS_TABLE + " ADD COLUMN duration INTEGER");
+                db.execSQL("ALTER TABLE " + LOCATIONS_TABLE + " ADD COLUMN times INTEGER");
+                db.execSQL("ALTER TABLE " + LOCATIONS_TABLE + " ADD COLUMN lastvisit INTEGER");
             }
         }
 

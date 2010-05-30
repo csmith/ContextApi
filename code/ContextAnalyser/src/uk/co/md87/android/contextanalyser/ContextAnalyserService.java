@@ -90,6 +90,7 @@ public class ContextAnalyserService extends Service {
 
     private double lat = 0, lon = 0;
     private int locationCount = 0;
+    private long locationStart;
     private Place location, lastLocation;
     private Geocoder geocoder;
     private String lastActivity = "";
@@ -135,6 +136,11 @@ public class ContextAnalyserService extends Service {
 
         if ((lat == 0 && lon == 0) || distance[0] > 500) {
             // New location
+
+            if (location != null) {
+                handleLocationEnd(location);
+            }
+
             lat = newLat;
             lon = newLon;
             locationCount = 1;
@@ -180,12 +186,17 @@ public class ContextAnalyserService extends Service {
         }
     }
 
-    public void updateLastLocation(final boolean added) {
+    protected void handleLocationEnd(final Place place) {
+        dataHelper.recordVisit(place, locationStart, System.currentTimeMillis());
+    }
+
+    protected void updateLastLocation(final boolean added) {
         location = dataHelper.findLocation(lat, lon);
 
         if (location != null) {
             if ((lastLocation == null || !lastLocation.equals(location))) {
                 Log.i(getClass().getSimpleName(), "New location, broadcasting: " + location);
+                locationStart = System.currentTimeMillis();
 
                 if (lastLocation != null) {
                     if (added) {
@@ -215,7 +226,7 @@ public class ContextAnalyserService extends Service {
         }
     }
 
-    public void analyse() {
+    protected void analyse() {
         final String newActivity = aggregator.getClassification();
 
         Log.v(getClass().getSimpleName(), "Aggregator says: " + newActivity);
