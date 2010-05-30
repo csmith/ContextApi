@@ -73,7 +73,7 @@ public class DataHelper {
             + "lat < %1$s + 0.005 and lon > %2$s - 0.01 and lon < %2$s + 0.01";
     private static final String JOURNEY_STEPS_QUERY = "journey = %1$s";
     private static final String JOURNEY_START_QUERY = "start = %1$s";
-    private static final String JOURNEY_BOTH_QUERY = JOURNEY_START_QUERY + " AND end = %1$s";
+    private static final String JOURNEY_BOTH_QUERY = JOURNEY_START_QUERY + " AND end = %2$s";
 
     private final SQLiteStatement insertLocationStatement, insertJourneyStatement,
             insertJourneyStepStatement, updateLocationStatement,
