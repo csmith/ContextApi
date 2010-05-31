@@ -1,0 +1,2151 @@
+#LyX 1.6.5 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass article
+\use_default_options true
+\language english
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Context-Aware API for Android Devices
+\end_layout
+
+\begin_layout Author
+Chris Smith
+\begin_inset Newline newline
+\end_inset
+
+Supervisor: Naranker Dulay
+\end_layout
+
+\begin_layout Date
+Summary 2010
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Background
+\end_layout
+
+\begin_layout Standard
+Context- or Activity-Aware devices is an area currently under lots of research.
+ There are many and varied applications of activity-aware devices, ranging
+ from personal fitness and healthcare to training factory workers or merely
+ playing music.
+\end_layout
+
+\begin_layout Standard
+While this research is going on, there has been a huge expansion in the
+ ownership, use and power of mobile telephones.
+ Mobile telephones are so ubiquitous and now come with such a large sensor
+ platform that they are the obvious choice for implementing activity-aware
+ technologies for use in day-to-day life.
+\end_layout
+
+\begin_layout Standard
+This project aims to make a context-aware API available on an open mobile
+ platform, which will enable developers to start adding context-aware functional
+ity to their applications without the extremely large overhead of writing
+ a logger and classifier themselves, or re-engineering the application to
+ use an existing context-aware framework if one is available.
+\end_layout
+
+\begin_layout Section
+Applications
+\end_layout
+
+\begin_layout Standard
+There are many documented applications of activity-aware systems, and current
+ research efforts which bring the technology to mobile telephones will only
+ serve to lengthen this list.
+\end_layout
+
+\begin_layout Standard
+The canonical example for activity-awareness, especially on mobile telephones,
+ is modeling the user's 
+\begin_inset Quotes eld
+\end_inset
+
+interruptibility
+\begin_inset Quotes erd
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Siewiorek2003,Raento2005"
+
+\end_inset
+
+.
+ This allows the software to know whether it's appropriate (or "polite")
+ to disturb the user, and can advise the user's contacts when they are busy.
+ It can also be used to create a 
+\begin_inset Quotes eld
+\end_inset
+
+smart answering machine
+\begin_inset Quotes erd
+\end_inset
+
+ 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Hudson2003"
+
+\end_inset
+
+ which can selectively direct calls straight to an answering machine if
+ the user is engaged in an "uninterpretable" activity and the call does
+ not appear to be important.
+ These allow the user's mobile telephone to better approximate human behaviour
+ - when approaching someone in person it is normally quite easy to determine
+ whether it would be polite or necessary to disturb them, based on their
+ demeanour, activity, and the urgency of your request; when picking up the
+ telephone it is not possible at all without assistance from an activity-aware
+ system.
+\end_layout
+
+\begin_layout Standard
+The current implementations of these ideas have several problems, however.
+ The more interesting research 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Hudson2003"
+
+\end_inset
+
+ requires a static camera fixed in an office to observe user behaviour,
+ instead of implementing it directly on a telephone, which obviously constrains
+ its usefulness.
+ Of the two solutions actually targeted at mobile telephones, one
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Siewiorek2003"
+
+\end_inset
+
+ requires bulky custom hardware which the user must carry on their belt,
+ and the other 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Raento2005"
+
+\end_inset
+
+does not expose an API to other applications and only surfaces the context-aware
+ functionality in two small applications whose focus is on social interaction
+ rather than improving the user's experience of the telephone locally.
+ This project will aim to bring the ideas of these to generic hardware (an
+ Android mobile telephone), and to provide an API which other applications
+ can harness.
+\end_layout
+
+\begin_layout Standard
+One use particularly suitable for mobile phones is dynamic adaptation of
+ the device's settings based on the user's current activity and context
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Schmidt1999"
+
+\end_inset
+
+.
+ When a user is walking the device can dynamically increase the font size
+ to make it easier to read with an unsteady hand, and correspondingly decrease
+ it when the user is stationary.
+ In a similar fashion, the brightness of the backlight can be altered based
+ on the ambient light level, and the ringer volume altered according to
+ the noise level.
+ Unfortunately this research did not progress beyond a feasibility study
+ and was implemented on a Nokia 6110, which is severely outdated by today's
+ standards.
+ 
+\end_layout
+
+\begin_layout Standard
+Another popular area for activity-aware systems is in healthcare.
+ Such systems can be used to monitor vulnerable people as they go about
+ day to day activities to ensure that they're not in trouble - several systems
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Song2005,Maurer2006"
+
+\end_inset
+
+ can be used to monitor elderly persons and summon help if it is detected
+ that they have fallen.
+ Another healthcare application
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Tentori2008"
+
+\end_inset
+
+ allows nurses to remotely monitor the activities of their patients in a
+ hospital ward, allowing them to respond to problems and keep up-to-date
+ with their patients' well-being while not physically present.
+ Activity-aware applications have also been used to try to encourage users
+ to be more healthy; one novel application records the day-to-day fitness
+ activities a user performs and uses this as a basis for a virtual 
+\begin_inset Quotes eld
+\end_inset
+
+garden
+\begin_inset Quotes erd
+\end_inset
+
+ that blossoms or wilts according to how much the user works out in a week
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Consolvo2008"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+As well as monitoring activities which the user is familiar with, activity-aware
+ systems can also be used to assist users in learning new activities.
+ One application
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Stiefmeier2008"
+
+\end_inset
+
+ monitors the activities of trainee workers in a car manufacturing plant,
+ and helps to provide a link between theoretical classroom-based training
+ and practical work.
+ The activity-aware system can offer advice to the workers that's directly
+ related to the current task they're performing, and can even monitor their
+ activities for compliance with procedures and give them a score afterwards.
+\end_layout
+
+\begin_layout Standard
+While the research into healthcare and training applications present novel
+ uses of activity-aware systems, the applications themselves are not really
+ applicable to a mobile device or the scope of this project.
+ The research does, however, describe the techniques used in those applications
+ for activity classification and should prove useful in that respect.
+\end_layout
+
+\begin_layout Standard
+Other areas of research include making activity-aware suggestions to the
+ user 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Bellotti2008"
+
+\end_inset
+
+, or issuing reminders or alerts based on the user's activity 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Schilit1994"
+
+\end_inset
+
+.
+ One example of the latter is an activity-aware system that detects when
+ the user is making coffee, and plays a sound on a remote computer to alert
+ thirsty coworkers to the fact.
+ Sound isn't only limited to alerts, however: the 
+\noun on
+XPOD
+\noun default
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Dornbush2005"
+
+\end_inset
+
+ project is an activity-aware music player, which tailors the music being
+ played to the user's current activity based on their past ratings.
+ This type of activity-aware device presents a much greater level of personalisa
+tion than previously possible, and making this type of customisation available
+ to mobile telephone users and application developers will surely result
+ in many new applications.
+\end_layout
+
+\begin_layout Section
+Inferring activity
+\end_layout
+
+\begin_layout Standard
+There are three general phases in most context-aware systems: a sensing
+ component, which reads or receives raw sensor data relating to the user's
+ environment or activity; a feature extraction component, which analysis
+ the sensor data and identifies a set of features from that data; and a
+ classification component, which uses the extracted features to reason about
+ the user's activity
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Choudhury2008"
+
+\end_inset
+
+.
+ Each of these components will be expanded on below.
+ Depending on the method of classification, some initial or continuous training
+ may be required, and this is also considered below.
+\end_layout
+
+\begin_layout Subsection
+Sensors and devices
+\end_layout
+
+\begin_layout Standard
+At the basis of activity-recognition are the physical hardware sensors.
+ The most commonly used sensor is the accelerometer, which outputs the accelerat
+ion of the sensor
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+and thus the device to which it's attached, and therefore the person using
+ the device
+\end_layout
+
+\end_inset
+
+ along a certain axis.
+ There is extensive research on using accelerometers to classify activities
+ such as walking 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Mathie2004,Garakani2009"
+
+\end_inset
+
+ (including whether or not the subject is walking on flat ground or up and
+ down stairs 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Caros2005"
+
+\end_inset
+
+), running 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Garakani2009"
+
+\end_inset
+
+, falling 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Mathie2004"
+
+\end_inset
+
+, sitting 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Mathie2004,Garakani2009"
+
+\end_inset
+
+, cycling 
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Garakani2009"
+
+\end_inset
+
+, etc.
+\end_layout
+
+\begin_layout Standard
+Accelerometers can be combined with magnetic field sensors to convert the
+ relative acceleration of the device into an absolute acceleration with
+ respect to the Earth.
+ This is particularly important when the sensor platform - a mobile telephone
+ - can be oriented in different ways while performing the same activity.
+ There are, for example, four different ways to comfortably fit a typical
+ smartphone into a trouser pocket, made up of two possible orientations
+ around two axis 
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+screen facing towards or away from the body, and the device oriented the
+ right way up or upside down
+\end_layout
+
+\end_inset
+
+.
+ With just raw accelerometer data these four orientations would lead to
+ different data for the same activity, but with the combination of magnetic
+ field sensors we can normalise them.
+\end_layout
+
+\begin_layout Standard
+Smartphones also come equipped with a microphone and GSM stack (prerequisites
+ for a telephone conversation!), and commonly a camera, geolocation API
+ (usually backed by GPS) and Bluetooth stack.
+ With the exception of the latter two, these types of sensors are not particular
+ly well explored for their use in context-aware systems at present.
+ It is easy to reason how each would be useful - a microphone can reveal
+ the ambient noise, which could indicate the difference between sitting
+ in a library and a bar; the camera likewise can reveal the lighting conditions
+ (if the device is not in a pocket or bag).
+ The GSM stack can provide rough location information and also a signal
+ strength to one or more cell towers; the signal strength will vary both
+ with the user's proximity to the cell tower and the environment around
+ them - being inside will degrade the signal more than being in open air,
+ for example - so may provide vital clues to a context-aware system.
+ One aspect of this project will be to research how the microphone, camera
+ and GSM stack can be used to enhance existing activity classification algorithm
+s.
+\end_layout
+
+\begin_layout Standard
+Current research on location information and Bluetooth device proximity
+ is summarised in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Location-analysis"
+
+\end_inset
+
+ (p
+\begin_inset CommandInset ref
+LatexCommand pageref
+reference "sec:Location-analysis"
+
+\end_inset
+
+) and 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Bluetooth"
+
+\end_inset
+
+ (p
+\begin_inset CommandInset ref
+LatexCommand pageref
+reference "sec:Bluetooth"
+
+\end_inset
+
+) respectively.
+\end_layout
+
+\begin_layout Subsection
+Feature detection
+\end_layout
+
+\begin_layout Standard
+It is not possible to reason directly about raw sensor inputs, so the next
+ step in inferring activities is to extract useful 
+\emph on
+features
+\emph default
+ from the raw input.
+ Features are usually mathematical properties of the input data, such as
+ the difference between the minimum and maximum data point in a given time
+ frame.
+ Most classifiers use an extremely large number of features - 
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Hein2008"
+
+\end_inset
+
+ detect 562 different features from their inputs.
+\end_layout
+
+\begin_layout Standard
+Some of the more commonly used features in activity-recognition systems
+ are: mean, standard deviation, energy, entropy, correlation between axis,
+ and discrete FFT coefficients
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Huynh2005"
+
+\end_inset
+
+.
+ Obviously, not all features are of equal value.
+ FFT coefficients are generally very good indicators of activity, but the
+ ideal coefficients and window sizes vary depending on the exact activity
+ that is being detected.
+ Likewise, the choice of other features to give the best recognition rate
+ varies depending on the activity being detected
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Huynh2005"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+As the sensor data is received continuously, it needs to be partitioned
+ somehow before features are extracted.
+ Most implementations use a sliding window approach with a 50% overlap between
+ windows
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Bao2004"
+
+\end_inset
+
+.
+ A window size of 10 seconds with a 50% overlap would result in one set
+ of features being computed every 5 seconds.
+ The window size is normally selected to correspond to a pre-defined number
+ of samples to enable fast computation of certain features - most notably
+ FFTs
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Bao2004"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+One challenge will be determining a set of features that are robust enough
+ to perform activity analysis on, but are sufficiently inexpensive to calculate
+ continually on a mobile device, where CPU speed is limited and excessive
+ usage results in undesirable higher battery consumption.
+\end_layout
+
+\begin_layout Subsection
+Training
+\end_layout
+
+\begin_layout Standard
+In order to meaningfully classify and label activities, some kind of training
+ generally needs to be performed beforehand.
+ The choice of classifier affects how much offline analysis has to be done
+ on the training set, and whether or not it can be adapted at run-time.
+\end_layout
+
+\begin_layout Standard
+One might expect that training would best be performed in a controlled environme
+nt, to reduce external influences on the user, but subjects in a laboratory
+ setting are much more self-conscious about their movements, and this manifests
+ itself in the data collected.
+ Walking in a laboratory tends to produce acceleration data showing a consistent
+ gait cycle which can be split into distinct phases, whereas walking in
+ an uncontrolled setting produces data showing large fluctuations in gait
+ phases and length.
+ This means that classifiers trained on laboratory data may achieve a much
+ lower accuracy when deployed in natural conditions
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Bao2004"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Subsection
+Classification
+\end_layout
+
+\begin_layout Standard
+The classification step involves feeding the features for frame into some
+ kind of machine learning algorithm which can, using training data
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+and any offline analysis made of that data
+\end_layout
+
+\end_inset
+
+, determine which activity the feature-set most like represents.
+ There are many different algorithms that can be used to perform the classificat
+ion, some of which are discussed below.
+\end_layout
+
+\begin_layout Subsubsection
+Decision trees
+\end_layout
+
+\begin_layout Standard
+Decision trees are possibly one of the simplest approaches possible
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Hudson2003"
+
+\end_inset
+
+.
+ A tree is constructed such that each node contains a test function, with
+ branches for each possible discrete outcome of the function.
+ This allows data to be classified with a 
+\begin_inset Quotes eld
+\end_inset
+
+divide and conquer
+\begin_inset Quotes erd
+\end_inset
+
+ approach.
+ While high accuracy is possible in some circumstances
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Hudson2003"
+
+\end_inset
+
+, there are several drawbacks to decision trees: a plain decision tree has
+ no way to model uncertainty - in an activity-aware system there will always
+ be a degree of uncertainty as to the classification, and being able to
+ measure this is an important tool.
+ They also have an inductive bias which leads to a preference for the most
+ general solution, and in most cases this generalisation causes many false
+ results
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Shen2004"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Decision trees require the structure of the tree and the test functions
+ for each node to be determined during training.
+ They do not lend themselves to minor on-the-fly modifications or new activities
+ that are not part of the training set.
+\end_layout
+
+\begin_layout Subsubsection
+Neural networks
+\end_layout
+
+\begin_layout Standard
+Neural networks are based on an extremely simplified model of the brain.
+ The network consists of layers of neurons, and each neuron performs a simple
+ arithmetic operation on its inputs.
+ This normally consists of taking each of its inputs, multiplying it by
+ a weight, and then summing all of the weighted inputs together; the resulting
+ figure then becomes the neuron's output, and the input to one or more nodes
+ in the next layer.
+\end_layout
+
+\begin_layout Standard
+A network consists of a layer of input neurons, a layer containing one or
+ more output neurons, and one or more layers of 
+\begin_inset Quotes eld
+\end_inset
+
+hidden
+\begin_inset Quotes erd
+\end_inset
+
+ neurons in between.
+ The number of 
+\begin_inset Quotes eld
+\end_inset
+
+hidden
+\begin_inset Quotes erd
+\end_inset
+
+ layers, and the number of neurons within those layers must be chosen before
+ training of the network begins.
+ The training process will then determine the weights for each link in the
+ network.
+ The choice of number of layers poses a problem when designing a network,
+ as too small a number can cripple the power of the network, but too large
+ can cause it to be too expensive to evaluate and can possibly lead to it
+ memorising erroneous data
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Dornbush2005"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Neural networks, however, do provide good accuracy and could potentially
+ (although not easily) be modified on-the-fly to cope with new activities.
+\end_layout
+
+\begin_layout Subsubsection
+Genetic algorithms
+\end_layout
+
+\begin_layout Standard
+Genetic algorithms use the principle of natural selection to 'evolve' a
+ solution to a problem.
+ A set of random solutions are created, and a pre-defined fitness function
+ is used to determine their relative worth.
+ The best solutions are then combined together to produce the next generation
+ of solutions, in a manner roughly analogous to reproduction in animals.
+ Small 
+\begin_inset Quotes eld
+\end_inset
+
+mutations
+\begin_inset Quotes erd
+\end_inset
+
+ are also introduced into each generation to counter the effect of local
+ maxima being reached.
+\end_layout
+
+\begin_layout Standard
+Genetic algorithms can be combined with other techniques such as neural
+ networks - the weights in the neural network can be 
+\begin_inset Quotes eld
+\end_inset
+
+evolved
+\begin_inset Quotes erd
+\end_inset
+
+ using genetic algorithms to create a neural network which is good as satisfying
+ the fitness function.
+\end_layout
+
+\begin_layout Standard
+The drawback of genetic algorithms is the need for a fitness function -
+ the network will only ever be as good as the fitness function, and if you
+ have a way to define what makes a good network you could in most cases
+ hardcode the solution instead of evolving a network to satisfy it.
+\end_layout
+
+\begin_layout Subsubsection
+Instance-based learning
+\end_layout
+
+\begin_layout Standard
+Instance-based learning (IBL)
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Witten2000"
+
+\end_inset
+
+ algorithms are a class of 
+\begin_inset Quotes eld
+\end_inset
+
+lazy
+\begin_inset Quotes erd
+\end_inset
+
+ algorithms.
+ They perform classification based on previously observed instances that
+ have already been classified.
+ There is no training required for IBLs, they're extremely adept at adapting
+ to new scenarios, and they have a very low error rate
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Dornbush2005"
+
+\end_inset
+
+ which makes them ideal for activity-recognition.
+\end_layout
+
+\begin_layout Standard
+One particular type of IBL algorithm which is frequently seen in activity-aware
+ research is the K-Nearest Neighbour (KNN) algorithm
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Han2006"
+
+\end_inset
+
+.
+ With the KNN algorithm, each sample is treated as a vector, and the distance
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+the euclidean distance is usually used, but any metric will suffice
+\end_layout
+
+\end_inset
+
+ between the sample and the existing instances is calculated.
+ The sample is then classified according to the classification of the majority
+ of its 
+\begin_inset Formula $k$
+\end_inset
+
+ nearest neighbours.
+\end_layout
+
+\begin_layout Standard
+One drawback of IBLs is that each new instance tends to be remembered for
+ future use, which eventually results in large amounts of memory consumption
+ and complexity when comparing distances of new samples.
+ This can be partially overcome by only storing instances which would affect
+ the classification of new samples
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Witten2000"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+The KNN algorithm can be easily extended to support dynamic classification
+ of new types of activities - if a sample is not within a certain distance
+ of sufficient other samples, it can be classified as a new type of activity.
+\end_layout
+
+\begin_layout Subsubsection
+Conclusion
+\end_layout
+
+\begin_layout Standard
+There are numerous machine learning algorithms available and suitable for
+ use in activity classification tasks.
+ There has been a lot of research into their use, and all of the algorithms
+ discussed have produced good results.
+ Because of the lack of need for any training, however, the K-Nearest Neighbour
+ algorithm appears to be the most promising for a mobile device.
+ Any algorithm that needs explicit training prior to classification would
+ almost certainly require a desktop application or a remote service to analyse
+ the data, as it typically requires large amounts of memory and expensive
+ computations.
+ This either makes the application extremely cumbersome for the user (they
+ have to connect their phone to a computer, transfer a file, obtain and
+ run a separate application, then transfer some file back), or puts a large
+ resource burden onto the distributor (having to remotely analyse all of
+ the data from all users would require dedicated hardware for any more than
+ a few users).
+\end_layout
+
+\begin_layout Section
+Mobile telephones
+\end_layout
+
+\begin_layout Standard
+It's hard to overstate the ubiquity of mobile telephones at present.
+ In 2003, over a billion mobile telephones were sold - six times as many
+ as the number of personal computers
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Eagle2004"
+
+\end_inset
+
+.
+ In 2007, this same figure describes the number of cameraphones sold
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Reynolds2008"
+
+\end_inset
+
+, clearly representing a substantial growth in sales and advancements in
+ the technology.
+ In fact, mobile telephones are the fastest adopted technology in human
+ history
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Eagle2004"
+
+\end_inset
+
+.
+ This ubiquity, coupled with the fact that mobile telephones are comfortably
+ carried around on a daily basis by most of their users, makes them a very
+ attractive alternative to more traditional platforms used for activity-aware
+ research, which typically involved bulky or inconvenient apparatus that
+ was expensive to manufacture
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Schmidt2008"
+
+\end_inset
+
+ and made users very self-conscious.
+\end_layout
+
+\begin_layout Subsection
+iPhone
+\end_layout
+
+\begin_layout Standard
+There have been several published works related to activity-recognition
+ on the iPhone.
+ The similarity between iPhone and Android platforms means that many of
+ the concepts developed for or used on the iPhone are applicable to both.
+\end_layout
+
+\begin_layout Subsubsection
+iLearn
+\end_layout
+
+\begin_layout Standard
+
+\noun on
+iLearn
+\noun default
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Schmidt2008"
+
+\end_inset
+
+ is a suite of three tools - 
+\noun on
+iLog
+\noun default
+, 
+\noun on
+iModel,
+\noun default
+ and 
+\noun on
+iClassify
+\noun default
+ - which together allow for real-time classification of low-level activities.
+ 
+\noun on
+iLog
+\noun default
+ is run on the user's iPhone and allows the user to specify which activity
+ they will be performing.
+ The application then records raw sensor data from the iPhone's three-axis
+ accelerometer and 124 features computed from this data in real-time.
+ The data is then stored on the device, annotated with the selected activity.
+\end_layout
+
+\begin_layout Standard
+The training data collected by 
+\noun on
+iLog
+\noun default
+ is then transferred to a desktop computer where 
+\noun on
+iModel
+\noun default
+ uses a Naïve Bayesian Network (NBN) to create a model which can be used
+ to classify future input.
+ The choice of NBNs was based on their ability to classify a set of trial
+ data correctly, and the low computational cost of classifying data once
+ the model has been generated.
+\end_layout
+
+\begin_layout Standard
+Once the model has been created, it is transferred back to the device where
+ it is used by 
+\noun on
+iClassify
+\noun default
+.
+ This provides an API for other applications, and allows them to register
+ for a callback which it publishes the user's current activity to every
+ second.
+\end_layout
+
+\begin_layout Standard
+Unfortunately, neither the source code nor the API are published.
+ The inability to run background processes on the iPhone suggests that any
+ 
+\begin_inset Quotes eld
+\end_inset
+
+API
+\begin_inset Quotes erd
+\end_inset
+
+ would have to be more like a framework where the third-party developer
+ has to re-engineer their application to use the 
+\noun on
+iClassify
+\noun default
+ application as a base.
+ This is undesirable as it makes it extremely difficult to adapt existing
+ applications to use the activity-aware API, and is a very cumbersome way
+ of providing what could be a very minor piece of functionality for the
+ application.
+\end_layout
+
+\begin_layout Subsubsection
+Evaluation
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset citation
+LatexCommand citet
+key "Miluzzo2009"
+
+\end_inset
+
+ present an evaluation of the iPhone for use in 
+\begin_inset Quotes eld
+\end_inset
+
+people-centric sensing applications
+\begin_inset Quotes erd
+\end_inset
+
+.
+ One of the major drawbacks highlighted is that the iPhone does not support
+ applications which run in the background.
+ This means that any application wishing to perform continuous real-time
+ activity detection would need to run as a foreground process, preventing
+ the user from using the device for any other function.
+\end_layout
+
+\begin_layout Standard
+The research also shows that the computational compatibility of the iPhone
+ is more than sufficient to perform the necessary calculations for a typical
+ activity-recognising application, which suggests that any modern smart
+ phone would be capable of these.
+\end_layout
+
+\begin_layout Subsection
+Android
+\end_layout
+
+\begin_layout Standard
+While the Android platform is relatively new, it is rapidly gaining market
+ share on the more established mobile operating systems.
+ A December 2009 survey
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ChangeWave2010"
+
+\end_inset
+
+ shows that 21% of respondents want their next smartphone purchase to run
+ Android, a 350% increase from the same survey conducted three months prior.
+ This is compared to the iPhone, which dropped 4% to 28% in the same time
+ period.
+ Gartner, a respected IT research firm, predicts that by 2012, Android will
+ be the second most popular mobile operating system globally
+\begin_inset CommandInset citation
+LatexCommand cite
+key "ComputerWorld2010"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In addition to its rapidly increasing popularity, the Android platform offers
+ several advantages over the iPhone platform.
+ Most notably is the ability to run background processes (called 
+\noun on
+services
+\noun default
+), which will allow a classifier application to run without interfering
+ with the user's normal use of their mobile telephone.
+ In addition, the Android OS provides access to the Bluetooth and GSM stacks,
+ allowing for data from both to be used for activity detection.
+\end_layout
+
+\begin_layout Standard
+The ability to run a background process will enable a proper API for sharing
+ activity data with other applications, which will allow third-party developers
+ to make their applications context-aware with relatively little work on
+ their part.
+ This is extremely desirable as it will allow rapid prototyping of applications,
+ which will hopefully lead to innovative new uses of activity classification.
+\end_layout
+
+\begin_layout Standard
+While it is purported
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Garakani2009"
+
+\end_inset
+
+ that there is research being done on bringing activity-awareness to Android
+ platforms, there does not seem to be any work published on this matter
+ or any applications available to support it.
+ While there a small number of self-proclaimed 
+\begin_inset Quotes eld
+\end_inset
+
+context-aware
+\begin_inset Quotes erd
+\end_inset
+
+ applications for Android, this context is almost exclusively limited to
+ geolocation.
+ This project will therefore produce one of the first publicly available
+ activity-aware applications for the Android platform.
+\end_layout
+
+\begin_layout Section
+Location analysis
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Location-analysis"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Location-based services are currently undergoing an 
+\begin_inset Quotes eld
+\end_inset
+
+explosion
+\begin_inset Quotes erd
+\end_inset
+
+
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Bellavista2008"
+
+\end_inset
+
+, thanks to improvements in technology, and greater openness on the part
+ of service providers and handset manufacturers.
+ All modern smartphone platforms have a geolocation stack, usually backed
+ by a GPS chipset and in most cases augmented with either a database of
+ known cell tower locations, or a map of known wifi network identifiers
+ and locations, or both.
+ The two databases allow for rough geolocation when GPS is not available,
+ or for greatly decreased lookup time when a GPS lock is available.
+\end_layout
+
+\begin_layout Standard
+However, while the geolocation stack is a rich source of data, it is a poor
+ source of information.
+ A latitude/longitude pair may describe the user's exact location, but a
+ user would be hard-pressed to tell the difference between the latitude/longitud
+e of their home, place of work, or of somewhere in between the two with
+ no real significance.
+ A great deal of research has therefore been devoted to detecting meaningful
+ locations from GPS traces.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Quotes eld
+\end_inset
+
+Place recognition
+\begin_inset Quotes erd
+\end_inset
+
+ has two phases: learning and recognising.
+ An initial learning phase analyses a sensor log and segments the data into
+ places where the device is stable (stationary), and designates this as
+ a 
+\begin_inset Quotes eld
+\end_inset
+
+waypoint
+\begin_inset Quotes erd
+\end_inset
+
+.
+ It then merges 
+\begin_inset Quotes eld
+\end_inset
+
+waypoints
+\begin_inset Quotes erd
+\end_inset
+
+ that appear to identify the same place being visited multiple times.
+ The second phase uses these learned waypoints to recognise when the device
+ is revisiting a place, and therefore also when the device is not visiting
+ a previously known place (for example when it is moving between two)
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Hightower2005"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+Unfortunately, quite a lot of research into location analysis uses GPS 
+\begin_inset Quotes eld
+\end_inset
+
+blackspots
+\begin_inset Quotes erd
+\end_inset
+
+ to identify useful places
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Nurmi2006,Liao2007b"
+
+\end_inset
+
+.
+ With older GPS chipsets, the satellite signal would be lost when the user
+ entered a building, and this allowed an inference that the current location
+ was probably a place of interest.
+ However, modern GPS chipsets receive a signal in most indoor locations.
+ It is possible that a decrease in signal strength or number of locked satellite
+s may still occur, or that GSM signal strength could be used instead, but
+ these ideas have not been widely explored at present.
+\end_layout
+
+\begin_layout Standard
+There is, however, plenty of research relating to the use of location data
+ outdoors.
+ One application
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Liao2007b"
+
+\end_inset
+
+ learns not only the user's frequently visited places, but the method of
+ transport used between them and the typical routes taken.
+ It can then offer instructions showing the user how to go from place to
+ place, or issue alerts if the user appears to be going the wrong way (by
+ getting on the wrong bus, for instance).
+ The ability to correctly infer the user's destination would be extremely
+ useful in a context-aware system: a user walking to do their grocery shopping
+ is almost certainly going to want to interact with their phone differently
+ than a user on a bus going to work.
+\end_layout
+
+\begin_layout Section
+Bluetooth
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Bluetooth"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The user's context depends on not only what they are doing, where they are
+ doing it, but also who they are with.
+ Sitting and eating lunch with a manager is quite a different context to
+ sitting and eating lunch with a spouse.
+ It would therefore be desirable to be able to identify between different
+ people when performing context analysis.
+\end_layout
+
+\begin_layout Standard
+One of the few ways that a mobile telephone can identify other people is
+ by searching for 
+\emph on
+their
+\emph default
+ mobile telephones.
+ This can be done by scanning for Bluetooth devices, which involves broadcasting
+ a 
+\begin_inset Quotes eld
+\end_inset
+
+device inquiry
+\begin_inset Quotes erd
+\end_inset
+
+ message; if a device chooses to answer the inquiry, it discloses its unique
+ MAC address and device class
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+the device class tells us whether the device is a computer or a mobile telephone
+, for example
+\end_layout
+
+\end_inset
+
+.
+ Unfortunately, this requires the person to not only be carrying a mobile
+ telephone, but a Bluetooth-enabled model, and for them to have configured
+ their device to have Bluetooth enabled and to be 
+\begin_inset Quotes eld
+\end_inset
+
+visible
+\begin_inset Quotes erd
+\end_inset
+
+.
+ A study in 2004
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Eagle2004"
+
+\end_inset
+
+ found that only 1 in 150 people had such a configured device on a university
+ campus.
+ This figure will undoubtedly be greater now, and may well be greater when
+ in public, but it highlights that only a handful of people may be detectable
+ via their Bluetooth devices.
+\end_layout
+
+\begin_layout Standard
+A study in 2006
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Nicolai2006"
+
+\end_inset
+
+ used a similar technique to monitor the social context of the user, introducing
+ the idea of 
+\begin_inset Quotes eld
+\end_inset
+
+familiar
+\begin_inset Quotes erd
+\end_inset
+
+ people, 
+\begin_inset Quotes eld
+\end_inset
+
+unfamiliar
+\begin_inset Quotes erd
+\end_inset
+
+ people and 
+\begin_inset Quotes eld
+\end_inset
+
+familiar strangers
+\begin_inset Quotes erd
+\end_inset
+
+.
+ These labels were applied based on the number of times their Bluetooth
+ devices were detected 
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+and by extension the number of times the user had come into contact with
+ them
+\end_layout
+
+\end_inset
+
+.
+ While the definition of 
+\begin_inset Quotes eld
+\end_inset
+
+familiar
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+unfamiliar
+\begin_inset Quotes erd
+\end_inset
+
+ are quite obvious, 
+\begin_inset Quotes eld
+\end_inset
+
+familiar strangers
+\begin_inset Quotes erd
+\end_inset
+
+ is a new class of people used to describe those who the user encounters
+ repeatedly, but doesn't interact with.
+ This may include neighbours that are passed on the street, or fellow commuters
+ on a journey into work.
+ The number of people in each of those groups (and any changes in those
+ numbers) can be used to infer how 
+\begin_inset Quotes eld
+\end_inset
+
+comfortable
+\begin_inset Quotes erd
+\end_inset
+
+ the user feels with their social context, and whether their current activity
+ is part of a normal routine or is novel.
+\end_layout
+
+\begin_layout Standard
+This research has, to date, not been readily combined with activity-aware
+ applications, and this project will aim to integrate the results of Bluetooth
+ scanning with 
+\begin_inset Quotes eld
+\end_inset
+
+classical
+\begin_inset Quotes erd
+\end_inset
+
+ activity classification techniques and to evaluate whether it provides
+ any benefit.
+\end_layout
+
+\begin_layout Section
+Power management
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Power-management"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+One major consideration when deploying an application on a mobile device
+ is the amount of power it will use.
+ An application constantly polling any one sensor can reduce battery life
+ significantly, and an application which kept all available sensors active
+ (in addition to doing CPU-heavy analysis on them) would drain the battery
+ in a typical smartphone in a matter of hours.
+ A context-aware application is not very useful for a user if they can only
+ use their telephone for an hour or two before it needs recharging!
+\end_layout
+
+\begin_layout Standard
+One solution
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Wang2009"
+
+\end_inset
+
+is to only use one or two sensors to monitor the user's activity until it
+ appears to be transitioning.
+ For example, if the user is believed to be walking, the application only
+ needs to periodically check either the accelerometer (to confirm the user
+ is still making walking motions) or GPS (to confirm the distance traveled
+ is still consistent with walking) to know that their activity has not changed.
+ As soon as the user's behaviour becomes inconsistent with walking, the
+ application can bring other sensors online until it has successfully reclassifi
+ed the activity, and then resume monitoring with minimal sensors.
+\end_layout
+
+\begin_layout Standard
+Another option
+\begin_inset CommandInset citation
+LatexCommand cite
+key "Wang2009"
+
+\end_inset
+
+ (which can be used in conjunction) is to only enable sensors for a short
+ amount of time, and then sleep for a period before reactivating them.
+ The 
+\begin_inset Quotes eld
+\end_inset
+
+duty cycle
+\begin_inset Quotes erd
+\end_inset
+
+ suggested for accelerometers is 6 second of sensing followed by 10 seconds
+ of sleeping.
+ The six second window is enough time to allow for capturing a full range
+ of motion (several complete strides) if the user is walking or running,
+ and then the ten second sleep stops the accelerometer using battery power
+ until the next cycle.
+ This process obviously means that a sudden switch in activity will not
+ be noticed immediately, but a delay of a few seconds is acceptable as most
+ activities will last for minutes or longer.
+\end_layout
+
+\begin_layout Standard
+The battery life on modern smartphones rarely exceeds 24 hours of typical
+ use, so it is extremely important that any applications developed for this
+ project does not significantly reduce this.
+ A balance between prompt detection and notification of activity changes
+ and battery use by sensors and processing algorithms will need to be found.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Specification
+\end_layout
+
+\begin_layout Section
+Experimentation
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Experimentation"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Battery use
+\end_layout
+
+\begin_layout Standard
+The average lifetime of a typical Android mobile telephone will need to
+ be ascertained, taking into consideration typical day-to-day use of the
+ device and any additional battery drain caused by that.
+ The impact of sensor use on the battery lifetime needs to be calculated
+ or experimentally determined, and the effect of the algorithms described
+ in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Power-management"
+
+\end_inset
+
+ needs to be quantified.
+\end_layout
+
+\begin_layout Standard
+Once this is complete, a selection of algorithms and suitable parameters
+ should be made for use in the classifier application (section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Classifier-application"
+
+\end_inset
+
+).
+ The aim of the selection should be to ensure the best activity detection
+ whilst not severely reducing the device's battery life.
+\end_layout
+
+\begin_layout Subsection
+Location analysis
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Location-analysis"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+As discussed in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Location-analysis"
+
+\end_inset
+
+, existing algorithms to detect interesting places rely on GPS signals not
+ being obtainable indoors, which is no longer true with current generation
+ GPS chipsets.
+ It may be possible to adapt these algorithms to work instead using the
+ GSM signal strength or number of locked GPS satellites.
+ The variance of these when inside and outside a building need to be investigate
+d to determine if this is a feasible approach, or whether an alternate algorithm
+ needs to be used.
+\end_layout
+
+\begin_layout Standard
+A suitable algorithm should be implemented which allows the user's activity
+ to be annotated with location-based context.
+ This would ideally take the form of a source and destination for mobile
+ activities, or location for static activities.
+ The goal is to be able to differentiate between 
+\begin_inset Quotes eld
+\end_inset
+
+walking to work
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+walking to the shop
+\begin_inset Quotes erd
+\end_inset
+
+, although the labeling of places may be left to future work.
+ Unlabeled places (i.e., something akin to 
+\begin_inset Quotes eld
+\end_inset
+
+walking to place2
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+walking to place7
+\begin_inset Quotes erd
+\end_inset
+
+ instead of the previous examples) still allow for applications to tailor
+ their behaviour based on the user's previous activities at or when walking
+ to that place, so will be sufficient for an initial version.
+\end_layout
+
+\begin_layout Subsection
+Bluetooth usage
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Bluetooth-usage"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The algorithm for classifying familiar, unfamiliar, and 
+\begin_inset Quotes eld
+\end_inset
+
+familiar stranger
+\begin_inset Quotes erd
+\end_inset
+
+ Bluetooth devices (section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Bluetooth"
+
+\end_inset
+
+) should be implemented.
+ An experiment should then be conducted to determine whether or not the
+ data provides useful clues as to the user's context.
+ This will depend on the number of other people with Bluetooth discoverable
+ devices in the vicinity of the user.
+\end_layout
+
+\begin_layout Standard
+If there are a sufficient number of discoverable devices, then the algorithms
+ should be included in the classifier application to provide additional
+ context.
+\end_layout
+
+\begin_layout Section
+Deliverables
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Deliverables"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The following items should be delivered:
+\end_layout
+
+\begin_layout Subsection
+Context-aware Framework
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Classifier-application"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+An Android application which:
+\end_layout
+
+\begin_layout Itemize
+monitors raw sensor data and extracts features from the device's:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+accelerometer sensors
+\end_layout
+
+\begin_layout Itemize
+magnetic field sensors
+\end_layout
+
+\begin_layout Itemize
+camera
+\end_layout
+
+\begin_layout Itemize
+microphone
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+monitors relevant data and extracts features concerning:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+visible Bluetooth devices in proximity to the device
+\end_layout
+
+\begin_layout Itemize
+the current location of the device
+\end_layout
+
+\begin_layout Itemize
+the current GSM signal strength and cell ID
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+presents the user with a method of optionally annotating this data with
+ their current activity
+\end_layout
+
+\begin_layout Itemize
+classifies the user's current activity using the extracted features and
+ a K-Nearest Neighbour algorithm
+\end_layout
+
+\begin_layout Itemize
+enhances the classification with extra contextual data inferred from location
+ or Bluetooth service:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+the user's probable source and destination, if traveling
+\end_layout
+
+\begin_layout Itemize
+the user's current location, if stationary
+\end_layout
+
+\begin_layout Itemize
+the user's company, if detected
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+attempts to conserve battery life by intelligent management and timing of
+ sensor activity
+\end_layout
+
+\begin_layout Subsubsection
+Interface
+\end_layout
+
+\begin_layout Standard
+The application should provide two different interfaces to retrieve the
+ user's context.
+ The first should be an implementation of the Android ContentProvider interface.
+ This allows third party applications to query and retrieve data (in this
+ case, the user's probable activities and context) as and when they need
+ it.
+\end_layout
+
+\begin_layout Standard
+The ContentProvider interface exposes data as a table.
+ The classifier application should therefore supply a unique ID for each
+ possible activity, the name of the activity (if labeled), the time the
+ activity was started, and the estimated uncertainty in the classification.
+ It should also expose relevant details of any context information, such
+ as related places (s
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Location-analysis"
+
+\end_inset
+
+) or other participants (s
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sub:Bluetooth-usage"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+The second interface should use Android broadcast Intents to notify any
+ interested application whenever the user's activity changes.
+ This will allow applications to be notified whenever the activity or context
+ of the user changes.
+ The Intent should contain a URI which corresponds to an entry in the table
+ returned by the ContentProvider, so applications can retrieve information
+ about the user's activity directly.
+\end_layout
+
+\begin_layout Standard
+Whenever activities, places or participants are exposed in the interface,
+ they should be assigned an ID which remains consistent for the specified
+ activity, place or participant.
+ Applications can use this ID regardless of any annotations the user supplies.
+ For example, the first time an interesting place is detected it may be
+ assigned ID 42 and label 
+\begin_inset Quotes eld
+\end_inset
+
+place42
+\begin_inset Quotes erd
+\end_inset
+
+, the user may then annotate this place as 
+\begin_inset Quotes eld
+\end_inset
+
+home
+\begin_inset Quotes erd
+\end_inset
+
+, and some time later replace it with 
+\begin_inset Quotes eld
+\end_inset
+
+old house
+\begin_inset Quotes erd
+\end_inset
+
+; the ID will be consistent across all of these labels, so any application
+ using this information will continue to function.
+\end_layout
+
+\begin_layout Subsection
+Activity condition for Locale
+\end_layout
+
+\begin_layout Standard
+As a proof-of-concept, an application should be developed which provides
+ Locale
+\begin_inset CommandInset citation
+LatexCommand cite
+key "TwoFortyFourAm2010"
+
+\end_inset
+
+, a popular Android application used to alter device settings and perform
+ actions based on certain conditions, with a new condition representing
+ the user's activity.
+\end_layout
+
+\begin_layout Standard
+This will allow users to change their device settings based on their current
+ activity by creating rules within Locale.
+ Locale also allows users to post updates to popular social networking sites
+ such as Twitter and Facebook, so it will be possible for users to broadcast
+ their activities to their friends.
+\end_layout
+
+\begin_layout Subsection
+Context-aware home screen
+\end_layout
+
+\begin_layout Standard
+To demonstrate the utility of applications being context-aware, an application
+ will be developed that replaces the standard Android home screen.
+ It should dynamically adapt its layout and contents according to the user's
+ activity and other context information made available by the classifier
+ application.
+\end_layout
+
+\begin_layout Standard
+The replacement home screen needs to allow users to browse and launch applicatio
+ns, and should expose relevant (context-sensitive) notifications to the
+ user, including notifications of e-mails, missed calls, text messages and
+ upcoming appointments.
+\end_layout
+
+\begin_layout Subsection
+User and developer guides
+\end_layout
+
+\begin_layout Itemize
+A user guide for the classifier
+\noun on
+ 
+\noun default
+application
+\end_layout
+
+\begin_layout Itemize
+A user guide for the Locale condition provider
+\end_layout
+
+\begin_layout Itemize
+A user guide for the Context-aware home screen
+\end_layout
+
+\begin_layout Itemize
+A developer's guide for using the information exposed by the 
+\noun on
+classifier
+\noun default
+ application
+\end_layout
+
+\begin_layout Subsection
+Website
+\end_layout
+
+\begin_layout Standard
+A website should be created containing an overview of the applications,
+ instructions for both users and developers, and links to download the applicati
+ons.
+ The website should explain the basic ideas behind activity and context
+ aware applications, and the specific techniques used in this project.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Evaluation
+\end_layout
+
+\begin_layout Section
+Reports
+\end_layout
+
+\begin_layout Standard
+The results of the experimentation described in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Experimentation"
+
+\end_inset
+
+ should be written up as a report.
+ The reports must include the data collected in each of the experiments,
+ the conclusions drawn from those, and the impact of the results of the
+ experiment on the project deliverables.
+\end_layout
+
+\begin_layout Section
+Deliverables
+\end_layout
+
+\begin_layout Standard
+On successful completion of the project, there should be three deliverable
+ applications as specified in section 
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "sec:Deliverables"
+
+\end_inset
+
+.
+ These can be tested and evaluated in a variety of manners:
+\end_layout
+
+\begin_layout Subsection
+Unit tests
+\end_layout
+
+\begin_layout Standard
+Throughout the development of the project, unit tests should be created
+ to test key functionality of all applications.
+ It is expected that at the completion of the project, all unit tests should
+ pass successfully, and they will have a code coverage of 80% or above.
+\end_layout
+
+\begin_layout Subsection
+System tests
+\end_layout
+
+\begin_layout Standard
+The classifier application should also have a suite of system tests.
+ These should consist of a set of fake or pre-recorded inputs which are
+ fed into the application in place of raw sensor data.
+ The output of the classifier (via the API) can then be compared to expected
+ output for the data.
+\end_layout
+
+\begin_layout Subsection
+User acceptance testing
+\end_layout
+
+\begin_layout Standard
+The Locale addon and context-aware home screen should be subject to user
+ acceptance testing for evaluation.
+ This should take the form of providing the applications to multiple end
+ users, allowing them to use them for a period of time (providing instructions
+ for certain tasks to complete).
+ The users should then be presented with a questionnaire which they can
+ use to evaluate the functionality, utility and design of the applications.
+\end_layout
+
+\begin_layout Subsubsection
+Android market
+\end_layout
+
+\begin_layout Standard
+In addition to providing the applications to a closed set of users, the
+ applications should be published to the Android market.
+ This will allow any owner of a compatible Android device to download and
+ use the applications.
+ The market also allows users to rate the application and leave comments,
+ which will be an extremely useful method of evaluating the success of the
+ applications.
+\end_layout
+
+\begin_layout Standard
+As part of this, the classifier application/framework will be published,
+ and should include instructions for developers detailing how they can make
+ their applications context-aware.
+ The interest expressed and number of applications which use it (if any)
+ will be an indicator of the effectiveness of the API and its documentation.
+\end_layout
+
+\begin_layout Subsection
+Classification scope
+\end_layout
+
+\begin_layout Standard
+The classifier should be able to classify the following activities:
+\end_layout
+
+\begin_layout Itemize
+walking
+\end_layout
+
+\begin_layout Itemize
+running
+\end_layout
+
+\begin_layout Itemize
+standing
+\end_layout
+
+\begin_layout Itemize
+sitting
+\end_layout
+
+\begin_layout Itemize
+traveling in a vehicle
+\end_layout
+
+\begin_layout Standard
+These should be evaluated by means of a leave-one-out cross-validation test,
+ with data collected from one or more users and annotated by hand.
+ It is expected that the classifier should correctly classify all activities
+ with an accuracy of at least 70%, within 30 seconds of the activity being
+ started.
+\end_layout
+
+\begin_layout Subsection
+Resource usage
+\end_layout
+
+\begin_layout Standard
+Finally, the applications should be evaluated based on their resource usage.
+ One of the main concerns will be battery usage (caused both by the application
+ using processor time, and activating sensors), but attention must also
+ be paid to memory consumption (especially after extended use).
+ The goal should be to ensure that the resource usage of the applications
+ in this project do not adversely impact the functionality of the device;
+ that is, battery life should not be reduced so significantly that it requires
+ users to change their normal charging behaviour, and memory usage should
+ not be so high as to cause other applications to become sluggish or be
+ closed by the operating system.
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset bibtex
+LatexCommand bibtex
+bibfiles "/home/chris/Uni/project/papers/project"
+options "bibtotoc,savetrees"
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
