@@ -36,6 +36,9 @@ public class Place {
     public static final String NAME = "name";
     public static final String LATITUDE = "lat";
     public static final String LONGITUDE = "lon";
+    public static final String DURATION = "duration";
+    public static final String VISIT_COUNT = "times";
+    public static final String LAST_VISIT = "lastvisit";
 
     public static final Uri CONTENT_URI = Uri.parse("content://uk.co.md87"
             + ".android.contextanalyser.placescontentprovider/places");
