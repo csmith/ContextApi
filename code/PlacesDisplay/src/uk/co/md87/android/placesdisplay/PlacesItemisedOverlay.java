@@ -22,7 +22,10 @@
 
 package uk.co.md87.android.placesdisplay;
 
+import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
+import android.widget.Toast;
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
 import java.util.ArrayList;
@@ -35,10 +38,13 @@ import java.util.List;
  */
 public class PlacesItemisedOverlay extends ItemizedOverlay<OverlayItem> {
 
+    private final Context context;
     private final List<OverlayItem> overlays = new ArrayList<OverlayItem>();
 
-    public PlacesItemisedOverlay(Drawable defaultMarker) {
+    public PlacesItemisedOverlay(Context context, Drawable defaultMarker) {
         super(boundCenter(defaultMarker));
+        
+        this.context = context;
     }
 
     @Override
@@ -49,6 +55,12 @@ public class PlacesItemisedOverlay extends ItemizedOverlay<OverlayItem> {
     public void addOverlay(OverlayItem overlay) {
         overlays.add(overlay);
         populate();
+    }
+
+    @Override
+    protected boolean onTap(int arg0) {
+        Toast.makeText(context, overlays.get(arg0).getTitle(), 5000).show();
+        return true;
     }
 
     @Override

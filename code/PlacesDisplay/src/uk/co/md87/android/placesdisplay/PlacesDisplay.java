@@ -98,8 +98,8 @@ public class PlacesDisplay extends MapActivity {
         MapView mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
 
-        PlacesItemisedOverlay overlay = new PlacesItemisedOverlay(Resources
-                .getSystem().getDrawable(android.R.drawable.btn_star_big_on));
+        PlacesItemisedOverlay overlay = new PlacesItemisedOverlay(this,
+                Resources.getSystem().getDrawable(android.R.drawable.btn_star_big_on));
         List<Overlay> mapOverlays = mapView.getOverlays();
 
         final Cursor cursor = managedQuery(Place.CONTENT_URI,
