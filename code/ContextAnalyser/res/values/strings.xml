@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <resources>
-    <string name="app_name">ContextAnalyser</string>
+    <string name="app_name">Context Analyser</string>
 
     <string name="permlab_receiveUpdates">receive context updates</string>
     <string name="permdesc_receiveUpdates">Allows the application to
@@ -25,11 +25,11 @@
     <string name="permdesc_writeJourneys">Allows the application to
         modify the list of journeys that the context analyser knows about.</string>
 
-    <string name="permgrouplabel">Context permissions</string>
+    <string name="permgrouplabel">Context information</string>
     <string name="permgroupdesc">Permissions related to the context analyser
         service and its API.</string>
 
-    <string name="permlab_broadcast">Make broadcasts</string>
+    <string name="permlab_broadcast">broadcast information</string>
     <string name="permdesc_broadcast">Allows the application to make
         context-related broadcasts.</string>
 
