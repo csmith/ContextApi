@@ -27,6 +27,7 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -97,24 +98,27 @@ public class PlacesDisplay extends MapActivity {
         MapView mapView = (MapView) findViewById(R.id.mapview);
         mapView.setBuiltInZoomControls(true);
 
-        PlacesItemisedOverlay overlay = new PlacesItemisedOverlay(getResources()
-                .getDrawable(R.drawable.icon));
+        PlacesItemisedOverlay overlay = new PlacesItemisedOverlay(Resources
+                .getSystem().getDrawable(android.R.drawable.btn_star_big_on));
         List<Overlay> mapOverlays = mapView.getOverlays();
 
         final Cursor cursor = managedQuery(Place.CONTENT_URI,
-                new String[] { Place.LATITUDE, Place.LONGITUDE },
+                new String[] { Place.LATITUDE, Place.LONGITUDE, Place.NAME },
                 null, null, null);
 
         if (cursor.moveToFirst()) {
             final int latitudeColumn = cursor.getColumnIndex(Place.LATITUDE);
             final int longitudeColumn = cursor.getColumnIndex(Place.LONGITUDE);
+            final int nameColumn = cursor.getColumnIndex(Place.NAME);
+
             do {
                 final double latitude = cursor.getDouble(latitudeColumn);
                 final double longitude = cursor.getDouble(longitudeColumn);
+                final String name = cursor.getString(nameColumn);
 
                 GeoPoint point = new GeoPoint((int) (latitude * 1000000),
                         (int) (longitude * 1000000));
-                OverlayItem overlayitem = new OverlayItem(point, "Hola, Mundo!", "I'm in Mexico City!");
+                OverlayItem overlayitem = new OverlayItem(point, name, "I'm in Mexico City!");
 
                 overlay.addOverlay(overlayitem);
             } while (cursor.moveToNext());

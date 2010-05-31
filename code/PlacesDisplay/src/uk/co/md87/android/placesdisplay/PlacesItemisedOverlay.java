@@ -38,7 +38,7 @@ public class PlacesItemisedOverlay extends ItemizedOverlay<OverlayItem> {
     private final List<OverlayItem> overlays = new ArrayList<OverlayItem>();
 
     public PlacesItemisedOverlay(Drawable defaultMarker) {
-        super(boundCenterBottom(defaultMarker));
+        super(boundCenter(defaultMarker));
     }
 
     @Override
