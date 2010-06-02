@@ -74,7 +74,9 @@ public class ContextAnalyserService extends Service {
 
     public static final int CONTEXT_PLACE = 1;
 
-    private static final int POLLING_DELAY = 10000;
+    public static final boolean DEBUG = false;
+
+    private static final int POLLING_DELAY = 60000;
 
     private final Runnable scheduleRunnable = new Runnable() {
 
@@ -136,7 +138,7 @@ public class ContextAnalyserService extends Service {
     public void poll() {
         handler.postDelayed(scheduleRunnable, POLLING_DELAY);
 
-        Log.v(getClass().getSimpleName(), "Polling...");
+        if (DEBUG) { Log.v(getClass().getSimpleName(), "Polling..."); }
 
         pollLocation();
         pollGeolocation();
@@ -180,7 +182,7 @@ public class ContextAnalyserService extends Service {
         while (it.hasNext()) {
             final Map.Entry<String, Long> tuple = it.next();
 
-            Log.v(getClass().getSimpleName(), "Attempting to geocode " + tuple.getKey());
+            if (DEBUG) { Log.v(getClass().getSimpleName(), "Attempting to geocode " + tuple.getKey()); }
             
             final String[] parts = tuple.getKey().split(",", 2);
 
@@ -211,7 +213,10 @@ public class ContextAnalyserService extends Service {
 
         if (location != null) {
             if ((lastLocation == null || !lastLocation.equals(location))) {
-                Log.i(getClass().getSimpleName(), "New location, broadcasting: " + location);
+                if (DEBUG) {
+                    Log.i(getClass().getSimpleName(), "New location, broadcasting: " + location);
+                }
+
                 locationStart = System.currentTimeMillis();
 
                 if (lastLocation != null) {
@@ -225,7 +230,10 @@ public class ContextAnalyserService extends Service {
                     }
 
                     if (!activityLog.isEmpty()) {
-                        Log.i(getClass().getSimpleName(), "Activity log to here: " + activityLog);
+                        if (DEBUG) {
+                            Log.i(getClass().getSimpleName(), "Activity log to here: " + activityLog);
+                        }
+
                         dataHelper.addJourney(lastLocation, location, activityLog);
                     }
                 }
@@ -246,7 +254,9 @@ public class ContextAnalyserService extends Service {
     protected void analyse() {
         final String newActivity = aggregator.getClassification();
 
-        Log.v(getClass().getSimpleName(), "Aggregator says: " + newActivity);
+        if (DEBUG) {
+            Log.v(getClass().getSimpleName(), "Aggregator says: " + newActivity);
+        }
 
         if (location == null && lastLocation != null) {
             // We're going somewhere - record the activity
@@ -256,7 +266,9 @@ public class ContextAnalyserService extends Service {
         }
 
         if (!newActivity.equals(lastActivity)) {
-            Log.i(getClass().getSimpleName(), "Broadcasting activity change");
+            if (DEBUG) {
+                Log.i(getClass().getSimpleName(), "Broadcasting activity change");
+            }
 
             final Intent intent = new Intent(ACTIVITY_CHANGED_INTENT);
             intent.putExtra("old", lastActivity);
@@ -303,14 +315,18 @@ public class ContextAnalyserService extends Service {
 
                 predictions.put(journey.getEnd(), last);
             } else {
-                Log.d(getClass().getSimpleName(), "Journey " + journey + " incompatible");
-                Log.d(getClass().getSimpleName(), "Their steps: " + theirSteps);
-                Log.d(getClass().getSimpleName(), "My steps: " + mySteps);
+                if (DEBUG) {
+                    Log.d(getClass().getSimpleName(), "Journey " + journey + " incompatible");
+                    Log.d(getClass().getSimpleName(), "Their steps: " + theirSteps);
+                    Log.d(getClass().getSimpleName(), "My steps: " + mySteps);
+                }
                 it.remove();
             }
         }
 
-        Log.i(getClass().getSimpleName(), "Predictions: " + journeys);
+        if (DEBUG) {
+            Log.i(getClass().getSimpleName(), "Predictions: " + journeys);
+        }
 
         final Intent intent = new Intent(PREDICTION_AVAILABLE_INTENT);
         intent.putExtra("count", count);
