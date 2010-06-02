@@ -20,6 +20,9 @@
             android:authorities="uk.co.md87.android.contextanalyser.journeyscontentprovider"
             android:readPermission="uk.co.md87.android.contextanalyser.READ_JOURNEYS"
             android:writePermission="uk.co.md87.android.contextanalyser.WRITE_JOURNEYS"/>
+
+        <provider android:name="uk.co.md87.android.contextanalyser.ActivitiesContentProvider"
+            android:authorities="uk.co.md87.android.contextanalyser.activitiescontentprovider"/>
     </application>
 
     <permission-group android:description="@string/permgroupdesc"
