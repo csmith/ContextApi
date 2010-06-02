@@ -24,14 +24,14 @@ package uk.co.md87.android.contextanalyser;
 
 import android.app.Service;
 import android.content.Intent;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.os.Handler;
 import android.os.IBinder;
-import android.telephony.TelephonyManager;
+import android.os.RemoteException;
 import android.util.Log;
+
 import com.flurry.android.FlurryAgent;
 
 import java.io.IOException;
@@ -41,8 +41,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import uk.co.md87.android.common.ExceptionHandler;
 
+import uk.co.md87.android.common.ExceptionHandler;
 import uk.co.md87.android.common.ModelReader;
 import uk.co.md87.android.common.accel.AccelReaderFactory;
 import uk.co.md87.android.common.aggregator.AutoAggregator;
@@ -52,6 +52,7 @@ import uk.co.md87.android.common.geo.LocationMonitorFactory;
 import uk.co.md87.android.common.model.Journey;
 import uk.co.md87.android.common.model.JourneyStep;
 import uk.co.md87.android.common.model.Place;
+import uk.co.md87.android.contextanalyser.rpc.ContextAnalyserBinder;
 
 /**
  * Background service which monitors and aggregates various sources of
@@ -86,6 +87,13 @@ public class ContextAnalyserService extends Service {
 
         public void run() {
             analyse();
+        }
+    };
+
+    private final ContextAnalyserBinder.Stub binder = new ContextAnalyserBinder.Stub() {
+
+        public String getActivity() throws RemoteException {
+            return lastActivity;
         }
     };
 
@@ -322,7 +330,7 @@ public class ContextAnalyserService extends Service {
 
     @Override
     public IBinder onBind(Intent arg0) {
-        return null;
+        return binder;
     }
 
 }
