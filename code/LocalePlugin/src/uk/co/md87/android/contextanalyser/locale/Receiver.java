@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Bundle;
 
 /**
  * Receives broadcast intents from Locale and the Context Analyser.
@@ -37,15 +38,29 @@ public class Receiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        final Cursor cursor = context.getContentResolver().query(
-                Uri.parse("content://uk.co.md87.android.contextanalyser."
-                + "activitiescontentprovider/current"),
-                new String[] { "activity" }, null, null, null);
+        if (com.twofortyfouram.Intent.ACTION_QUERY_CONDITION.equals(intent.getAction())) {
+            final Bundle bundle = intent.getBundleExtra(com.twofortyfouram.Intent.EXTRA_BUNDLE);
 
-        if (cursor.moveToFirst()) {
-            cursor.getString(cursor.getColumnIndex("activity"));
-        } else {
-            setResultCode(com.twofortyfouram.Intent.RESULT_CONDITION_UNKNOWN);
+            if (bundle == null || !bundle.containsKey("activity")) {
+                return;
+            }
+
+            final Cursor cursor = context.getContentResolver().query(
+                    Uri.parse("content://uk.co.md87.android.contextanalyser."
+                    + "activitiescontentprovider/current"),
+                    new String[] { "activity" }, null, null, null);
+
+            if (cursor.moveToFirst()) {
+                final String activity = cursor.getString(cursor.getColumnIndex("activity"));
+
+                if (activity.equals(bundle.getString("activity"))) {
+                    setResultCode(com.twofortyfouram.Intent.RESULT_CONDITION_SATISFIED);
+                } else {
+                    setResultCode(com.twofortyfouram.Intent.RESULT_CONDITION_UNSATISFIED);
+                }
+            } else {
+                setResultCode(com.twofortyfouram.Intent.RESULT_CONDITION_UNKNOWN);
+            }
         }
     }
 
