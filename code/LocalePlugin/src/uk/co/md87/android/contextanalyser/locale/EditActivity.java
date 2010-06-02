@@ -31,6 +31,7 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.flurry.android.FlurryAgent;
 import com.twofortyfouram.SharedResources;
 
 /**
@@ -48,6 +49,8 @@ public class EditActivity extends Activity {
     @Override
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FlurryAgent.onStartSession(this, "FRC4VR4CREJG3BTGSTLV");
 
         setContentView(R.layout.main);
 
@@ -77,8 +80,10 @@ public class EditActivity extends Activity {
     @Override
     public void finish() {
         if (isCancelled) {
+            FlurryAgent.onEvent("cancel");
             setResult(RESULT_CANCELED);
         } else {
+            FlurryAgent.onEvent("save");
             final Intent returnIntent = new Intent();
 
             final Bundle storeAndForwardExtras = new Bundle();
@@ -92,6 +97,7 @@ public class EditActivity extends Activity {
             setResult(RESULT_OK, returnIntent);
         }
 
+        FlurryAgent.onEndSession(this);
         super.finish();
     }
 
