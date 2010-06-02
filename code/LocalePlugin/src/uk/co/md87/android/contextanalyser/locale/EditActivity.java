@@ -28,11 +28,15 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 import com.twofortyfouram.SharedResources;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * This is the "Edit" activity for the locale plugin.
@@ -63,13 +67,25 @@ public class EditActivity extends Activity {
         ((LinearLayout) findViewById(R.id.frame))
                 .setBackgroundDrawable(SharedResources.getDrawableResource(getPackageManager(),
                 SharedResources.DRAWABLE_LOCALE_BORDER));
+        
+        final List<String> objects = Arrays.asList(new String[]{
+            "CLASSIFIED/IDLE/SITTING", "CLASSIFIED/IDLE/STANDING",
+            "CLASSIFIED/WALKING", "CLASSIFIED/WALKING/STAIRS",
+            "CLASSIFIED/WALKING/STAIRS/UP", "CLASSIFIED/WALKING/STAIRS/DOWN",
+            "CLASSIFIED/DANCING", "CLASSIFIED/VEHICLE",
+            "CLASSIFIED/VEHICLE/CAR", "CLASSIFIED/VEHICLE/BUS",
+        });
+
+        final Spinner spinner = (Spinner) findViewById(R.id.spinner);
+        spinner.setAdapter(new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, objects));
 
         if (savedInstanceState == null) {
             final Bundle forwardedBundle = getIntent()
                     .getBundleExtra(com.twofortyfouram.Intent.EXTRA_BUNDLE);
 
             if (forwardedBundle != null) {
-                ((TextView) findViewById(R.id.textview)).setText(forwardedBundle.getString("activity"));
+                spinner.setSelection(objects.indexOf(forwardedBundle.getString("activity")));
             }
         }
     }
@@ -89,9 +105,9 @@ public class EditActivity extends Activity {
             final Bundle storeAndForwardExtras = new Bundle();
 
             storeAndForwardExtras.putString("activity",
-                    ((TextView) findViewById(R.id.textview)).getText().toString());
+                    ((Spinner) findViewById(R.id.spinner)).getSelectedItem().toString());
             returnIntent.putExtra(com.twofortyfouram.Intent.EXTRA_STRING_BLURB,
-                    ((TextView) findViewById(R.id.textview)).getText().toString());
+                    ((Spinner) findViewById(R.id.spinner)).getSelectedItem().toString());
 
             returnIntent.putExtra(com.twofortyfouram.Intent.EXTRA_BUNDLE, storeAndForwardExtras);
             setResult(RESULT_OK, returnIntent);

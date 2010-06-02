@@ -10,12 +10,11 @@
         android:layout_weight="1"
         android:layout_margin="5dp"
         android:id="@+id/frame">
-        <TextView
-            android:id="@+id/textview"
+        <Spinner
+            android:id="@+id/spinner"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/plugin_name"
-            android:editable="true"
-            android:singleLine="true"/>
+            android:prompt="@string/plugin_name"
+            android:drawSelectorOnTop="true"/>
     </LinearLayout>
 </LinearLayout>
