@@ -7,8 +7,21 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.INFO"/>
             </intent-filter>
         </activity>
+
+        <activity android:name=".EditActivity" android:label="Activity"
+            android:icon="@drawable/icon" android:exported="true">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_CONDITION"/>
+            </intent-filter>
+        </activity>
+
+         <receiver android:name=".Receiver" >
+             <intent-filter>
+                 <action android:name="com.twofortyfouram.locale.intent.action.QUERY_CONDITION" />
+             </intent-filter>
+         </receiver>
     </application>
 </manifest>
