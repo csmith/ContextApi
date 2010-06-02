@@ -61,6 +61,10 @@ public class Receiver extends BroadcastReceiver {
             } else {
                 setResultCode(com.twofortyfouram.Intent.RESULT_CONDITION_UNKNOWN);
             }
+        } else if ("uk.co.md87.android.contextanalyser.ACTIVITY_CHANGED".equals(intent.getAction())) {
+            final Intent broadcast = new Intent(com.twofortyfouram.Intent.ACTION_REQUEST_QUERY);
+            broadcast.putExtra(com.twofortyfouram.Intent.EXTRA_ACTIVITY, EditActivity.class.getName());
+            context.sendBroadcast(intent);
         }
     }
 

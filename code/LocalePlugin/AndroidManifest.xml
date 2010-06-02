@@ -18,10 +18,19 @@
             </intent-filter>
         </activity>
 
-         <receiver android:name=".Receiver" >
+         <receiver android:name=".Receiver" android:exported="true">
              <intent-filter>
                  <action android:name="com.twofortyfouram.locale.intent.action.QUERY_CONDITION" />
              </intent-filter>
          </receiver>
+
+         <receiver android:name=".Receiver" android:exported="true"
+             android:permission="uk.co.md87.android.contextanalyser.BROADCAST">
+             <intent-filter>
+                 <action android:name="uk.co.md87.android.contextanalyser.ACTIVITY_CHANGED" />
+             </intent-filter>
+         </receiver>
     </application>
+
+    <uses-permission android:name="uk.co.md87.android.contextanalyser.RECEIVE_UPDATES"/>
 </manifest>
