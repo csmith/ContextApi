@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-     package="uk.co.md87.android.contextanalyser.locale">
-    <application android:name="@string/app_name">
+     package="uk.co.md87.android.contextanalyser.locale"
+     android:versionCode="1" android:versionName="0.0.1">
+    <application android:label="@string/app_name" android:icon="@drawable/icon">
         <activity android:name="com.twofortyfouram.MarketActivity"
             android:label="Activity Plugin" android:icon="@drawable/icon"
             android:theme="@android:style/Theme.Translucent.NoTitleBar">
@@ -11,8 +12,8 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".EditActivity" android:label="Activity"
-            android:icon="@drawable/icon" android:exported="true">
+        <activity android:name=".EditActivity" android:label="@string/app_name"
+            android:icon="@drawable/icon">
             <intent-filter>
                 <action android:name="com.twofortyfouram.locale.intent.action.EDIT_CONDITION"/>
             </intent-filter>
@@ -22,15 +23,12 @@
              <intent-filter>
                  <action android:name="com.twofortyfouram.locale.intent.action.QUERY_CONDITION" />
              </intent-filter>
-         </receiver>
-
-         <receiver android:name=".Receiver" android:exported="true"
-             android:permission="uk.co.md87.android.contextanalyser.BROADCAST">
              <intent-filter>
                  <action android:name="uk.co.md87.android.contextanalyser.ACTIVITY_CHANGED" />
              </intent-filter>
          </receiver>
     </application>
 
+    <uses-sdk android:minSdkVersion="3" />
     <uses-permission android:name="uk.co.md87.android.contextanalyser.RECEIVE_UPDATES"/>
 </manifest>

@@ -14,7 +14,8 @@
             android:id="@+id/textview"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:prompt="@string/plugin_name"
+            android:hint="@string/plugin_name"
+            android:editable="true"
             android:singleLine="true"/>
     </LinearLayout>
 </LinearLayout>
