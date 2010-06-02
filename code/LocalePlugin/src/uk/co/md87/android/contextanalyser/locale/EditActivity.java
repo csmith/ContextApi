@@ -31,10 +31,10 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 import com.twofortyfouram.SharedResources;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -47,6 +47,19 @@ public class EditActivity extends Activity {
 
     private static final int MENU_SAVE = 1;
     private static final int MENU_DONT_SAVE = 2;
+
+    final List<String> objects = Arrays.asList(new String[]{
+        "CLASSIFIED/IDLE/SITTING", "CLASSIFIED/IDLE/STANDING",
+        "CLASSIFIED/WALKING", "CLASSIFIED/WALKING/STAIRS/UP",
+        "CLASSIFIED/WALKING/STAIRS/DOWN", "CLASSIFIED/DANCING",
+        "CLASSIFIED/VEHICLE/CAR", "CLASSIFIED/VEHICLE/BUS",
+    });
+
+    final List<String> friendly = Arrays.asList(new String[]{
+        "Idle (sitting)", "Idle (standing)",
+        "Walking", "Walking (up stairs)", "Walking (down stairs)",
+        "Dancing", "Vehicle (car)", "Vehicle (bus)",
+    });
 
     private boolean isCancelled;
 
@@ -68,17 +81,9 @@ public class EditActivity extends Activity {
                 .setBackgroundDrawable(SharedResources.getDrawableResource(getPackageManager(),
                 SharedResources.DRAWABLE_LOCALE_BORDER));
         
-        final List<String> objects = Arrays.asList(new String[]{
-            "CLASSIFIED/IDLE/SITTING", "CLASSIFIED/IDLE/STANDING",
-            "CLASSIFIED/WALKING", "CLASSIFIED/WALKING/STAIRS",
-            "CLASSIFIED/WALKING/STAIRS/UP", "CLASSIFIED/WALKING/STAIRS/DOWN",
-            "CLASSIFIED/DANCING", "CLASSIFIED/VEHICLE",
-            "CLASSIFIED/VEHICLE/CAR", "CLASSIFIED/VEHICLE/BUS",
-        });
-
         final Spinner spinner = (Spinner) findViewById(R.id.spinner);
         spinner.setAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, objects));
+                android.R.layout.simple_spinner_item, friendly));
 
         if (savedInstanceState == null) {
             final Bundle forwardedBundle = getIntent()
@@ -105,7 +110,7 @@ public class EditActivity extends Activity {
             final Bundle storeAndForwardExtras = new Bundle();
 
             storeAndForwardExtras.putString("activity",
-                    ((Spinner) findViewById(R.id.spinner)).getSelectedItem().toString());
+                    objects.get(((Spinner) findViewById(R.id.spinner)).getSelectedItemPosition()));
             returnIntent.putExtra(com.twofortyfouram.Intent.EXTRA_STRING_BLURB,
                     ((Spinner) findViewById(R.id.spinner)).getSelectedItem().toString());
 
