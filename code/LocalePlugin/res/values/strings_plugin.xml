@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<!-- NOTE: these names cannot be changed without also changing the string constants in com.twofortyfouram.MarketActivity.  You will NOT get a compile time error -->
+
+    <string name="plugin_dialog_title"><i>Locale</i> Required</string>
+    <string name="plugin_dialog_install">Install</string>
+    <string name="plugin_dialog_need_locale_message"><i>Locale</i> is required to use this plug-in.  Would you like to install <i>Locale</i>?</string>
+    <string name="plugin_dialog_need_locale_informative">Tap \"Install\" to find <i>Locale</i> on the Android Market.</string> <!-- "Install" should match up with the plugin_dialog_install string -->
+    <string name="plugin_dialog_market_not_available">Application is not installed on your phone.</string>
+</resources>

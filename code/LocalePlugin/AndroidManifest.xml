@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
      package="uk.co.md87.android.contextanalyser.locale">
-    <application>
-         <activity android:name=".MainActivity" android:label="MainActivity">
+    <application android:name="@string/app_name">
+        <activity android:name="com.twofortyfouram.MarketActivity"
+            android:label="Activity Plugin" android:icon="@drawable/icon"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
