@@ -3,8 +3,8 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">" 
-    <TextView
+    <WebView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="Hello Android from NetBeans"/>
+        android:layout_height="fill_parent"
+        android:id="@+id/webview"/>
 </LinearLayout>

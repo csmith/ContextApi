@@ -25,6 +25,7 @@ package uk.co.md87.android.contextanalyser;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.webkit.WebView;
 
 /**
  *
@@ -36,6 +37,11 @@ public class IntroActivity extends Activity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
+        setContentView(R.layout.main);
+
+        final WebView webview = (WebView) findViewById(R.id.webview);
+        webview.loadUrl("http://chris.smith.name/android/contextanalyser/");
 
         startService(new Intent(this, ContextAnalyserService.class));
     }
