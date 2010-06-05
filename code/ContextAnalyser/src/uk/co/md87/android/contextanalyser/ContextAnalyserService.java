@@ -97,8 +97,14 @@ public class ContextAnalyserService extends Service {
         public String getActivity() throws RemoteException {
             return lastActivity;
         }
+
+        public Map getPredictions() throws RemoteException {
+            return predictions;
+        }
+
     };
 
+    private final Map<Long, Integer> predictions = new HashMap<Long, Integer>();
     private final Map<String, Long> names = new HashMap<String, Long>();
     private final List<String> activityLog = new LinkedList<String>();
 
@@ -283,7 +289,7 @@ public class ContextAnalyserService extends Service {
     protected void checkPredictions() {
         final Collection<Journey> journeys = dataHelper.findJourneys(lastLocation);
         final List<JourneyStep> mySteps = JourneyUtil.getSteps(activityLog);
-        final Map<Long, Integer> predictions = new HashMap<Long, Integer>();
+        predictions.clear();
 
         int total = 0;
         int count = 0;

@@ -31,4 +31,6 @@ interface ContextAnalyserBinder {
 
     String getActivity();
 
+    Map getPredictions();
+
 }

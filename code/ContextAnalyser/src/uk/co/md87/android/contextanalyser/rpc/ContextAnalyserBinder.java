@@ -4,6 +4,7 @@
  */
 package uk.co.md87.android.contextanalyser.rpc;
 import java.lang.String;
+import java.util.Map;
 import android.os.RemoteException;
 import android.os.IBinder;
 import android.os.IInterface;
@@ -61,6 +62,14 @@ reply.writeNoException();
 reply.writeString(_result);
 return true;
 }
+case TRANSACTION_getPredictions:
+{
+data.enforceInterface(DESCRIPTOR);
+java.util.Map _result = this.getPredictions();
+reply.writeNoException();
+reply.writeMap(_result);
+return true;
+}
 }
 return super.onTransact(code, data, reply, flags);
 }
@@ -96,8 +105,28 @@ _data.recycle();
 }
 return _result;
 }
+public java.util.Map getPredictions() throws android.os.RemoteException
+{
+android.os.Parcel _data = android.os.Parcel.obtain();
+android.os.Parcel _reply = android.os.Parcel.obtain();
+java.util.Map _result;
+try {
+_data.writeInterfaceToken(DESCRIPTOR);
+mRemote.transact(Stub.TRANSACTION_getPredictions, _data, _reply, 0);
+_reply.readException();
+java.lang.ClassLoader cl = (java.lang.ClassLoader)this.getClass().getClassLoader();
+_result = _reply.readHashMap(cl);
+}
+finally {
+_reply.recycle();
+_data.recycle();
+}
+return _result;
+}
 }
 static final int TRANSACTION_getActivity = (IBinder.FIRST_CALL_TRANSACTION + 0);
+static final int TRANSACTION_getPredictions = (IBinder.FIRST_CALL_TRANSACTION + 1);
 }
 public java.lang.String getActivity() throws android.os.RemoteException;
+public java.util.Map getPredictions() throws android.os.RemoteException;
 }

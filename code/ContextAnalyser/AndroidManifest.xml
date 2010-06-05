@@ -23,6 +23,9 @@
 
         <provider android:name="uk.co.md87.android.contextanalyser.ActivitiesContentProvider"
             android:authorities="uk.co.md87.android.contextanalyser.activitiescontentprovider"/>
+
+        <provider android:name="uk.co.md87.android.contextanalyser.PredictionsContentProvider"
+            android:authorities="uk.co.md87.android.contextanalyser.predictionscontentprovider"/>
     </application>
 
     <permission-group android:description="@string/permgroupdesc"
