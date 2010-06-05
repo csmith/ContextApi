@@ -3,7 +3,7 @@
      package="uk.co.md87.android.contexthome" android:versionCode="1" android:versionName="0.0.1">
     <application android:label="Context Sensitive Home Screen" android:icon="@drawable/icon">
          <activity android:name=".ContextHome" android:label="Context Home"
-            android:icon="@drawable/icon">
+            android:icon="@drawable/icon" android:theme="@android:style/Theme.Black.NoTitleBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.HOME"/>
