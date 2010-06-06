@@ -55,7 +55,71 @@ Supervisor: Naranker Dulay
 \end_layout
 
 \begin_layout Date
-Summary 2010
+Summer 2010
+\end_layout
+
+\begin_layout Standard
+All materials can be accessed electronically at:
+\end_layout
+
+\begin_layout Standard
+/homes/cs106/....
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Abstract
+In recent years location-based services have seen a dramatic increase in
+ adoption, and all modern smartphone platforms have integrated services
+ to facilitate the creation location-aware applications.
+ Such applications enhance the experience of users, using location to modify
+ content or alter the behaviour of the application to better suit the circumstan
+ces.
+\end_layout
+
+\begin_layout Abstract
+The product of this project is a 
+\emph on
+context
+\emph default
+-aware API for the Android platform.
+ This allows applications to augment the already available location data
+ with extra 
+\emph on
+context
+\emph default
+ about the user's situation - primarily their current activity.
+ It also develops an algorithm for recognising 
+\emph on
+places
+\emph default
+ which are relevant to the user, and monitoring which activities are performed
+ in 
+\emph on
+journeys
+\emph default
+ between those places, thus enabling predictions of the user's likely destinatio
+n based on their activity.
+\end_layout
+
+\begin_layout Abstract
+Research into other methods of annotating context was conducted, and it
+ was found that most potential sources of context information either produced
+ little or no information, or were too battery-draining to perform in a
+ real world environment with current technology.
+ Much effort was placed into optimising the API to have as small effect
+ on battery life as possible.
+\end_layout
+
+\begin_layout Abstract
+A context-aware API was successfully produced, along with a collection of
+ applications which use the API in order to demonstrate its features or
+ provide example use cases.
 \end_layout
 
 \begin_layout Standard
@@ -72,6 +136,20 @@ LatexCommand tableofcontents
 \end_inset
 
 
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Introduction
+\end_layout
+
+\begin_layout Standard
 \begin_inset Newpage pagebreak
 \end_inset
 
