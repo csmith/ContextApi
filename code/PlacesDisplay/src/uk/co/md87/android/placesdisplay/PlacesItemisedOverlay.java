@@ -24,10 +24,11 @@ package uk.co.md87.android.placesdisplay;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.util.Log;
 import android.widget.Toast;
+
 import com.google.android.maps.ItemizedOverlay;
 import com.google.android.maps.OverlayItem;
+
 import java.util.ArrayList;
 import java.util.List;
 

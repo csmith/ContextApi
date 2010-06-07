@@ -43,8 +43,8 @@ import com.google.android.maps.OverlayItem;
 import java.util.Date;
 import java.util.List;
 
-import uk.co.md87.android.common.ExceptionHandler;
-import uk.co.md87.android.common.model.Place;
+import uk.co.md87.android.contextapi.ContextApi;
+import uk.co.md87.android.contextapi.ContextApi.Places.ColumnNames;
 
 /**
  * Activity which displays all known places on a map.
@@ -57,8 +57,6 @@ public class PlacesDisplay extends MapActivity {
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-
-        Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
         FlurryAgent.onStartSession(this, "XXXXGE95S8R54R6M7S6X");
 
@@ -104,20 +102,20 @@ public class PlacesDisplay extends MapActivity {
                 Resources.getSystem().getDrawable(android.R.drawable.btn_star_big_on));
         List<Overlay> mapOverlays = mapView.getOverlays();
 
-        final Cursor cursor = managedQuery(Place.CONTENT_URI,
-                new String[] { Place.LATITUDE, Place.LONGITUDE,
-                Place.NAME, Place.LAST_VISIT, Place.VISIT_COUNT },
+        final Cursor cursor = managedQuery(ContextApi.Places.CONTENT_URI,
+                new String[] { ColumnNames.LATITUDE, ColumnNames.LONGITUDE,
+                ColumnNames.NAME, ColumnNames.LAST_VISIT, ColumnNames.VISIT_COUNT },
                 null, null, null);
 
         final java.text.DateFormat dateFormat = DateFormat.getDateFormat(this);
         final java.text.DateFormat timeFormat = DateFormat.getTimeFormat(this);
 
         if (cursor.moveToFirst()) {
-            final int latitudeColumn = cursor.getColumnIndex(Place.LATITUDE);
-            final int longitudeColumn = cursor.getColumnIndex(Place.LONGITUDE);
-            final int nameColumn = cursor.getColumnIndex(Place.NAME);
-            final int lastVisitColumn = cursor.getColumnIndex(Place.LAST_VISIT);
-            final int visitCountColumn = cursor.getColumnIndex(Place.VISIT_COUNT);
+            final int latitudeColumn = cursor.getColumnIndex(ColumnNames.LATITUDE);
+            final int longitudeColumn = cursor.getColumnIndex(ColumnNames.LONGITUDE);
+            final int nameColumn = cursor.getColumnIndex(ColumnNames.NAME);
+            final int lastVisitColumn = cursor.getColumnIndex(ColumnNames.LAST_VISIT);
+            final int visitCountColumn = cursor.getColumnIndex(ColumnNames.VISIT_COUNT);
 
             do {
                 final double latitude = cursor.getDouble(latitudeColumn);

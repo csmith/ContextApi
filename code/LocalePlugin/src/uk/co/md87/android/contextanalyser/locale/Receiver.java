@@ -26,8 +26,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
+
+import uk.co.md87.android.contextapi.ContextApi.Activities;
+import uk.co.md87.android.contextapi.ContextApi.Intents;
 
 /**
  * Receives broadcast intents from Locale and the Context Analyser.
@@ -46,12 +48,12 @@ public class Receiver extends BroadcastReceiver {
             }
 
             final Cursor cursor = context.getContentResolver().query(
-                    Uri.parse("content://uk.co.md87.android.contextanalyser."
-                    + "activitiescontentprovider/current"),
-                    new String[] { "activity" }, null, null, null);
+                    Activities.CONTENT_URI,
+                    new String[] { Activities.ColumnNames.ACTIVITY }, null, null, null);
 
             if (cursor.moveToFirst()) {
-                final String activity = cursor.getString(cursor.getColumnIndex("activity"));
+                final String activity = cursor.getString(
+                        cursor.getColumnIndex(Activities.ColumnNames.ACTIVITY));
 
                 if (activity.equals(bundle.getString("activity"))) {
                     setResultCode(com.twofortyfouram.Intent.RESULT_CONDITION_SATISFIED);
@@ -61,7 +63,7 @@ public class Receiver extends BroadcastReceiver {
             } else {
                 setResultCode(com.twofortyfouram.Intent.RESULT_CONDITION_UNKNOWN);
             }
-        } else if ("uk.co.md87.android.contextanalyser.ACTIVITY_CHANGED".equals(intent.getAction())) {
+        } else if (Intents.ACTIVITY_CHANGED.equals(intent.getAction())) {
             final Intent broadcast = new Intent(com.twofortyfouram.Intent.ACTION_REQUEST_QUERY);
             broadcast.putExtra(com.twofortyfouram.Intent.EXTRA_ACTIVITY, EditActivity.class.getName());
             context.sendBroadcast(intent);
