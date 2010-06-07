@@ -59,7 +59,8 @@ public class PlacesItemisedOverlay extends ItemizedOverlay<OverlayItem> {
 
     @Override
     protected boolean onTap(int arg0) {
-        Toast.makeText(context, overlays.get(arg0).getTitle(), 5000).show();
+        Toast.makeText(context, overlays.get(arg0).getTitle() + "\n\n"
+                + overlays.get(arg0).getSnippet(), Toast.LENGTH_LONG).show();
         return true;
     }
 

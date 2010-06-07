@@ -31,6 +31,7 @@ import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.format.DateFormat;
 
 import com.flurry.android.FlurryAgent;
 import com.google.android.maps.GeoPoint;
@@ -39,6 +40,7 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
+import java.util.Date;
 import java.util.List;
 
 import uk.co.md87.android.common.ExceptionHandler;
@@ -103,22 +105,36 @@ public class PlacesDisplay extends MapActivity {
         List<Overlay> mapOverlays = mapView.getOverlays();
 
         final Cursor cursor = managedQuery(Place.CONTENT_URI,
-                new String[] { Place.LATITUDE, Place.LONGITUDE, Place.NAME },
+                new String[] { Place.LATITUDE, Place.LONGITUDE,
+                Place.NAME, Place.LAST_VISIT, Place.VISIT_COUNT },
                 null, null, null);
+
+        final java.text.DateFormat dateFormat = DateFormat.getDateFormat(this);
+        final java.text.DateFormat timeFormat = DateFormat.getTimeFormat(this);
 
         if (cursor.moveToFirst()) {
             final int latitudeColumn = cursor.getColumnIndex(Place.LATITUDE);
             final int longitudeColumn = cursor.getColumnIndex(Place.LONGITUDE);
             final int nameColumn = cursor.getColumnIndex(Place.NAME);
+            final int lastVisitColumn = cursor.getColumnIndex(Place.LAST_VISIT);
+            final int visitCountColumn = cursor.getColumnIndex(Place.VISIT_COUNT);
 
             do {
                 final double latitude = cursor.getDouble(latitudeColumn);
                 final double longitude = cursor.getDouble(longitudeColumn);
                 final String name = cursor.getString(nameColumn);
+                final long lastVisit = cursor.getLong(lastVisitColumn);
+                final int visitCount = cursor.getInt(visitCountColumn);
 
-                GeoPoint point = new GeoPoint((int) (latitude * 1000000),
+                final GeoPoint point = new GeoPoint((int) (latitude * 1000000),
                         (int) (longitude * 1000000));
-                OverlayItem overlayitem = new OverlayItem(point, name, "I'm in Mexico City!");
+
+                final Date date = new Date(lastVisit * 1000);
+
+                final OverlayItem overlayitem = new OverlayItem(point, name,
+                        "Visited " + visitCount + " time" + (visitCount == 1 ? "" : "s")
+                        + "\nLast visited on " + dateFormat.format(date)
+                        + " at " + timeFormat.format(date));
 
                 overlay.addOverlay(overlayitem);
             } while (cursor.moveToNext());
