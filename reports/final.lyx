@@ -149,6 +149,130 @@ LatexCommand tableofcontents
 Introduction
 \end_layout
 
+\begin_layout Section
+Proposal
+\end_layout
+
+\begin_layout Quote
+Objective: to create an API for android applications to query the user's
+ [probable] current activity, and to consider and implement possible uses
+ for this API in existing applications.
+ The user's activity would be determined based on available sensor and ambient
+ data (e.g.
+ time, location, orientation/movement of device, background noises, camera
+ image, in-range bluetooth devices, etc), previous behaviour of the user,
+ and possibly behaviour of other users which has been shared between devices.
+\end_layout
+
+\begin_layout Quote
+Motivation: Activity-awareness would be a major step forward in making mobile
+ devices better able to adapt to what the user wants to do with them.
+ The latest generation of mobile phones have made location-aware applications
+ quite ubiquitous, and a lot of these could be further enhanced by making
+ them activity aware.
+ For example, an application which lists businesses in a certain area could
+ not only know the search area (by merit of being location-aware), but could
+ also make an educated guess at what you're looking for (e.g.
+ the activity API may suggest the user is likely to be going to lunch, so
+ the application could initially show nearby eating establishments instead
+ of requiring the user to search for them).
+\end_layout
+
+\begin_layout Quote
+Challenges/issues: primary challenge is developing an algorithm which can
+ make reasonable estimates as to the user's activity (or attempting and
+ then justifying why such an algorithm is not feasible, and investigating
+ requirements or alternatives), and would form the bulk of the project.
+ Sub-challenges within this include: researching/implementing machine learning
+ techniques so the algorithm can take previous behaviour into account, processin
+g data from 'messy' inputs such as mic/camera, and designing an API that
+ would enable third-party app developers to easily make their applications
+ activity aware.
+\end_layout
+
+\begin_layout Quote
+Approach: data from sensors would need to be processed (e.g.
+ mic input processed into a figure for ambient noise level in dB).
+ The combination of this processed data would then need to be fed into an
+ algorithm (possibly a neural network) to determine likelihood of various
+ activities.
+ There would need to be some mechanism for users to correct or train the
+ system (at least initially), and it's possible that this data could then
+ be shared to other users of the api/application.
+\end_layout
+
+\begin_layout Section
+Aims and Motivation
+\end_layout
+
+\begin_layout Standard
+The primary aim of this project is to create an application for the Android
+ platform that can sense the user's context in some fashion.
+ This application will have a public interface which will allow other applicatio
+ns written by third party developers to read and receive updates about the
+ user's context.
+\end_layout
+
+\begin_layout Standard
+The ease of access to location aware services in modern smartphone platforms
+ has lead to a surge in the number of applications which improve their utility
+ or behaviour by integrating location information.
+ It stands to reason that if additional context information were available,
+ developers would be able to take advantage of this and further improve
+ the utility of their applications.
+ This, in turn, would increase the productivity of the end-user.
+\end_layout
+
+\begin_layout Standard
+As discussed in
+\begin_inset CommandInset ref
+LatexCommand ref
+reference "par:Background"
+
+\end_inset
+
+, a large amount of existing research has been done on context-aware devices,
+ and specifically on activity-aware systems.
+ There have also been some limited implementations for smartphones.
+ Unfortunately, the end product of most of this research is not suitable
+ for deployment or use in practical, every-day circumstances.
+ This project aims to produce a working prototype which can be used on a
+ day-to-day basis on an Android smartphone without significantly degrading
+ performance.
+\end_layout
+
+\begin_layout Section
+Issues and challenges
+\end_layout
+
+\begin_layout Standard
+One of the main challenges for this project will be accomplashing accurate
+ and useful context-awareness without significantly hindering the battery
+ life or performance of a typical device.
+ Existing algorithms tend to be extremely verbose, sometimes performing
+ upwards of thousands of calculations per classification; on a mobile device
+ this is likely to severely cripple battery life.
+\end_layout
+
+\begin_layout Standard
+The problem of battery life affects all areas of the project - from how
+ often data is collected, how the data is then analysed, and which sources
+ of potential data are consulted.
+ A large amount of time will need to be spent analysing the various potential
+ data sources and establishing whether or not the cost in consulting them
+ is worth the reduction in battery lifetime and any gain in the reliability
+ or accuracy of context information.
+\end_layout
+
+\begin_layout Standard
+The aim of the application is to provide the context data to third-party
+ applications, so another challenge will be designing an appropriate interface
+ which will allow applications to query and receive updates about the user's
+ context.
+ Consideration will have to be given as to any security measures (such as
+ access control) which may need to be applied in order to protect user privacy.
+\end_layout
+
 \begin_layout Standard
 \begin_inset Newpage pagebreak
 \end_inset
@@ -158,6 +282,13 @@ Introduction
 
 \begin_layout Part
 Background
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Background"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
