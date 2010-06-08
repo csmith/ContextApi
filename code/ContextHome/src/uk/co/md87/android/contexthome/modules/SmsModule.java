@@ -96,7 +96,7 @@ public class SmsModule implements Module {
             Uri uri = ContentUris.withAppendedId(People.CONTENT_URI,
                     cursor.getLong(cursor.getColumnIndex(Contacts.Phones.PERSON_ID)));
             image.setImageBitmap(Contacts.People.loadContactPhoto(context,
-                    uri, R.drawable.icon, null));
+                    uri, R.drawable.blank, null));
         } else {
             title.setText(Html.fromHtml("<b>" + address + "</b>"));
         }

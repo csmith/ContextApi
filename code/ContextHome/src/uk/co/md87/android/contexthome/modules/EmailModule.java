@@ -29,6 +29,7 @@ import android.net.Uri;
 import android.provider.Contacts;
 import android.provider.Contacts.People;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -98,9 +99,9 @@ public class EmailModule implements Module {
             Uri uri = ContentUris.withAppendedId(People.CONTENT_URI,
                     cursor.getLong(cursor.getColumnIndex(Contacts.Phones.PERSON_ID)));
             image.setImageBitmap(Contacts.People.loadContactPhoto(context,
-                    uri, R.drawable.icon, null));
+                    uri, R.drawable.blank, null));
         } else {
-            title.setText(Html.fromHtml("<b>" + address + "</b>"));
+            title.setText(Html.fromHtml("<b>" + address.split("\n")[2] + "</b>"));
         }
 
         cursor.close();
