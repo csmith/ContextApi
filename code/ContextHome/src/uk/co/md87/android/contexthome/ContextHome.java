@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.LinearLayout;
+import uk.co.md87.android.contexthome.modules.EmailModule;
 import uk.co.md87.android.contexthome.modules.SmsModule;
 
 /**
@@ -41,7 +42,7 @@ public class ContextHome extends Activity {
 
     private LinearLayout layout;
     private final Module[] modules = new Module[]{
-        new SmsModule(), new SmsModule(), new SmsModule(), new SmsModule(),
+        new SmsModule(), new EmailModule(), new SmsModule(), new SmsModule(),
     };
 
     /** Called when the activity is first created. */
