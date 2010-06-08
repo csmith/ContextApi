@@ -22,13 +22,21 @@
 
 package uk.co.md87.android.contexthome.modules;
 
+import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+import android.provider.Contacts;
+import android.provider.Contacts.People;
+import android.text.Html;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import uk.co.md87.android.contexthome.Module;
+import uk.co.md87.android.contexthome.R;
 
 /**
  * A module which displays SMS messages.
@@ -46,18 +54,59 @@ public class SmsModule implements Module {
         layout.setOrientation(LinearLayout.VERTICAL);
 
         final Cursor cursor = context.getContentResolver().query(INBOX_URI,
-                new String[] { "_id", "date", "body" }, null, null, "date DESC");
+                new String[] { "_id", "date", "body", "address" }, null, null, "date DESC");
+        final int bodyIndex = cursor.getColumnIndex("body");
+        final int addressIndex = cursor.getColumnIndex("address");
+
+        final LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
+                LayoutParams.WRAP_CONTENT);
+        params.weight = 1;
+
         boolean success = cursor.moveToFirst();
         for (int i = 0; i < weight && success; i++) {
-            final TextView text = new TextView(context);
-            text.setText(cursor.getString(cursor.getColumnIndex("body")));
-            layout.addView(text);
+            final String body = cursor.getString(bodyIndex);
+            final String address = cursor.getString(addressIndex);
+
+            layout.addView(getView(context, layout, body, address), params);
+
             success = cursor.moveToNext();
         }
         cursor.close();
         
 
         return layout;
+    }
+
+    private View getView(Context context, ViewGroup layout, String text, String address) {
+        final View view = View.inflate(context, R.layout.titledimage, null);
+
+        final Uri contactUri = Uri.withAppendedPath(Contacts.Phones.CONTENT_FILTER_URL,
+                Uri.encode(address));
+
+        final Cursor cursor = context.getContentResolver().query(contactUri,
+                new String[] { Contacts.Phones.PERSON_ID,
+                Contacts.Phones.DISPLAY_NAME }, null, null, null);
+
+        final TextView title = (TextView) view.findViewById(R.id.title);
+        final ImageView image = (ImageView) view.findViewById(R.id.image);
+
+        if (cursor.moveToFirst()) {
+            title.setText(Html.fromHtml("<b>" + cursor.getString(cursor
+                    .getColumnIndex(Contacts.Phones.DISPLAY_NAME)) + "</b>"));
+            Uri uri = ContentUris.withAppendedId(People.CONTENT_URI,
+                    cursor.getLong(cursor.getColumnIndex(Contacts.Phones.PERSON_ID)));
+            image.setImageBitmap(Contacts.People.loadContactPhoto(context,
+                    uri, R.drawable.icon, null));
+        } else {
+            title.setText(Html.fromHtml("<b>" + address + "</b>"));
+        }
+
+        cursor.close();
+
+        final TextView body = (TextView) view.findViewById(R.id.body);
+        body.setText(text);
+
+        return view;
     }
 
 }
