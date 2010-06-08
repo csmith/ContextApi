@@ -266,6 +266,10 @@ public class DataHelper {
         }
     }
 
+    public void close() {
+        db.close();
+    }
+
     private static class OpenHelper extends SQLiteOpenHelper {
 
         public OpenHelper(final Context context) {

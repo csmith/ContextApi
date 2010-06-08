@@ -24,6 +24,7 @@ package uk.co.md87.android.contextanalyser;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -61,7 +62,8 @@ import uk.co.md87.android.contextanalyser.rpc.ContextAnalyserBinder;
  *
  * @author chris
  */
-public class ContextAnalyserService extends Service {
+public class ContextAnalyserService extends Service
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     public static final String ACTIVITY_CHANGED_INTENT
             = "uk.co.md87.android.contextanalyser.ACTIVITY_CHANGED";
@@ -121,8 +123,8 @@ public class ContextAnalyserService extends Service {
     private Handler handler = new Handler();
 
     @Override
-    public void onCreate() {
-        super.onCreate();
+    public void onStart(Intent intent, int startId) {
+        super.onStart(intent, startId);
 
         Thread.setDefaultUncaughtExceptionHandler(new ExceptionHandler(this));
 
@@ -139,6 +141,11 @@ public class ContextAnalyserService extends Service {
         handler.postDelayed(scheduleRunnable, POLLING_DELAY);
 
         FlurryAgent.onStartSession(this, "MKB8YES3C6CFB86PXYXK");
+
+        Log.i("ContextAnalyser", "Starting...");
+
+        SharedPreferences prefs = getSharedPreferences("contextanalyser", MODE_WORLD_READABLE);
+        prefs.registerOnSharedPreferenceChangeListener(this);
     }
     
     public void poll() {
@@ -346,6 +353,8 @@ public class ContextAnalyserService extends Service {
     public void onDestroy() {
         super.onDestroy();
 
+        dataHelper.close();
+
         handler.removeCallbacks(scheduleRunnable);
         FlurryAgent.onEndSession(this);
     }
@@ -353,6 +362,14 @@ public class ContextAnalyserService extends Service {
     @Override
     public IBinder onBind(Intent arg0) {
         return binder;
+    }
+
+    public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
+        if (!prefs.getBoolean("run", true)) {
+            Log.i("ContextAnalyser", "Stopping...");
+            stopSelf();
+            prefs.unregisterOnSharedPreferenceChangeListener(this);
+        }
     }
 
 }

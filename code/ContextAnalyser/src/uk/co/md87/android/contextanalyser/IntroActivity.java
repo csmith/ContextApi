@@ -24,7 +24,10 @@ package uk.co.md87.android.contextanalyser;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.webkit.WebView;
 
 /**
@@ -43,7 +46,34 @@ public class IntroActivity extends Activity {
         final WebView webview = (WebView) findViewById(R.id.webview);
         webview.loadUrl("http://chris.smith.name/android/contextanalyser/");
 
-        startService(new Intent(this, ContextAnalyserService.class));
+        SharedPreferences prefs = getSharedPreferences("contextanalyser", MODE_WORLD_READABLE);
+
+        if (prefs.getBoolean("run", true)) {
+            startService(new Intent(this, ContextAnalyserService.class));
+        }
     }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        SharedPreferences prefs = getSharedPreferences("contextanalyser", MODE_WORLD_READABLE);
+        menu.clear();
+        menu.add(0, 0, 0, prefs.getBoolean("run", true) ? "Disable service" : "Enable service");
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        SharedPreferences prefs = getSharedPreferences("contextanalyser", MODE_WORLD_READABLE);
+        boolean old = prefs.getBoolean("run", true);
+        prefs.edit().putBoolean("run", !old).commit();
+
+        if (!old) {
+            startService(new Intent(this, ContextAnalyserService.class));
+        }
+        
+        return super.onOptionsItemSelected(item);
+    }
+
+
 
 }
