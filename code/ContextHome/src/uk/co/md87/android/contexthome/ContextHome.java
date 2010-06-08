@@ -24,6 +24,9 @@ package uk.co.md87.android.contexthome;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.LinearLayout;
+import uk.co.md87.android.contexthome.modules.SmsModule;
 
 /**
  * A home screen that displays e-mails, text messages, etc, and responds to
@@ -33,11 +36,35 @@ import android.os.Bundle;
  */
 public class ContextHome extends Activity {
 
+    private static final LayoutParams MODULE_PARAMS
+            = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
+
+    private LinearLayout layout;
+    private final Module[] modules = new Module[]{
+        new SmsModule(), new SmsModule(), new SmsModule(), new SmsModule(),
+        new SmsModule(), new SmsModule(), new SmsModule(), new SmsModule(),
+        new SmsModule(), new SmsModule(),
+    };
+
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
-        // ToDo add your GUI initialization code here        
+        
+        layout = new LinearLayout(this);
+        MODULE_PARAMS.weight = (float) 1 / 10;
+        layout.setOrientation(LinearLayout.VERTICAL);
+        setContentView(layout);
+
+        initLayout();
+    }
+
+    private void initLayout() {
+        layout.removeAllViews();
+
+        for (Module module : modules) {
+            layout.addView(module.getView(this, 1), MODULE_PARAMS);
+        }
     }
 
 }
