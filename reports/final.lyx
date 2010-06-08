@@ -1757,6 +1757,389 @@ The battery life on modern smartphones rarely exceeds 24 hours of typical
 Accelerometer classification
 \end_layout
 
+\begin_layout Section
+Sensor Logger application
+\end_layout
+
+\begin_layout Standard
+The primary component of context that this project aims to expose is the
+ user's activity.
+ The main factor in determining a user's activity is the data retrieved
+ from the device's accelerometers.
+ This gave rise to the project's first published application, titled 
+\noun on
+Sensor Logger
+\noun default
+.
+ The first version of 
+\noun on
+Sensor Logger
+\noun default
+ consisted of a single activity containing a large amount of text describing
+ the project, an editable text field where the user could name their activity,
+ and a button which initiated logging.
+\end_layout
+
+\begin_layout Standard
+Once the user tapped the 'Start' button, the application launched a service
+ which registered with the device's SensorManager and requested fast updates
+ from both the accelerometer and the magnetic field sensor.
+ Every 50ms the last value received from each axis on each sensor was written
+ along with a timestamp to a file on the device.
+ After 1024 samples were collected (a total of around 51 seconds), the service
+ launched an uploader service and terminated itself.
+ The uploader service read the file from the device's flash memory, opened
+ a HTTP connection to the project website, and submitted the data to a PHP
+ script.
+ The PHP script in turn stored the data in a MySQL database.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Market
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Diagram of components
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Manual classification
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Screenshot of window classifications
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Once the sensor data was logged in the database, a web interface provided
+ a graphical representation of the acceleration and magnetic field readings.
+ It also allowed a handful of authenticated users to manually classify overlappi
+ng 
+\begin_inset Quotes eld
+\end_inset
+
+windows
+\begin_inset Quotes erd
+\end_inset
+
+ of 128 data points.
+ These users could define activities in a hierarchical fashion, starting
+ with two root nodes - 'CLASSIFIED' and 'UNCLASSIFIED'.
+ Early data submitted resulted in a classification hierarchy of:
+\end_layout
+
+\begin_layout Itemize
+UNCLASSIFIED
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+PENDING (not yet manually assigned)
+\end_layout
+
+\begin_layout Itemize
+UNKNOWN (unable to determine actual activity from user label)
+\end_layout
+
+\begin_layout Itemize
+DNI (short for 
+\begin_inset Quotes eld
+\end_inset
+
+Do Not Include
+\begin_inset Quotes erd
+\end_inset
+
+, for windows which appear erroneous)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+CLASSIFIED
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+WALKING
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+STAIRS (not used in itself)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+UP
+\end_layout
+
+\begin_layout Itemize
+DOWN
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+IDLE (not used in itself)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+SITTING
+\end_layout
+
+\begin_layout Itemize
+STANDING
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+VEHICLE (not used in itself)
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+CAR
+\end_layout
+
+\begin_layout Itemize
+BUS
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+DANCING
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+It was observed that many samples had erroneous data either at the start
+ or the end of the recording.
+ This was a result of the user putting the device away in a pocket (as instructe
+d) or picking it back up to check the results.
+ A classification of 'DNI', short for 'Do Not Include' was therefore introduced
+ which allowed the erroneous windows to be summarilary excluded from later
+ analysis.
+ Later iterations of the Sensor Logger application included a 10 second
+ delay at the start to give the user time to put the device away, and sounded
+ an audible alert at the end, which reduced the number of records submitted
+ with bad data.
+\end_layout
+
+\begin_layout Standard
+Another problem with the user submitted data was that some activity descriptions
+ didn't make sense.
+ With the earliest versions of the Sensor Logger, a significant number of
+ users entered their own name or a non-sensical string into the textbox
+ labelled 
+\begin_inset Quotes eld
+\end_inset
+
+Activity name
+\begin_inset Quotes erd
+\end_inset
+
+.
+ This suggested that users were either not reading or misunderstanding the
+ instructions.
+ A classification for 'UNKNOWN' was introduced to facilitate removal of
+ the records where classifications couldn't be inferred from the activity
+ name.
+\end_layout
+
+\begin_layout Section
+Feature extraction
+\end_layout
+
+\begin_layout Standard
+Once a reasonable sample of data had been recorded, the PHP script was modified
+ to allow exporting of all classified windows.
+ It produced a plain text file containing the sensor readings and timestamp
+ for each of the 128 points in each window, as well as the manually-applied
+ classification.
+ It did not include information as to which windows were from the same sample,
+ or the orginal user-supplied activity name.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Sample in appendix
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+A Java program was written which imported the exported data.
+ A series of 'feature extractors' were written.
+ These included the range, minimum, median, mean, maximum and absolute mean
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+explain
+\end_layout
+
+\end_inset
+
+.
+ Each of these was calculated over the set of 128 data points from each
+ axis on each sensor, giving a total of 36 features.
+ Before initial tests with these features were performed, it was planned
+ to add further features including fast fourier transforms and energy, as
+ suggested by multiple papers consulted in background research.
+\end_layout
+
+\begin_layout Standard
+The program was modified to export the features and classification of each
+ window in ARFF
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+ref
+\end_layout
+
+\end_inset
+
+ (Attribute Relation File Format).
+ This is a format used by Weka
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+ref
+\end_layout
+
+\end_inset
+
+, a popular data mining suite developed by the University of Waikato.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Sample in appendix
+\end_layout
+
+\end_inset
+
+ The ARFF file was imported into Weka and analysed.
+\end_layout
+
+\begin_layout Standard
+It was found that Weka could correctly classified 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+99%
+\end_layout
+
+\end_inset
+
+ of activities (measured using a 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+hold-one cross validation
+\end_layout
+
+\end_inset
+
+) using a K-Nearest Network algorithm with K = 1.
+ Furthermore, it became apparent that the error did not significantly increase
+ when the 36 features were reduced to just four - the absolute mean and
+ the range of the Y and Z accelerometer readings.
+ Given the low cost of calculating these features and the very high detection
+ rate, further research into other features such as FFTs was not performed.
+\end_layout
+
+\begin_layout Standard
+The application was again modified to read the exported data, calculate
+ the four interesting features, and create a mapping of data points to activity.
+ This map was then serialised and written to a file 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+expand
+\end_layout
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Section
+On-device classification
+\end_layout
+
+\begin_layout Standard
+The serialised model was bundled with a new version of the Sensor Logger
+ application, along with a completely redesigned user interface.
+ The application now consisted of a series of activities: on opening the
+ application, the user is presented with an introduction activity which
+ explains what the application does and the aims of the project; when they
+ click the 'next' button a 10 second countdown is displayed with the instruction
+ to put the phone away repeated.
+ During the data collection period an animated pattern of dots is displayed
+ so the user knows the application is still working if they look at it.
+ When data collection is completed, the device adds a notification with
+ sound and vibrate settings, and displays another progress screen while
+ a background service analyses the data.
+ The result of the classification is then displayed prominently and the
+ user is presented with two buttons - one to confirm the classification
+ and one to reject and correct it.
+ The on-device classification (and any correction made to it) is submitted
+ along with all the data previously submitted.
+ The user is then presented with a 'Thank you' message, and a unique link
+ to the project website where they can view graphs of their activities.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Mess!
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Activity Recorder application
+\end_layout
+
 \begin_layout Part
 Microphone, camera and Bluetooth
 \end_layout
@@ -1766,7 +2149,7 @@ Places
 \end_layout
 
 \begin_layout Part
-The Context Analyser
+The Context Analyser applications
 \end_layout
 
 \begin_layout Standard
@@ -1936,13 +2319,13 @@ Finally, the applications should be evaluated based on their resource usage.
 
 \begin_layout Part
 Conclusion
+\end_layout
+
+\begin_layout Standard
 \begin_inset Newpage pagebreak
 \end_inset
 
 
-\end_layout
-
-\begin_layout Standard
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
 bibfiles "/home/chris/Uni/project/papers/project"
