@@ -12,11 +12,13 @@
         android:id="@+id/title"
         android:layout_toRightOf="@id/image"
         android:layout_width="wrap_content"
+        android:singleLine="true"
         android:layout_height="wrap_content"/>
     <TextView
         android:id="@+id/body"
         android:layout_below="@id/title"
         android:layout_toRightOf="@id/image"
         android:layout_width="wrap_content"
+        android:singleLine="true"
         android:layout_height="wrap_content"/>
 </RelativeLayout>
