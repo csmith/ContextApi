@@ -43,16 +43,19 @@ public class SmsModule implements Module {
     @Override
     public View getView(final Context context, final int weight) {
         final LinearLayout layout = new LinearLayout(context);
-        final TextView text = new TextView(context);
+        layout.setOrientation(LinearLayout.VERTICAL);
 
         final Cursor cursor = context.getContentResolver().query(INBOX_URI,
                 new String[] { "_id", "date", "body" }, null, null, "date DESC");
-        if (cursor.moveToFirst()) {
+        boolean success = cursor.moveToFirst();
+        for (int i = 0; i < weight && success; i++) {
+            final TextView text = new TextView(context);
             text.setText(cursor.getString(cursor.getColumnIndex("body")));
+            layout.addView(text);
+            success = cursor.moveToNext();
         }
         cursor.close();
         
-        layout.addView(text);
 
         return layout;
     }

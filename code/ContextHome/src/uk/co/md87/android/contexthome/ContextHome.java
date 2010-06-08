@@ -42,8 +42,6 @@ public class ContextHome extends Activity {
     private LinearLayout layout;
     private final Module[] modules = new Module[]{
         new SmsModule(), new SmsModule(), new SmsModule(), new SmsModule(),
-        new SmsModule(), new SmsModule(), new SmsModule(), new SmsModule(),
-        new SmsModule(), new SmsModule(),
     };
 
     /** Called when the activity is first created. */
@@ -52,7 +50,6 @@ public class ContextHome extends Activity {
         super.onCreate(icicle);
         
         layout = new LinearLayout(this);
-        MODULE_PARAMS.weight = (float) 1 / 10;
         layout.setOrientation(LinearLayout.VERTICAL);
         setContentView(layout);
 
@@ -62,8 +59,11 @@ public class ContextHome extends Activity {
     private void initLayout() {
         layout.removeAllViews();
 
+        int i = 0;
         for (Module module : modules) {
-            layout.addView(module.getView(this, 1), MODULE_PARAMS);
+            final LayoutParams params = new LayoutParams(MODULE_PARAMS);
+            params.weight = (float) ++i / 10;
+            layout.addView(module.getView(this, i), params);
         }
     }
 
