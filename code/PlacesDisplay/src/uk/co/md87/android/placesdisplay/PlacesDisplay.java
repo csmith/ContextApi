@@ -41,7 +41,9 @@ import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import uk.co.md87.android.contextapi.ContextApi;
 import uk.co.md87.android.contextapi.ContextApi.Places.ColumnNames;
@@ -104,8 +106,8 @@ public class PlacesDisplay extends MapActivity {
 
         final Cursor cursor = managedQuery(ContextApi.Places.CONTENT_URI,
                 new String[] { ColumnNames.LATITUDE, ColumnNames.LONGITUDE,
-                ColumnNames.NAME, ColumnNames.LAST_VISIT, ColumnNames.VISIT_COUNT },
-                null, null, null);
+                ColumnNames._ID, ColumnNames.NAME, ColumnNames.LAST_VISIT,
+                ColumnNames.VISIT_COUNT }, null, null, null);
 
         final java.text.DateFormat dateFormat = DateFormat.getDateFormat(this);
         final java.text.DateFormat timeFormat = DateFormat.getTimeFormat(this);
@@ -114,8 +116,12 @@ public class PlacesDisplay extends MapActivity {
             final int latitudeColumn = cursor.getColumnIndex(ColumnNames.LATITUDE);
             final int longitudeColumn = cursor.getColumnIndex(ColumnNames.LONGITUDE);
             final int nameColumn = cursor.getColumnIndex(ColumnNames.NAME);
+            final int idColumn = cursor.getColumnIndex(ColumnNames._ID);
             final int lastVisitColumn = cursor.getColumnIndex(ColumnNames.LAST_VISIT);
             final int visitCountColumn = cursor.getColumnIndex(ColumnNames.VISIT_COUNT);
+
+            final Map<Integer, OverlayItem> places
+                    = new HashMap<Integer, OverlayItem>(cursor.getCount());
 
             do {
                 final double latitude = cursor.getDouble(latitudeColumn);
@@ -123,6 +129,7 @@ public class PlacesDisplay extends MapActivity {
                 final String name = cursor.getString(nameColumn);
                 final long lastVisit = cursor.getLong(lastVisitColumn);
                 final int visitCount = cursor.getInt(visitCountColumn);
+                final int id = cursor.getInt(idColumn);
 
                 final GeoPoint point = new GeoPoint((int) (latitude * 1000000),
                         (int) (longitude * 1000000));
@@ -135,9 +142,13 @@ public class PlacesDisplay extends MapActivity {
                         + " at " + timeFormat.format(date));
 
                 overlay.addOverlay(overlayitem);
+
+                places.put(id, overlayitem);
             } while (cursor.moveToNext());
+
+            mapOverlays.add(new JourneysOverlay(this, places));
+            mapOverlays.add(overlay);
         }
-        mapOverlays.add(overlay);
     }
 
     @Override
