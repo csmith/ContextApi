@@ -33,7 +33,8 @@ import android.os.Build;
 public abstract class BaseFactory {
 
     protected boolean shouldUseFake() {
-        return Build.PRODUCT.endsWith("sdk");
+        return Build.PRODUCT.endsWith("sdk")
+                || Build.MODEL.toLowerCase().contains("dev phone");
     }
 
 }
