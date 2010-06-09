@@ -22,7 +22,14 @@
 
 package uk.co.md87.android.contexthome.modules;
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -41,10 +48,28 @@ public class AppsModule implements Module {
     public View getView(final Context context, final int weight) {
         final View view = View.inflate(context, R.layout.scroller, null);
         final LinearLayout layout = (LinearLayout) view.findViewById(R.id.content);
+        final PackageManager pm = context.getPackageManager();
+        final Intent intent = new Intent(Intent.ACTION_MAIN);
+        final View.OnClickListener listener = new View.OnClickListener() {
 
-        for (int i = 0; i < 20; i++) {
+            public void onClick(View view) {
+                final ActivityInfo info = (ActivityInfo) view.getTag();
+                final Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_MAIN);
+                intent.setClassName(info.packageName, info.name);
+                context.startActivity(intent);
+            }
+        };
+
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        
+        for (ResolveInfo res : pm.queryIntentActivities(intent, 0)) {
             final ImageView image = new ImageView(context);
-            image.setImageResource(R.drawable.blank);
+            image.setImageDrawable(res.activityInfo.loadIcon(pm));
+            image.setFocusable(true);
+            image.setClickable(true);
+            image.setTag(res.activityInfo);
+            image.setOnClickListener(listener);
             layout.addView(image, 48, 48);
         }
 
