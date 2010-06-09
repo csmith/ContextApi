@@ -29,9 +29,7 @@ import android.net.Uri;
 import android.provider.Contacts;
 import android.provider.Contacts.People;
 import android.text.Html;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
@@ -47,7 +45,8 @@ import uk.co.md87.android.contexthome.R;
  */
 public class EmailModule implements Module {
 
-    private static final Uri INBOX_URI = Uri.parse("content://gmail-ls/conversations/chris87@gmail.com");
+    private static final Uri INBOX_URI = Uri.parse("content://gmail-ls/"
+            + "conversations/chris87@gmail.com");
 
     /** {@inheritDoc} */
     @Override
@@ -56,10 +55,9 @@ public class EmailModule implements Module {
         layout.setOrientation(LinearLayout.VERTICAL);
 
         final Cursor cursor = context.getContentResolver().query(INBOX_URI,
-                new String[] { "subject", "fromAddress" }, null, null, null);
+                new String[] { "conversation_id" }, null, null, null);
 
-        final int subjectIndex = cursor.getColumnIndex("subject");
-        final int addressIndex = cursor.getColumnIndex("fromAddress");
+        final int convIdIndex = cursor.getColumnIndex("conversation_id");
 
         final LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
                 LayoutParams.WRAP_CONTENT);
@@ -67,10 +65,25 @@ public class EmailModule implements Module {
 
         boolean success = cursor.moveToFirst();
         for (int i = 0; i < weight && success; i++) {
-            final String body = cursor.getString(subjectIndex);
-            final String address = cursor.getString(addressIndex);
+            final long convId = cursor.getLong(convIdIndex);
+            final Uri uri = INBOX_URI.buildUpon().appendEncodedPath(String.valueOf(convId)
+                    + "/messages").build();
 
-            layout.addView(getView(context, layout, body, address), params);
+            final Cursor messageCursor = context.getContentResolver().query(uri,
+                new String[] { "fromAddress", "subject", "messageId" }, null, null, null);
+
+            messageCursor.moveToFirst();
+
+            final int subjectIndex = messageCursor.getColumnIndex("subject");
+            final int addressIndex = messageCursor.getColumnIndex("fromAddress");
+
+            final String body = messageCursor.getString(subjectIndex);
+            final String address = messageCursor.getString(addressIndex);
+            final int count = messageCursor.getCount();
+
+            layout.addView(getView(context, body, address, count), params);
+
+            messageCursor.close();
 
             success = cursor.moveToNext();
         }
@@ -80,28 +93,31 @@ public class EmailModule implements Module {
         return layout;
     }
 
-    private View getView(Context context, ViewGroup layout, String text, String address) {
+    private View getView(Context context, String text, String address, int count) {
         final View view = View.inflate(context, R.layout.titledimage, null);
 
-        final Uri contactUri = Uri.withAppendedPath(Contacts.Phones.CONTENT_FILTER_URL,
-                Uri.encode(address));
+        final Uri contactUri = Uri.parse("content://contacts/contact_methods");
+
+        final String name = address.replaceAll("^.*\"(.*?)\".*$", "$1")
+                .replaceAll("(.*), (.*)", "$2 $1");
+        final String email = address.replaceAll("^.*<(.*?)>.*$", "$1");
 
         final Cursor cursor = context.getContentResolver().query(contactUri,
-                new String[] { Contacts.Phones.PERSON_ID,
-                Contacts.Phones.DISPLAY_NAME }, null, null, null);
+                new String[] { "person", "name" }, "data LIKE ?", new String[] { email }, null);
 
         final TextView title = (TextView) view.findViewById(R.id.title);
         final ImageView image = (ImageView) view.findViewById(R.id.image);
 
         if (cursor.moveToFirst()) {
             title.setText(Html.fromHtml("<b>" + cursor.getString(cursor
-                    .getColumnIndex(Contacts.Phones.DISPLAY_NAME)) + "</b>"));
+                    .getColumnIndex("name")) + "</b> (" + count + ")"));
             Uri uri = ContentUris.withAppendedId(People.CONTENT_URI,
-                    cursor.getLong(cursor.getColumnIndex(Contacts.Phones.PERSON_ID)));
+                    cursor.getLong(cursor.getColumnIndex("person")));
             image.setImageBitmap(Contacts.People.loadContactPhoto(context,
                     uri, R.drawable.blank, null));
         } else {
-            title.setText(Html.fromHtml("<b>" + address.split("\n")[2] + "</b>"));
+            title.setText(Html.fromHtml("<b>" + (name.length() == 0 ? email : name) + "</b> ("
+                    + count + ")"));
         }
 
         cursor.close();
