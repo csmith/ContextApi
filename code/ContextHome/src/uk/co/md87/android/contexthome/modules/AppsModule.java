@@ -70,7 +70,9 @@ public class AppsModule implements Module {
             image.setClickable(true);
             image.setTag(res.activityInfo);
             image.setOnClickListener(listener);
-            layout.addView(image, 48, 48);
+            image.setPadding(2, 2, 2, 2);
+            image.setBackgroundResource(R.drawable.grid_selector);
+            layout.addView(image, 52, 52);
         }
 
         return view;

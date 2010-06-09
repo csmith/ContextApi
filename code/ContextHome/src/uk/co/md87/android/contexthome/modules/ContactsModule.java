@@ -22,24 +22,17 @@
 
 package uk.co.md87.android.contexthome.modules;
 
-import android.content.ComponentName;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ActivityInfo;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.Contacts;
 import android.provider.Contacts.People;
 import android.provider.Contacts.Photos;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import java.util.Arrays;
+
 import uk.co.md87.android.contexthome.Module;
 import uk.co.md87.android.contexthome.R;
 
@@ -73,7 +66,7 @@ public class ContactsModule implements Module {
         final int column = cursor.getColumnIndex("person");
         if (cursor.moveToFirst()) {
             do {
-                layout.addView(getView(context, listener, cursor.getLong(column)));
+                layout.addView(getView(context, listener, cursor.getLong(column)), 52, 52);
             } while (cursor.moveToNext());
         }
 
@@ -90,6 +83,8 @@ public class ContactsModule implements Module {
         image.setImageBitmap(People.loadContactPhoto(context,
                     uri, R.drawable.blank, null));
         image.setOnClickListener(listener);
+        image.setBackgroundResource(R.drawable.grid_selector);
+        image.setPadding(2, 2, 2, 2);
 
         return image;
     }
