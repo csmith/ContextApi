@@ -24,6 +24,8 @@ package uk.co.md87.android.contexthome.modules;
 
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.Contacts;
@@ -45,16 +47,17 @@ import uk.co.md87.android.contexthome.R;
  */
 public class EmailModule implements Module {
 
-    private static final Uri INBOX_URI = Uri.parse("content://gmail-ls/"
-            + "conversations/chris87@gmail.com");
-
     /** {@inheritDoc} */
     @Override
     public View getView(final Context context, final int weight) {
         final LinearLayout layout = new LinearLayout(context);
         layout.setOrientation(LinearLayout.VERTICAL);
 
-        final Cursor cursor = context.getContentResolver().query(INBOX_URI,
+        final Uri inboxUri = Uri.parse("content://gmail-ls/"
+            + "conversations/" + context.getSharedPreferences("email",
+            Context.MODE_WORLD_READABLE).getString("account", "chris87@gmail.com"));
+
+        final Cursor cursor = context.getContentResolver().query(inboxUri,
                 new String[] { "conversation_id" }, null, null, null);
 
         final int convIdIndex = cursor.getColumnIndex("conversation_id");
@@ -66,7 +69,7 @@ public class EmailModule implements Module {
         boolean success = cursor.moveToFirst();
         for (int i = 0; i < weight && success; i++) {
             final long convId = cursor.getLong(convIdIndex);
-            final Uri uri = INBOX_URI.buildUpon().appendEncodedPath(String.valueOf(convId)
+            final Uri uri = inboxUri.buildUpon().appendEncodedPath(String.valueOf(convId)
                     + "/messages").build();
 
             final Cursor messageCursor = context.getContentResolver().query(uri,
@@ -76,12 +79,14 @@ public class EmailModule implements Module {
 
             final int subjectIndex = messageCursor.getColumnIndex("subject");
             final int addressIndex = messageCursor.getColumnIndex("fromAddress");
+            final int messageIdIndex = messageCursor.getColumnIndex("messageId");
 
             final String body = messageCursor.getString(subjectIndex);
             final String address = messageCursor.getString(addressIndex);
             final int count = messageCursor.getCount();
+            final long messageId = messageCursor.getLong(messageIdIndex);
 
-            layout.addView(getView(context, body, address, count), params);
+            layout.addView(getView(context, body, address, messageId, count), params);
 
             messageCursor.close();
 
@@ -93,8 +98,18 @@ public class EmailModule implements Module {
         return layout;
     }
 
-    private View getView(Context context, String text, String address, int count) {
+    private View getView(final Context context, String text, String address, final long messageId, int count) {
         final View view = View.inflate(context, R.layout.titledimage, null);
+        view.setClickable(true);
+        view.setFocusable(true);
+        view.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                final Intent intent = new Intent();
+                intent.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivity");
+                context.startActivity(intent);
+            }
+        });
 
         final Uri contactUri = Uri.parse("content://contacts/contact_methods");
 
