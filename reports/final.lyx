@@ -2140,6 +2140,48 @@ Mess!
 Activity Recorder application
 \end_layout
 
+\begin_layout Standard
+The Activity Recorder application was the second application published on
+ the market.
+ In contrast to the sensor logger, it only records the two relevant axes
+ of the accelerometer, and all data is kept in memory
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+on the heap?
+\end_layout
+
+\end_inset
+
+ instead of being written to a file.
+\end_layout
+
+\begin_layout Standard
+The activity recorder consists of a background service which records 128
+ samples of sensor data once every 30 seconds.
+ At all other times, the accelerometer is not accessed to conserve battery
+ power.
+ The samples are then classified using the same model as the Sensor Logger
+ application, and the resulting activity is appended to a list.
+ 
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Adjacent
+\end_layout
+
+\end_inset
+
+ samples which are classified as the same activity are merged together.
+\end_layout
+
+\begin_layout Standard
+The user interface displays a list of activities, along with their start
+ time and duration in minutes or hours.
+\end_layout
+
 \begin_layout Part
 Microphone, camera and Bluetooth
 \end_layout
@@ -2319,6 +2361,353 @@ Finally, the applications should be evaluated based on their resource usage.
 
 \begin_layout Part
 Conclusion
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Part
+Appendices
+\end_layout
+
+\begin_layout Section
+\start_of_appendix
+User Guide - Context Analyser
+\end_layout
+
+\begin_layout Standard
+Welcome to the 
+\noun on
+Context Analyser
+\noun default
+.
+ This application analyses your 
+\emph on
+context
+\emph default
+ as you carry your phone around with you performing day-to-day activities.
+ Other applications can query your context information and enhance their
+ behaviour so that they're more relevant to what you're doing.
+\end_layout
+
+\begin_layout Standard
+The context analyser currently provides the following context information:
+\end_layout
+
+\begin_layout Itemize
+Your activity
+\end_layout
+
+\begin_layout Itemize
+Your location
+\end_layout
+
+\begin_layout Itemize
+Your predicted destination, if you're not at a known location
+\end_layout
+
+\begin_layout Standard
+It does this by gathering data from your phone's accelerometers and location
+ provider.
+ Data is recorded for a few seconds once a minute, to preserve your battery
+ life.
+\end_layout
+
+\begin_layout Standard
+For your 'activity', the context analyser tries to detect whether you are
+ walking, sitting, standing, or in a vehicle.
+ It can also expand on these to detect the difference between a car and
+ a bus, and walking normally and walking up or down stairs.
+ Future updates may add more activities.
+\end_layout
+
+\begin_layout Standard
+For your location and destination, the context analyser deals in 'places'.
+ These are locations up to 500m wide where you have spent several minutes
+ not moving.
+ A place could correspond to your home, office, favourite coffee shop or
+ a bus stop you frequently wait at.
+ When you move between places, the context analyser notes which activities
+ it thought you were performing, and stores these as a 'journey' which links
+ the two places.
+ When you next set off from one of these, it can compare your activities
+ and see if it can guess where you're heading.
+\end_layout
+
+\begin_layout Standard
+There is very little you can do with the context analyser on its own.
+ It's built as a tool for other applications to hook into.
+ 
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename contextanalyser-featured.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Featured applications
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Featured-applications"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+You can see some of these featured applications listed when you open the
+ context analyser (see 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "fig:Featured-applications"
+
+\end_inset
+
+) .
+ Simply click on one of them and the Android market will open for you to
+ view or install your chosen app.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename contextanalyser-menu.png
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Disable service button
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Disable-service-button"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+The context analyser will run a background service as soon as you open the
+ application, or whenever another application requests data from it.
+ If you wish to disable the background service (which will stop the context
+ analyser from detecting places or determining your activity), press the
+ 
+\noun on
+menu
+\noun default
+ button and select the 
+\noun on
+Disable service
+\noun default
+ option (see 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "fig:Disable-service-button"
+
+\end_inset
+
+).
+ The background service will not run until you repeat the procedure and
+ select 
+\noun on
+Enable service
+\noun default
+.
+\end_layout
+
+\begin_layout Section
+User Guide - Places
+\end_layout
+
+\begin_layout Standard
+The 
+\noun on
+places
+\noun default
+ application shows you all of the places detected by the 
+\noun on
+Context Analyser
+\noun default
+, and the journeys you make in between them.
+ The 
+\noun on
+Context Analyser
+\noun default
+ is a tool which tries to determine your current activity and location,
+ and your destination if you're on the move.
+ If you don't have the 
+\noun on
+Context Analyser
+\noun default
+ installed, you'll be prompted to install it from the market.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename places-normal.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Places application
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Places-application"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+The places application displays a map and marks each detected place with
+ an orange star.
+ Places you've travelled between are connected with a red line - the thicker
+ the line, the more frequently you make that journey.
+ In 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "fig:Places-application"
+
+\end_inset
+
+, you can see two places with a very frequently made journey between them.
+\end_layout
+
+\begin_layout Standard
+You can pan the map by dragging it around with your finger, or by moving
+ your phone's trackball (if it has one).
+ To zoom in and out, tap the screen and wait two seconds and the zoom controls
+ will appear at the bottom of the map.
+ Simply tap either button to zoom in or out.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename places-toast.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Place details
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Place-details"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+To see more information about a place, simply tap on its star.
+ A small 
+\emph on
+toast
+\emph default
+ will appear giving you the name of the place, the number of visits, and
+ the date and time of your last visit.
+ Names are determined automatically by geocoding the latitude and longitude
+ to a nearby place name - this could be the name of a street, a nearby landmark
+ or a side alley.
+ 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "fig:Place-details"
+
+\end_inset
+
+ shows the result of tapping one of the stars - the name of the place is
+ 
+\begin_inset Quotes eld
+\end_inset
+
+Rose Alley
+\begin_inset Quotes erd
+\end_inset
+
+, it has been visited 37 times and the last time this happened was in the
+ early hours of July the 10th.
 \end_layout
 
 \begin_layout Standard
