@@ -2,4 +2,5 @@
 <resources>
     <string name="app_name">Locale Plugin</string>
     <string name="plugin_name">Activity</string>
+    <string name="location_name">Destination</string>
 </resources>

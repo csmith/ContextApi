@@ -19,16 +19,25 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".EditDestination" android:label="@string/location_name"
+            android:icon="@drawable/icon">
+            <intent-filter>
+                <action android:name="com.twofortyfouram.locale.intent.action.EDIT_CONDITION"/>
+            </intent-filter>
+        </activity>
+
          <receiver android:name=".Receiver" android:exported="true">
              <intent-filter>
                  <action android:name="com.twofortyfouram.locale.intent.action.QUERY_CONDITION" />
              </intent-filter>
              <intent-filter>
                  <action android:name="uk.co.md87.android.contextanalyser.ACTIVITY_CHANGED" />
+                 <action android:name="uk.co.md87.android.contextanalyser.CONTEXT_CHANGED" />
              </intent-filter>
          </receiver>
     </application>
 
     <uses-sdk android:minSdkVersion="3" />
     <uses-permission android:name="uk.co.md87.android.contextanalyser.RECEIVE_UPDATES"/>
+    <uses-permission android:name="uk.co.md87.android.contextanalyser.READ_PLACES"/>
 </manifest>

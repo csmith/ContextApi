@@ -23,43 +23,39 @@
 package uk.co.md87.android.contextanalyser.locale;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.CursorAdapter;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.flurry.android.FlurryAgent;
 import com.twofortyfouram.SharedResources;
 
 import java.util.Arrays;
 import java.util.List;
+import uk.co.md87.android.contextapi.ContextApi;
 
 /**
- * Allows the user to edit their selected activity.
+ * Allows the user to edit their selected destination.
  *
  * @author chris
  */
-public class EditActivity extends Activity {
+public class EditDestination extends Activity {
 
     private static final int MENU_SAVE = 1;
     private static final int MENU_DONT_SAVE = 2;
-
-    final List<String> objects = Arrays.asList(new String[]{
-        "CLASSIFIED/IDLE/SITTING", "CLASSIFIED/IDLE/STANDING",
-        "CLASSIFIED/WALKING", "CLASSIFIED/WALKING/STAIRS/UP",
-        "CLASSIFIED/WALKING/STAIRS/DOWN", "CLASSIFIED/DANCING",
-        "CLASSIFIED/VEHICLE/CAR", "CLASSIFIED/VEHICLE/BUS",
-    });
-
-    final List<String> friendly = Arrays.asList(new String[]{
-        "Idle (sitting)", "Idle (standing)",
-        "Walking", "Walking (up stairs)", "Walking (down stairs)",
-        "Dancing", "Vehicle (car)", "Vehicle (bus)",
-    });
 
     private boolean isCancelled;
 
@@ -80,17 +76,50 @@ public class EditActivity extends Activity {
         ((LinearLayout) findViewById(R.id.frame))
                 .setBackgroundDrawable(SharedResources.getDrawableResource(getPackageManager(),
                 SharedResources.DRAWABLE_LOCALE_BORDER));
+
+        final Cursor cursor = getContentResolver().query(ContextApi.Places.CONTENT_URI,
+                new String[] { ContextApi.Places.ColumnNames._ID,
+                ContextApi.Places.ColumnNames.NAME }, null, null, null);
+
+        final int idColumn = cursor.getColumnIndex(ContextApi.Places.ColumnNames._ID);
+        final int nameColumn = cursor.getColumnIndex(ContextApi.Places.ColumnNames.NAME);
         
         final Spinner spinner = (Spinner) findViewById(R.id.spinner);
-        spinner.setAdapter(new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, friendly));
+        spinner.setAdapter(new CursorAdapter(this, cursor) {
+
+            @Override
+            public View newView(Context context, Cursor cursor, ViewGroup parent) {
+                final View view = View.inflate(context,
+                        android.R.layout.simple_spinner_item, null);
+                
+                bindView(view, context, cursor);
+
+                return view;
+            }
+
+            @Override
+            public void bindView(View view, Context context, Cursor cursor) {
+                ((TextView) view.findViewById(android.R.id.text1)).setText(
+                        cursor.getString(nameColumn));
+                ((TextView) view.findViewById(android.R.id.text1)).setTag(
+                        cursor.getInt(idColumn));
+            }
+        });
 
         if (savedInstanceState == null) {
             final Bundle forwardedBundle = getIntent()
                     .getBundleExtra(com.twofortyfouram.Intent.EXTRA_BUNDLE);
 
             if (forwardedBundle != null) {
-                spinner.setSelection(objects.indexOf(forwardedBundle.getString("activity")));
+                int target = forwardedBundle.getInt("destination");
+                for (int i = 0; i < spinner.getCount(); i++) {
+                    Cursor value = (Cursor) spinner.getItemAtPosition(i);
+                    if (value.getInt(idColumn) == target) {
+                        spinner.setSelection(i);
+                        break;
+                    }
+                }
+
             }
         }
     }
@@ -109,10 +138,11 @@ public class EditActivity extends Activity {
 
             final Bundle storeAndForwardExtras = new Bundle();
 
-            storeAndForwardExtras.putString("activity",
-                    objects.get(((Spinner) findViewById(R.id.spinner)).getSelectedItemPosition()));
+            Cursor cursor = (Cursor) ((Spinner) findViewById(R.id.spinner)).getSelectedItem();
+            storeAndForwardExtras.putInt("destination",
+                    cursor.getInt(cursor.getColumnIndex(ContextApi.Places.ColumnNames._ID)));
             returnIntent.putExtra(com.twofortyfouram.Intent.EXTRA_STRING_BLURB,
-                    ((Spinner) findViewById(R.id.spinner)).getSelectedItem().toString());
+                    cursor.getString(cursor.getColumnIndex(ContextApi.Places.ColumnNames.NAME)));
 
             returnIntent.putExtra(com.twofortyfouram.Intent.EXTRA_BUNDLE, storeAndForwardExtras);
             setResult(RESULT_OK, returnIntent);
