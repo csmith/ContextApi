@@ -24,6 +24,7 @@ package uk.co.md87.android.contexthome.modules;
 
 import android.content.ContentUris;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.Contacts;
@@ -54,7 +55,8 @@ public class SmsModule implements Module {
         layout.setOrientation(LinearLayout.VERTICAL);
 
         final Cursor cursor = context.getContentResolver().query(INBOX_URI,
-                new String[] { "_id", "date", "body", "address" }, null, null, "date DESC");
+                new String[] { "thread_id", "date", "body", "address" }, null, null, "date DESC");
+        final int idIndex = cursor.getColumnIndex("thread_id");
         final int bodyIndex = cursor.getColumnIndex("body");
         final int addressIndex = cursor.getColumnIndex("address");
 
@@ -67,7 +69,8 @@ public class SmsModule implements Module {
             final String body = cursor.getString(bodyIndex);
             final String address = cursor.getString(addressIndex);
 
-            layout.addView(getView(context, layout, body, address), params);
+            layout.addView(getView(context, layout, body, address, cursor.getLong(idIndex)),
+                    params);
 
             success = cursor.moveToNext();
         }
@@ -77,8 +80,20 @@ public class SmsModule implements Module {
         return layout;
     }
 
-    private View getView(Context context, ViewGroup layout, String text, String address) {
+    private View getView(final Context context, ViewGroup layout, String text,
+            String address, final long threadId) {
         final View view = View.inflate(context, R.layout.titledimage, null);
+        view.setClickable(true);
+        view.setFocusable(true);
+        view.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                final Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse("content://mms-sms/conversations/" + threadId));
+                context.startActivity(intent);
+            }
+        });
 
         final Uri contactUri = Uri.withAppendedPath(Contacts.Phones.CONTENT_FILTER_URL,
                 Uri.encode(address));

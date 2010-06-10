@@ -62,10 +62,10 @@ public class ContextHome extends Activity {
     private void initLayout() {
         layout.removeAllViews();
 
-        int i = 0;
+        int i = 1;
         for (Module module : modules) {
             final LayoutParams params = new LayoutParams(MODULE_PARAMS);
-            params.weight = (float) ++i / 10;
+            params.weight = ++i > 3 ? (float) i / 11 : 1;
             layout.addView(module.getView(this, i), params);
         }
     }

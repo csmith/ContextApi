@@ -26,16 +26,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Canvas;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.graphics.Point;
-import android.util.Log;
+
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
-import java.util.ArrayList;
+
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+
 import uk.co.md87.android.contextapi.ContextApi;
 import uk.co.md87.android.contextapi.ContextApi.Journeys.ColumnNames;
 
