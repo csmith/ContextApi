@@ -42,31 +42,38 @@ public class ContextHome extends Activity {
     private static final LayoutParams MODULE_PARAMS
             = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
-    private LinearLayout layout;
+    private LinearLayout layout, fixedLayout;
+    private final Module[] fixedModules = new Module[] {
+        new ContactsModule(), new AppsModule()
+    };
+    
     private final Module[] modules = new Module[]{
-        new ContactsModule(), new AppsModule(), new EmailModule(), new SmsModule(),
+        new EmailModule(), new SmsModule(),
     };
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
+        setContentView(R.layout.container);
         
-        layout = new LinearLayout(this);
-        layout.setOrientation(LinearLayout.VERTICAL);
-        setContentView(layout);
+        layout = (LinearLayout) findViewById(R.id.content);
+        fixedLayout = (LinearLayout) findViewById(R.id.fixedcontent);
 
         initLayout();
     }
 
     private void initLayout() {
+        fixedLayout.removeAllViews();
         layout.removeAllViews();
 
-        int i = 1;
+        for (Module module : fixedModules) {
+            fixedLayout.addView(module.getView(this, 1), MODULE_PARAMS);
+        }
+
         for (Module module : modules) {
-            final LayoutParams params = new LayoutParams(MODULE_PARAMS);
-            params.weight = ++i > 3 ? (float) i / 11 : 1;
-            layout.addView(module.getView(this, i), params);
+            layout.addView(module.getView(this, 10), MODULE_PARAMS);
         }
     }
 

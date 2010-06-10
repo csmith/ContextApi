@@ -67,7 +67,7 @@ public class EmailModule implements Module {
         params.weight = 1;
 
         boolean success = cursor.moveToFirst();
-        for (int i = 0; i < weight && success; i++) {
+        for (int i = 0; i < weight && success; ) {
             final long convId = cursor.getLong(convIdIndex);
             final Uri uri = inboxUri.buildUpon().appendEncodedPath(String.valueOf(convId)
                     + "/messages").build();
@@ -75,21 +75,22 @@ public class EmailModule implements Module {
             final Cursor messageCursor = context.getContentResolver().query(uri,
                 new String[] { "fromAddress", "subject", "messageId" }, null, null, null);
 
-            messageCursor.moveToFirst();
+            if (messageCursor.moveToFirst()) {
+                final int subjectIndex = messageCursor.getColumnIndex("subject");
+                final int addressIndex = messageCursor.getColumnIndex("fromAddress");
+                final int messageIdIndex = messageCursor.getColumnIndex("messageId");
 
-            final int subjectIndex = messageCursor.getColumnIndex("subject");
-            final int addressIndex = messageCursor.getColumnIndex("fromAddress");
-            final int messageIdIndex = messageCursor.getColumnIndex("messageId");
+                final String body = messageCursor.getString(subjectIndex);
+                final String address = messageCursor.getString(addressIndex);
+                final int count = messageCursor.getCount();
+                final long messageId = messageCursor.getLong(messageIdIndex);
 
-            final String body = messageCursor.getString(subjectIndex);
-            final String address = messageCursor.getString(addressIndex);
-            final int count = messageCursor.getCount();
-            final long messageId = messageCursor.getLong(messageIdIndex);
+                layout.addView(getView(context, body, address, messageId, count), params);
 
-            layout.addView(getView(context, body, address, messageId, count), params);
+                i++;
+            }
 
             messageCursor.close();
-
             success = cursor.moveToNext();
         }
         cursor.close();
