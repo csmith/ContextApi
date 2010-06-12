@@ -63,7 +63,16 @@ All materials can be accessed electronically at:
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 /homes/cs106/....
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -271,6 +280,16 @@ The aim of the application is to provide the context data to third-party
  context.
  Consideration will have to be given as to any security measures (such as
  access control) which may need to be applied in order to protect user privacy.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Contributions
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -621,31 +640,6 @@ key "Garakani2009"
 \end_inset
 
 , etc.
-\end_layout
-
-\begin_layout Standard
-Accelerometers can be combined with magnetic field sensors to convert the
- relative acceleration of the device into an absolute acceleration with
- respect to the Earth.
- This is particularly important when the sensor platform - a mobile telephone
- - can be oriented in different ways while performing the same activity.
- There are, for example, four different ways to comfortably fit a typical
- smartphone into a trouser pocket, made up of two possible orientations
- around two axis 
-\begin_inset Foot
-status collapsed
-
-\begin_layout Plain Layout
-screen facing towards or away from the body, and the device oriented the
- right way up or upside down
-\end_layout
-
-\end_inset
-
-.
- With just raw accelerometer data these four orientations would lead to
- different data for the same activity, but with the combination of magnetic
- field sensors we can normalise them.
 \end_layout
 
 \begin_layout Standard
@@ -1277,6 +1271,16 @@ The research also shows that the computational compatibility of the iPhone
  is more than sufficient to perform the necessary calculations for a typical
  activity-recognising application, which suggests that any modern smart
  phone would be capable of these.
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Multitasking
+\end_layout
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Subsection
@@ -1825,11 +1829,34 @@ Manual classification
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
 
 \begin_layout Plain Layout
-Screenshot of window classifications
+\begin_inset Graphics
+	filename website-windows.png
+	height 70pheight%
+	rotateAngle 90
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Website for manually classifying windows
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Website-for-manually"
+
+\end_inset
+
+
 \end_layout
 
 \end_inset
@@ -1837,7 +1864,12 @@ Screenshot of window classifications
 
 \end_layout
 
-\begin_layout Standard
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
 Once the sensor data was logged in the database, a web interface provided
  a graphical representation of the acceleration and magnetic field readings.
  It also allowed a handful of authenticated users to manually classify overlappi
@@ -1850,8 +1882,18 @@ windows
 \end_inset
 
  of 128 data points.
- These users could define activities in a hierarchical fashion, starting
- with two root nodes - 'CLASSIFIED' and 'UNCLASSIFIED'.
+ The classification portion of the website is shown in 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "fig:Website-for-manually"
+
+\end_inset
+
+; it shows the first six overlapping windows for one submission, with the
+ third window highlighted because the user's cursor is over the corresponding
+ dropdown.
+ Users of this system could define activities in a hierarchical fashion,
+ starting with two root nodes - 'CLASSIFIED' and 'UNCLASSIFIED'.
  Early data submitted resulted in a classification hierarchy of:
 \end_layout
 
@@ -2001,22 +2043,38 @@ Sample in appendix
 \begin_layout Standard
 A Java program was written which imported the exported data.
  A series of 'feature extractors' were written.
- These included the range, minimum, median, mean, maximum and absolute mean
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-explain
+ These calculated the:
 \end_layout
 
-\end_inset
+\begin_layout Itemize
+maximum
+\end_layout
 
-.
- Each of these was calculated over the set of 128 data points from each
+\begin_layout Itemize
+minimum
+\end_layout
+
+\begin_layout Itemize
+range
+\end_layout
+
+\begin_layout Itemize
+median
+\end_layout
+
+\begin_layout Itemize
+mean
+\end_layout
+
+\begin_layout Itemize
+absolute mean
+\end_layout
+
+\begin_layout Standard
+Each of these extractors was run over the set of 128 data points from each
  axis on each sensor, giving a total of 36 features.
- Before initial tests with these features were performed, it was planned
- to add further features including fast fourier transforms and energy, as
- suggested by multiple papers consulted in background research.
+ It was planned to add further features including fast fourier transforms
+ and energy, as suggested by multiple papers consulted in background research.
 \end_layout
 
 \begin_layout Standard
@@ -2085,6 +2143,19 @@ hold-one cross validation
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Trumpet blowing
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 The application was again modified to read the exported data, calculate
  the four interesting features, and create a mapping of data points to activity.
  This map was then serialised and written to a file 
@@ -2141,6 +2212,19 @@ Activity Recorder application
 \end_layout
 
 \begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
+Screenshot
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
 The Activity Recorder application was the second application published on
  the market.
  In contrast to the sensor logger, it only records the two relevant axes
@@ -2182,16 +2266,614 @@ The user interface displays a list of activities, along with their start
  time and duration in minutes or hours.
 \end_layout
 
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
 \begin_layout Part
-Microphone, camera and Bluetooth
+Other sensors
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
 \end_layout
 
 \begin_layout Part
 Places
 \end_layout
 
+\begin_layout Section
+Use of GPS/GSM blackspots
+\end_layout
+
+\begin_layout Standard
+As discussed in 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "sec:Location-analysis"
+
+\end_inset
+
+ a lot of existing research into identifying interesting places relied on
+ the fact that with hardware that is now 5-10 years old, you could not reliably
+ get a GPS signal indoors.
+ Thus whenever the user remained somewhere without a GPS signal it was likely
+ that they were spending time indoors, and therefore their current location
+ would be noteworthy.
+\end_layout
+
+\begin_layout Standard
+Unfortunately, modern GPS hardware is much more sensitive and can quite
+ easily get a signal indoors in most circumstances.
+ One possible solution to this was to monitor the strength of either the
+ GPS lock or the GSM signal, and attempt to determine whether or not a differenc
+e was noticable.
+ An experiment was therefore conducted to record the GPS and GSM status
+ for multiple indoor and outdoor locations.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float table
+placement bh
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Tabular
+<lyxtabular version="3" rows="9" columns="4">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Location
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+GSM strength
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+GPS satellites
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+GPS time to fix
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Indoors
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-101 dBm
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+10
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+<1 sec
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Outdoors
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-101 dBm
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+8
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+<1 sec
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Indoors
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-71 dBm
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2 sec
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Outdoors
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-67 dBm
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+7
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+2 sec
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Indoors
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-67 dBm
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+11
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+<1 sec
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Outdoors
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-67 dBm
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+10
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+3 secs
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Indoors
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-67 dBm
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+10
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+<1 sec
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Outdoors
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+-43 dBm
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+10
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+<1 sec
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+GPS and GSM strengths
+\begin_inset CommandInset label
+LatexCommand label
+name "tab:GPS-and-GSM"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+At four separate indoor locations, the third-party 
+\noun on
+GPS Status
+\noun default
+ application was used to observe the number of satellites the device was
+ receiving a signal from, and the amount of time it took to acquire a fix
+ on all of those satellites.
+ The GSM signal strength as reported by the device's built in debugging
+ tools was also recorded.
+ The device was then moved outdoors to the nearest appropriate open area
+ (footpath, outdoor seating area, etc), and the process was repeated.
+ The results are summarised in 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "tab:GPS-and-GSM"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+While the indoor GSM strength is lower than the corresponding outdoor strength
+ in two out of the four samples, it is still significantly stronger than
+ the weakest recorded indoor or outdoor signal.
+ In the other two cases the signal strength was the same for both indoors
+ and outdoors.
+ The GSM signal strength therefore seems to be a poor indicator of whether
+ or not the user is indoors - it would have to be continually monitored
+ to detect a drop in signal strength, and the (limited) experimental data
+ shows that this would have a 50% false negative rate.
+ The experiment does not allow us to reason about false positives, but it
+ is easy to imagine that many circumstances would give rise to drops in
+ signal strength - the most obvious being moving away from the cell tower.
+\end_layout
+
+\begin_layout Standard
+The GPS results show even less correlation between indoor and outdoor readings.
+ In two out of the four locations, the indoor test identified more satellites
+ than the outdoor test - the opposite to what would be expected.
+ This could be because the indoor locations were typically above ground
+ level - the extra altitude may be more beneficial to obtaining a lock than
+ the obstruction of the building itself.
+ It seems more likely, however, that the numbers are not correlated in any
+ way, and a larger experiment would reveal it to be random variance.
+ Similarly, the time taken to lock the satellites is typically very small,
+ but in a few situations there is a noticable delay.
+ The location which resulted in a three second lock time was repeated after
+ a thirty second pause and obtained a sub-second lock time, but the original
+ data was included in the results.
+\end_layout
+
+\begin_layout Standard
+The experiment, although extremely limited in size, shows that it is unlikely
+ that GSM strength or GPS metadata would be useful in determining interesting
+ places.
+ Alternative methods therefore had to be considered.
+\end_layout
+
+\begin_layout Section
+Detecting places by time spent
+\end_layout
+
+\begin_layout Standard
+Without information about whether or not the user is indoors, the next best
+ method to detect interesting places is by monitoring the amount of time
+ the user spends there.
+ It stands to reason that a location where the user is only present fleetingly
+ as they pass through is less important than somewhere they spend half a
+ day.
+\end_layout
+
+\begin_layout Standard
+The Android operating system provides two methods of determining the user's
+ location - 
+\begin_inset Quotes eld
+\end_inset
+
+coarse
+\begin_inset Quotes erd
+\end_inset
+
+, which uses a cell tower and WiFi access point database, and 
+\begin_inset Quotes eld
+\end_inset
+
+fine
+\begin_inset Quotes erd
+\end_inset
+
+ which uses the device's GPS chipset.
+ While 
+\begin_inset Quotes eld
+\end_inset
+
+coarse
+\begin_inset Quotes erd
+\end_inset
+
+ is less accurate than using GPS, it also uses significantly less battery
+ power.
+ Brief testing revealed that while GPS regularly obtained accuracies of
+ below five metres, 
+\begin_inset Quotes eld
+\end_inset
+
+network
+\begin_inset Quotes erd
+\end_inset
+
+ location (using cell tower IDs and a built-in database) obtained accuracies
+ in the region of 500 metres.
+ Network location augmented with the built-in database of WiFi access point
+ locations obtained accuraries in the same region as GPS.
+ However, WiFi augmentation only works when the user has elected to enable
+ WiFi on their device, and this puts a large drain on the battery.
+\end_layout
+
+\begin_layout Standard
+As the most important places a user typically visits will be much greater
+ than 500 metres apart, 
+\begin_inset Quotes eld
+\end_inset
+
+coarse
+\begin_inset Quotes erd
+\end_inset
+
+ location will was used for all location-related tasks in the project.
+ Because of this large inaccuracy, places could not be represented by a
+ single point but must have a radius to compensate for the inaccuracy.
+ Based on earlier experimentation, this radius was fixed at 500 metres.
+\end_layout
+
+\begin_layout Standard
+A new 
+\begin_inset Quotes eld
+\end_inset
+
+place
+\begin_inset Quotes erd
+\end_inset
+
+ is identified when the user remains within 500 metres of a point for at
+ least 3 minutes.
+ This figure is, hopefully, long enough to eliminate places where the user
+ is temporarily held up (such as traffic lights), but short enough to include
+ places the user visits but doesn't remain for a long length of time (such
+ as supermarkets).
+ When implementing this algorithm, care was taken to ensure that the length
+ of time was defined as a constant and so could easily be changed if experimenta
+l data showed that it was either too long or too short.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
 \begin_layout Part
-The Context Analyser applications
+The 
+\noun on
+Context Analyser
+\noun default
+ and applications
 \end_layout
 
 \begin_layout Standard
@@ -2549,6 +3231,10 @@ reference "fig:Disable-service-button"
 Enable service
 \noun default
 .
+\begin_inset Newpage pagebreak
+\end_inset
+
+
 \end_layout
 
 \begin_layout Section
@@ -2708,6 +3394,2065 @@ Rose Alley
 
 , it has been visited 37 times and the last time this happened was in the
  early hours of July the 10th.
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+User Guide - Locale plugin
+\end_layout
+
+\begin_layout Standard
+The 
+\noun on
+Context Analyser
+\noun default
+ plugin for 
+\noun on
+Locale
+\noun default
+ allows you to create 
+\noun on
+Locale
+\noun default
+ situations based on information provided by the 
+\noun on
+Context Analyser
+\noun default
+.
+ 
+\noun on
+Locale
+\noun default
+ is an application which allows you to make your phone change settings,
+ send tweets, or perform a variety of other actions, whenever a certain
+ 'situation' occurs.
+ A situation is just a set of conditions - such as your location, your phone's
+ battery life, or the current time.
+ The 
+\noun on
+Context Analyser
+\noun default
+ application automatically determines your current activity (such as 'walking'
+ or 'sitting down'), and your predicted destination if you're travelling.
+ This plugin requires that you have both 
+\noun on
+Context Analyser
+\noun default
+ and 
+\noun on
+Locale
+\noun default
+ installed.
+ Both are available from the Android market.
+\end_layout
+
+\begin_layout Standard
+The plugin adds two new conditions which you can use in 
+\noun on
+Locale
+\noun default
+ situations:
+\end_layout
+
+\begin_layout Itemize
+Activity - the activity you are 
+\emph on
+most likely
+\emph default
+ performing
+\end_layout
+
+\begin_layout Itemize
+Destination - your 
+\emph on
+most likely
+\emph default
+ destination, if you're not at a known location
+\end_layout
+
+\begin_layout Standard
+A basic overview of adding these new conditions follows.
+ For full documentation on how to use 
+\noun on
+Locale
+\noun default
+, consult the 
+\noun on
+Locale 
+\noun default
+user manual.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename locale-situations.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Locale main screen
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Locale-main-screen"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+When you open 
+\noun on
+Locale
+\noun default
+, you will see a list of currently defined situations (
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "fig:Locale-main-screen"
+
+\end_inset
+
+).
+ You can edit existing situations by tapping on them.
+ Existing situations may be deleted by clicking on the red minus button
+ to the right of the situation name.
+ Finally, new situations can be created by tapping the 'Add Situation' button
+ at the bottom of the screen.
+ 
+\noun on
+Locale 
+\noun default
+shows any situations that are 
+\emph on
+active
+\emph default
+ (all the conditions currently hold true) in bold.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename locale-situation-pre.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Locale editing situation
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Locale-editing-situation"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename locale-add-condition.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Locale add condition popup
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Locale-add-condition"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+Once you've selected a situation to edit, or created a brand new situation,
+ you will see 
+\noun on
+Locale
+\noun default
+'s 'edit situation' screen (
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "fig:Locale-editing-situation"
+
+\end_inset
+
+).
+ This allows you to set the name of the situation, add or edit conditions,
+ and add or edit settings.
+ The 
+\noun on
+Context Analyser
+\noun default
+ plugin adds two new conditions, which are shown in the list when you click
+ 'Add condition' (
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "fig:Locale-add-condition"
+
+\end_inset
+
+).
+ Select either 'Activity' or 'Destination' to add a new condition based
+ on your current context.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename locale-select-destination.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Locale plugin selecting destination
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Locale-plugin-selecting"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename locale-select-activity.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Locale plugin selecting activity
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Locale-plugin-selecting-activity"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+When you select one of the plugin's conditions, you will be presented with
+ a screen which allows you to specify which activity (see 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "fig:Locale-plugin-selecting-activity"
+
+\end_inset
+
+) or destination (see 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "fig:Locale-plugin-selecting"
+
+\end_inset
+
+) you wish to match.
+ For activities, you can select one of sitting, standing, walking, walking
+ up stairs, walking down stairs, dancing, travelling bar car, or travelling
+ by bus.
+ For destination, you may select any place which the 
+\noun on
+Context Analyser
+\noun default
+ has previously detected.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename locale-menu.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Locale condition editor menu
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Locale-condition-editor"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+Once you've selected your chosen activity or destination, press the 
+\noun on
+menu
+\noun default
+ button and select the 'Save Changes' option (see 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "fig:Locale-condition-editor"
+
+\end_inset
+
+).
+ You will then return to the situation editor where the new condition will
+ be displayed.
+ You may then add settings as with any other 
+\noun on
+Locale
+\noun default
+ situation, and 
+\noun on
+Locale
+\noun default
+ will automatically apply these when all of the conditions match.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+User Guide - Context Home Screen
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Developer Guide
+\end_layout
+
+\begin_layout Standard
+This guide details how you can integrate the data made available by the
+ 
+\noun on
+Context Analyser
+\noun default
+ into your own applications.
+ It is expected that you are familiar with Android application development
+ and general concepts.
+ For an overview of how the 
+\noun on
+Context Analyser 
+\noun default
+works, please consult the user guide.
+\end_layout
+
+\begin_layout Standard
+The 
+\noun on
+Context Analyser
+\noun default
+ exposes its data via a set of Content Providers.
+ These are augmented by several broadcast intents which can be used by third
+ party applications to receive immediate notification when the user's context
+ changes.
+ 
+\end_layout
+
+\begin_layout Subsection
+Permissions
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Permissions"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+In order to protect the user's privacy, a series of permissions are defined
+ by the 
+\noun on
+Context Analyser
+\noun default
+, and access to data and broadcast intents is limited to applications which
+ hold the appropriate permissions.
+ The 
+\noun on
+Context Analyser
+\noun default
+ defines the following permissions:
+\end_layout
+
+\begin_layout Itemize
+uk.co.md87.android.contextanalyser.RECEIVE_UPDATES - allows the application to
+ receive real-time updates about context or place information through broadcast
+ intents
+\end_layout
+
+\begin_layout Itemize
+uk.co.md87.android.contextanalyser.READ_PLACES - allows the application to read
+ places from the relevant content provider
+\end_layout
+
+\begin_layout Itemize
+uk.co.md87.android.contextanalyser.WRITE_PLACES - allows the application to modify
+ places via the relevant content provider
+\end_layout
+
+\begin_layout Itemize
+uk.co.md87.android.contextanalyser.READ_JOURNEYS - allows the application to
+ read journey information from the relevant content providers
+\end_layout
+
+\begin_layout Itemize
+uk.co.md87.android.contextanalyser.WRITE_JOURNEYS - allows the application to
+ modify journey information via the relevant content providers
+\end_layout
+
+\begin_layout Itemize
+uk.co.md87.android.contextanalyser.BROADCAST - permission used when broadcasting
+ context-related intents.
+ Applications may wish to check that broadcasters hold this permission to
+ prevent third parties broadcasting erroneous data.
+\end_layout
+
+\begin_layout Standard
+If you do not declare the required permissions, a run time error will occur
+ when your application attempts to access protected data.
+ All permissions listed here are defined as 
+\noun on
+dangerous
+\noun default
+, which means that end users will be prompted about them when installing
+ any application using them; this is in line with the underlying accelerometer
+ and location permissions.
+\end_layout
+
+\begin_layout Subsection
+Model
+\end_layout
+
+\begin_layout Standard
+The 
+\noun on
+Context Analyser
+\noun default
+ is backed by a database containing tables for 
+\emph on
+places
+\emph default
+, 
+\emph on
+journeys
+\emph default
+ and 
+\emph on
+journey steps
+\emph default
+.
+ Activities and predictions are stored in memory.
+\end_layout
+
+\begin_layout Standard
+A 
+\series bold
+place
+\series default
+ is a location represented by a latitude/longitude tuple.
+ Places have a radius of 500 metres; whenever a user moves to within 500
+ metres of a known place, they are assumed to be located at that place.
+ New places are identified when the user is observed to be in the same location
+ (within 500 metres) for three consecutive readings, which occur at 1 minute
+ intervals.
+ Places also have an associated name, which is initially set to a string
+ representation of the latitude and longitude; the 
+\noun on
+Context Analyser
+\noun default
+ will attempt to rename any place with such a name by geocoding the latitude/lon
+gitude into a nearby street or landmark name.
+\end_layout
+
+\begin_layout Standard
+An 
+\series bold
+activity
+\series default
+ is represented by a string delimited by forward slashes (
+\noun on
+/
+\noun default
+).
+ This forms a hierarchy of classifications, with the following possible
+ values:
+\end_layout
+
+\begin_layout Itemize
+CLASSIFIED/DANCING
+\end_layout
+
+\begin_layout Itemize
+CLASSIFIED/IDLE/SITTING
+\end_layout
+
+\begin_layout Itemize
+CLASSIFIED/IDLE/STANDING
+\end_layout
+
+\begin_layout Itemize
+CLASSIFIED/VEHICLE/BUS
+\end_layout
+
+\begin_layout Itemize
+CLASSIFIED/VEHICLE/CAR
+\end_layout
+
+\begin_layout Itemize
+CLASSIFIED/WALKING
+\end_layout
+
+\begin_layout Itemize
+CLASSIFIED/WALKING/STAIRS/DOWN
+\end_layout
+
+\begin_layout Itemize
+CLASSIFIED/WALKING/STAIRS/UP
+\end_layout
+
+\begin_layout Standard
+It is possible for activities to contain only a part of the hierarchy -
+ for example if the readings alternate between classifications for travelling
+ by bus and by car, they will be aggregated and the resulting activity will
+ be simply CLASSIFIED/VEHICLE
+\noun on
+.
+
+\noun default
+ Similarly, if the user's activity is in constant flux, the resulting activity
+ will be aggregated to simply 'CLASSIFIED'.
+\end_layout
+
+\begin_layout Standard
+A 
+\series bold
+journey
+\series default
+ is a recorded sequence of activites which occured when the user moved from
+ one place to another.
+ Whenever the user leaves a known place, the 
+\noun on
+Context Analyser
+\noun default
+ begins a log of activities; when they then reach another known place, the
+ log is converted into a journey.
+ Each journey consists of a sequence of 
+\series bold
+journey steps
+\series default
+, which describe a single activity and a number of reptitions.
+\end_layout
+
+\begin_layout Standard
+For example, if the user leaves place A, spends five minutes walking, then
+ ten minutes on a bus, and arrives at place B:
+\end_layout
+
+\begin_layout Itemize
+A journey will be created with a start point of A and an end point of B
+\end_layout
+
+\begin_layout Itemize
+The journey will consist of two journey steps:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Step one will have an activity of CLASSIFIED/WALKING with five reptitions
+\end_layout
+
+\begin_layout Itemize
+Step two will have an activity of CLASSIFIED/VEHICLE/BUS with ten reptitions
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+When the user is on a journey, the Context Analyser compares their current
+ history to that of previously recorded journeys leaving the same place.
+ If any of the journeys match, their destinations are considered as 
+\series bold
+predictions
+\series default
+.
+ The number of times each matching journey occured is summed and the result
+ is used as a 'score' for the destination involved.
+ The destination with the highest score is considered the most likely destinatio
+n for the user.
+\end_layout
+
+\begin_layout Standard
+For the purposes of prediction, a partial journey is considered to match
+ a historical journey if:
+\end_layout
+
+\begin_layout Itemize
+it contains the same number of, or fewer, steps
+\end_layout
+
+\begin_layout Itemize
+each step has the same activity
+\end_layout
+
+\begin_layout Itemize
+the number of reptitions in each completed step (not the last step) is:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+no less than 50% of the historical value
+\end_layout
+
+\begin_layout Itemize
+no greater than 150% of the historical value
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+the number of repititions of the last step is:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+no greater than 150% of the historical value
+\end_layout
+
+\end_deeper
+\begin_layout Subsection
+Broadcast intents
+\end_layout
+
+\begin_layout Standard
+The 
+\noun on
+Context Analyser
+\noun default
+ broadcasts three different intents to make other applications aware of
+ certain events.
+ Applications require the RECEIVE_UPDATES permission to receive these broadcasts
+, as discussed previously.
+ These intents are:
+\end_layout
+
+\begin_layout Itemize
+uk.co.md87.android.contextanalyser.ACTIVITY_CHANGED
+\end_layout
+
+\begin_layout Itemize
+uk.co.md87.android.contextanalyser.CONTEXT_CHANGED
+\end_layout
+
+\begin_layout Itemize
+uk.co.md87.android.contextanalyser.PREDICTION_AVAILABLE
+\end_layout
+
+\begin_layout Standard
+The 
+\series bold
+ACTIVITY_CHANGED
+\series default
+ intent is broadcast whenever the user's activity is discovered to have
+ changed.
+ It contains two string extras - the old activity and the new activity -
+ under the keys 
+\begin_inset Quotes eld
+\end_inset
+
+old
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+new
+\begin_inset Quotes erd
+\end_inset
+
+ respectively.
+\end_layout
+
+\begin_layout Standard
+The 
+\series bold
+CONTEXT_CHANGED
+\series default
+ intent occurs whenever some other aspect of the user's context changes.
+ Presently this only includes the user's current place.
+ It contains an integer extra under the key 
+\begin_inset Quotes eld
+\end_inset
+
+type
+\begin_inset Quotes erd
+\end_inset
+
+ which describes which type of context has changed; this will have the value
+ 1 for place updates.
+ Place updates will also have two further integer extras - the place the
+ user was previously in (or -1 if they were not in a known place) and the
+ place the user is now in - under the keys 
+\begin_inset Quotes eld
+\end_inset
+
+old
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+new
+\begin_inset Quotes erd
+\end_inset
+
+, respectively.
+ These place IDs can be resolved to names and latitude/longitude by querying
+ the relevant content provider, described below.
+\end_layout
+
+\begin_layout Standard
+The 
+\series bold
+PREDICTION_AVAILABLE
+\series default
+ intent is broadcast whenever a prediction has been made by the 
+\noun on
+Context Analyser
+\noun default
+.
+ The best available prediction is included as a place ID in the 
+\begin_inset Quotes eld
+\end_inset
+
+best_target
+\begin_inset Quotes erd
+\end_inset
+
+ key, the total score for the prediction to that place is available as an
+ integer in the 
+\begin_inset Quotes eld
+\end_inset
+
+count
+\begin_inset Quotes erd
+\end_inset
+
+ key, and the 'probability' (the score for that place divided by the total
+ scores for all predicted places) is a float in the 
+\begin_inset Quotes eld
+\end_inset
+
+best_probability
+\begin_inset Quotes erd
+\end_inset
+
+ key.
+ A full set of predictions can be retrieved from the relevant content provider,
+ described below.
+\end_layout
+
+\begin_layout Standard
+As discussed in the permissions section (
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "sub:Permissions"
+
+\end_inset
+
+), you may wish to make sure that all broadcasts you receive are sent by
+ an application which holds the BROADCAST permission.
+ This ensures that the user trusts the application to send these broadcasts,
+ and reduces the chance that they are from a malicious application attempting
+ to introduce erroneous data or otherwise compromise your receiver.
+\end_layout
+
+\begin_layout Subsection
+Content providers
+\end_layout
+
+\begin_layout Standard
+The 
+\noun on
+Context Analyser
+\noun default
+ provides four content providers from which you can receive data:
+\end_layout
+
+\begin_layout Subsubsection
+Activities
+\end_layout
+
+\begin_layout Standard
+Allows querying of the user's current activity.
+ This may be expanded in future versions to allow querying of all known
+ activities.
+ Read only, does not accept selection, projection or order parameters.
+\end_layout
+
+\begin_layout Standard
+URI: 
+\noun on
+content://uk.co.md87.android.contextanalyser.activitiescontentprovider/current
+\end_layout
+
+\begin_layout Standard
+Content type: 
+\noun on
+vnd.contextanalyser.activity
+\end_layout
+
+\begin_layout Standard
+Columns:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="2" columns="3">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Type
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Remarks
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+activity
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+string
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The user's current activity
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Journeys
+\end_layout
+
+\begin_layout Standard
+Allows querying of the user's historical journeys and steps within them.
+ Read/write access, supports selection and ordering.
+\end_layout
+
+\begin_layout Paragraph
+Journeys
+\end_layout
+
+\begin_layout Standard
+URI: 
+\noun on
+content://uk.co.md87.android.contextanalyser.journeyscontentprovider/journeys
+\end_layout
+
+\begin_layout Standard
+Content type: 
+\noun on
+vnd.contextanalyser.journey
+\end_layout
+
+\begin_layout Standard
+Columns:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="3">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Type
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Remarks
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+_id
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+A unique, persistent ID for the journey
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+start
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The ID of the place at which this journey starts
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+end
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The ID of the place at which this journey ends
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+steps
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+int
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The number of steps in this journey
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+number
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+int
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The number of times this journey has been made
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Paragraph
+Journey steps
+\end_layout
+
+\begin_layout Standard
+URI: 
+\noun on
+content://uk.co.md87.android.contextanalyser.journeyscontentprovider/steps
+\end_layout
+
+\begin_layout Standard
+Content type: 
+\noun on
+vnd.contextanalyser.journeystep
+\end_layout
+
+\begin_layout Standard
+Columns:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="6" columns="3">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Type
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Remarks
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+_id
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+A unique, persistent ID for the step
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+activity
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+string
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The activity that was observed
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+repetitions
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+int
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The number of times the activity occured
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+journey
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The ID of the journey that this step belongs to
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+next
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The ID of the next step in the journey, or 0 if the last step in sequence
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Places
+\end_layout
+
+\begin_layout Standard
+Allows querying of the user's know places.
+ Read/write access, supports selection and ordering.
+\end_layout
+
+\begin_layout Standard
+URI: 
+\noun on
+content://uk.co.md87.android.contextanalyser.placescontentprovider/places
+\end_layout
+
+\begin_layout Standard
+Content type: 
+\noun on
+vnd.contextanalyser.location
+\end_layout
+
+\begin_layout Standard
+Columns:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="8" columns="3">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Type
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Remarks
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+_id
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+A unique, persistent ID for the place
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+string
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The name of the place
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+latitude
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+double
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The latitude of the centre of the place
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+longitude
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+double
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The longitude at the centre of the place
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+duration
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+Amount of time in seconds spent at the place
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+times
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The number of times the place has been visited
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+lastvisit
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The unix timestamp of the last visit (seconds)
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsubsection
+Predictions
+\end_layout
+
+\begin_layout Standard
+Allows querying of the current predictions, if any.
+ Read only, does not accept selection, projection or order parameters.
+\end_layout
+
+\begin_layout Standard
+URI: 
+\noun on
+content://uk.co.md87.android.contextanalyser.predictionscontentprovider/predictions
+\end_layout
+
+\begin_layout Standard
+Content type: 
+\noun on
+vnd.contextanalyser.prediction
+\end_layout
+
+\begin_layout Standard
+Columns:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="3">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<column alignment="center" valignment="top" width="0">
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Name
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Type
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+
+\series bold
+Remarks
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+_ID
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+A unique ID for the prediction
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+place
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+long
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The ID of the predicted destination
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+count
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+int
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Plain Layout
+The 'score' of the prediction
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Context API
+\end_layout
+
+\begin_layout Standard
+A small 
+\begin_inset Quotes eld
+\end_inset
+
+API
+\begin_inset Quotes erd
+\end_inset
+
+ is available to facilitate easier access to the services exposed by the
+ 
+\noun on
+Context Analyser.
+
+\noun default
+ This consists of the 
+\noun on
+ContextApi
+\noun default
+ class and its assorted subclasses.
+ These subclasses contain constant values for all column names, URIs and
+ content types, as well as intent names and enumeration values.
+\end_layout
+
+\begin_layout Standard
+The 
+\noun on
+ContextApi.Intents
+\noun default
+ class defines string constants for the three broadcast intents which are
+ used by the 
+\noun on
+Context Analyser
+\noun default
+.
+ The 
+\noun on
+ContextTypes
+\noun default
+ inner class contains integer constants for the possible 'type' values for
+ the CONTEXT_CHANGED intent.
+\end_layout
+
+\begin_layout Standard
+The 
+\noun on
+Places
+\noun default
+, 
+\noun on
+Journeys
+\noun default
+, 
+\noun on
+JourneySteps
+\noun default
+, 
+\noun on
+Predictions 
+\noun default
+and 
+\noun on
+Activities
+\noun default
+ classes all contain a CONTENT_URI field containing the Uri of the the content
+ provider, a CONTENT_TYPE field containing the string mime type for that
+ provider, and a static 
+\noun on
+ColumnNames
+\noun default
+ class which contains string constants for each column returned by the content
+ provider.
+\end_layout
+
+\begin_layout Standard
+The following code from the 
+\noun on
+Places
+\noun default
+ application shows the use of these constant values:
+\end_layout
+
+\begin_layout LyX-Code
+final Cursor cursor = managedQuery(ContextApi.Places.CONTENT_URI,
+\end_layout
+
+\begin_layout LyX-Code
+         new String[] { ColumnNames.LATITUDE, ColumnNames.LONGITUDE,     
+                 
+\end_layout
+
+\begin_layout LyX-Code
+         ColumnNames._ID, ColumnNames.NAME, ColumnNames.LAST_VISIT,       
+           
+\end_layout
+
+\begin_layout LyX-Code
+         ColumnNames.VISIT_COUNT }, null, null, null);
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+if (cursor.moveToFirst()) { 
+\end_layout
+
+\begin_layout LyX-Code
+    final int nameColumn = cursor.getColumnIndex(ColumnNames.NAME);
+\end_layout
+
+\begin_layout LyX-Code
+    final int idColumn = cursor.getColumnIndex(ColumnNames._ID);
+\end_layout
+
+\begin_layout LyX-Code
+
+\end_layout
+
+\begin_layout LyX-Code
+    do {
+\end_layout
+
+\begin_layout LyX-Code
+        final String name = cursor.getString(nameColumn);
+\end_layout
+
+\begin_layout LyX-Code
+        final int id = cursor.getInt(idColumn);
+\end_layout
+
+\begin_layout LyX-Code
+        // etc
+\end_layout
+
+\begin_layout LyX-Code
+    } while (cursor.moveToNext());
+\end_layout
+
+\begin_layout LyX-Code
+}
+\end_layout
+
+\begin_layout Standard
+Note that the code imports both the 
+\noun on
+ContextApi
+\noun default
+ class, and the 
+\noun on
+ContextApi.Places.ColumnNames
+\noun default
+ class.
 \end_layout
 
 \begin_layout Standard
@@ -2717,7 +5462,7 @@ Rose Alley
 
 \begin_inset CommandInset bibtex
 LatexCommand bibtex
-bibfiles "/home/chris/Uni/project/papers/project"
+bibfiles "/home/chris/Projects/Java/ContextApi/papers/project"
 options "bibtotoc,savetrees"
 
 \end_inset
