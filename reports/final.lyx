@@ -2,7 +2,7 @@
 \lyxformat 345
 \begin_document
 \begin_header
-\textclass article
+\textclass paper
 \use_default_options true
 \language english
 \inputencoding auto
@@ -27,7 +27,7 @@
 \use_bibtopic false
 \paperorientation portrait
 \secnumdepth 3
-\tocdepth 3
+\tocdepth 2
 \paragraph_separation skip
 \defskip medskip
 \quotes_language english
@@ -124,6 +124,26 @@ A context-aware API was successfully produced, along with a collection of
 \begin_layout LyX-Code
 \begin_inset CommandInset toc
 LatexCommand tableofcontents
+
+\end_inset
+
+
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FloatList figure
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset FloatList table
 
 \end_inset
 
@@ -266,20 +286,74 @@ The aim of the application is to provide the context data to third-party
 \end_layout
 
 \begin_layout Section
-Contributions
+Structure
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Contributions
-\end_layout
+Part 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "par:Background"
 
 \end_inset
 
+ summarises some of the current work in the field of context-aware systems
+ and activity inference.
+ Part 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "par:Activity-classification"
 
+\end_inset
+
+ explains in detail the techniques developed to classify user activity from
+ accelerometer data, applications developed to facilitate this, and analyses
+ data collected from users to determine the accuracy of the activity classificat
+ion algorithms.
+ Parts 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "par:Other-sensors"
+
+\end_inset
+
+ and 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "par:Places"
+
+\end_inset
+
+ deal with potential context information from other sensors such as microphones
+ and cameras, and the contextual value of the user's location, and how interesti
+ng places can be inferred.
+\end_layout
+
+\begin_layout Standard
+Part 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "par:The-Context-Analyser"
+
+\end_inset
+
+ introduces the Context Analyser, the primary output of this proejct, and
+ its suite of related applications.
+ The project is evaluated in part 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "par:Evaluation"
+
+\end_inset
+
+ and conclusions drawn and future work considered in part 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "par:Conclusion"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Standard
@@ -1762,6 +1836,12 @@ The battery life on modern smartphones rarely exceeds 24 hours of typical
 \end_layout
 
 \begin_layout Part
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Activity-classification"
+
+\end_inset
+
 Activity classification
 \end_layout
 
@@ -2693,6 +2773,12 @@ CLASSIFIED/VEHICLE
 \end_layout
 
 \begin_layout Part
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Other-sensors"
+
+\end_inset
+
 Other sensors
 \end_layout
 
@@ -2760,9 +2846,10 @@ Eclair
 
 \begin_layout Standard
 \begin_inset Float table
+placement h
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Tabular
@@ -3830,6 +3917,12 @@ l light, or in darkness.
 \end_layout
 
 \begin_layout Part
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Places"
+
+\end_inset
+
 Places
 \end_layout
 
@@ -4421,6 +4514,12 @@ l data showed that it was either too long or too short.
 \end_layout
 
 \begin_layout Part
+\begin_inset CommandInset label
+LatexCommand label
+name "par:The-Context-Analyser"
+
+\end_inset
+
 The 
 \noun on
 Context Analyser
@@ -5480,6 +5579,12 @@ unread
 \end_layout
 
 \begin_layout Part
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Evaluation"
+
+\end_inset
+
 Evaluation
 \end_layout
 
@@ -5853,11 +5958,42 @@ Resource usage
 \end_layout
 
 \begin_layout Part
+\begin_inset CommandInset label
+LatexCommand label
+name "par:Conclusion"
+
+\end_inset
+
 Conclusion
 \end_layout
 
 \begin_layout Section
 Project outcomes
+\end_layout
+
+\begin_layout Standard
+A context-aware API has been developed for the Android platform.
+ This was the primary purpose and output of this project, and it has been
+ evaluated to perform to an acceptable accuracy.
+ While not all of the evaluation targets were met, a number of these were
+ conscious decisions to deviate from the previous specification in response
+ to a change in development method or change in target audience.
+\end_layout
+
+\begin_layout Standard
+In developing the API, an algorithm to classify accelerometer data using
+ an extremely small set of extracted features was devised.
+ This is a significant deviation from established works in the field, which
+ mostly attempt to use as many features as possible in an attempt to increase
+ accuracy.
+ 
+\end_layout
+
+\begin_layout Standard
+In addition to the main API, the project has also delivered a set of application
+s built on top of it, most notably the context aware home screen.
+ This clearly demonstrates how context-aware systems can enhance a user's
+ experience by tailoring content and behaviour to the current context.
 \end_layout
 
 \begin_layout Section
@@ -5878,15 +6014,7 @@ There are many areas in this project which could be expanded on or enhanced
 \end_layout
 
 \begin_layout Subsection
-Using GSM cell tower 
-\begin_inset Quotes eld
-\end_inset
-
-turnover
-\begin_inset Quotes erd
-\end_inset
-
- to enhance activity classification
+Using GSM metadata to enhance activity classification
 \end_layout
 
 \begin_layout Standard
