@@ -59,23 +59,6 @@ Summer 2010
 \end_layout
 
 \begin_layout Standard
-All materials can be accessed electronically at:
-\end_layout
-
-\begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-/homes/cs106/....
-\end_layout
-
-\end_inset
-
-
-\end_layout
-
-\begin_layout Standard
 \begin_inset Newpage pagebreak
 \end_inset
 
@@ -255,7 +238,7 @@ Issues and challenges
 \end_layout
 
 \begin_layout Standard
-One of the main challenges for this project will be accomplashing accurate
+One of the main challenges for this project will be accomplishing accurate
  and useful context-awareness without significantly hindering the battery
  life or performance of a typical device.
  Existing algorithms tend to be extremely verbose, sometimes performing
@@ -280,6 +263,13 @@ The aim of the application is to provide the context data to third-party
  context.
  Consideration will have to be given as to any security measures (such as
  access control) which may need to be applied in order to protect user privacy.
+\end_layout
+
+\begin_layout Section
+Contributions
+\end_layout
+
+\begin_layout Standard
 \begin_inset Note Note
 status open
 
@@ -681,14 +671,14 @@ reference "sec:Location-analysis"
 ) and 
 \begin_inset CommandInset ref
 LatexCommand ref
-reference "sec:Bluetooth"
+reference "sec:Bluetooth-1"
 
 \end_inset
 
  (p
 \begin_inset CommandInset ref
 LatexCommand pageref
-reference "sec:Bluetooth"
+reference "sec:Bluetooth-1"
 
 \end_inset
 
@@ -1271,16 +1261,30 @@ The research also shows that the computational compatibility of the iPhone
  is more than sufficient to perform the necessary calculations for a typical
  activity-recognising application, which suggests that any modern smart
  phone would be capable of these.
-\begin_inset Note Note
-status open
+\end_layout
 
-\begin_layout Plain Layout
+\begin_layout Subsubsection
 Multitasking
 \end_layout
 
-\end_inset
+\begin_layout Standard
+Since the evaluation presented above was written, Apple have announced a
+ new version of the iPhone OS which supports pseudo multi-tasking.
+ However, this form of multi-tasking only allows a limited set of predefined
+ functions to be performed, such as playing audio or monitoring location.
+ This still prevents continuous real-time activity detection from taking
+ place in a useful fashion.
+\end_layout
 
-
+\begin_layout Standard
+Further, because of the homogeneous hardware and memory model employed by
+ the iPhone, applications typically make assumptions about the amount of
+ free memory that will be available to them.
+ This prevents any real implementation of multi-tasking, as background apps
+ would infringe on this fixed amount of free memory.
+ It is therefore unlikely that future updates will enable true, uninhibited
+ multi-tasking, as it would break compatibility with a lot of existing applicati
+ons.
 \end_layout
 
 \begin_layout Subsection
@@ -1390,7 +1394,7 @@ key "Bellavista2008"
  of service providers and handset manufacturers.
  All modern smartphone platforms have a geolocation stack, usually backed
  by a GPS chipset and in most cases augmented with either a database of
- known cell tower locations, or a map of known wifi network identifiers
+ known cell tower locations, or a map of known WiFi network identifiers
  and locations, or both.
  The two databases allow for rough geolocation when GPS is not available,
  or for greatly decreased lookup time when a GPS lock is available.
@@ -1791,6 +1795,16 @@ sideways false
 status collapsed
 
 \begin_layout Plain Layout
+\begin_inset Graphics
+	filename components.png
+	width 60page%
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
 \begin_inset Caption
 
 \begin_layout Plain Layout
@@ -1831,20 +1845,17 @@ reference "fig:Sensor-Logger-component"
 
  shows the relationship between the various components involved in the Sensor
  Logger application.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Diagram of components
-\end_layout
-
-\end_inset
-
-
 \end_layout
 
 \begin_layout Subsection
 Market and user input
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Market-and-user"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -1870,11 +1881,12 @@ reference "sec:Manual-classification"
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename analysis_of_user-submitted_sensor_logger_data_sets.png
+	width 60page%
 
 \end_inset
 
@@ -1971,11 +1983,12 @@ s what the user is actually doing with their device; if it is left on a
 \begin_inset Float figure
 wide false
 sideways false
-status collapsed
+status open
 
 \begin_layout Plain Layout
 \begin_inset Graphics
 	filename breakdown_of_incorrect_results.png
+	width 60page%
 
 \end_inset
 
@@ -2078,7 +2091,7 @@ long
 .
  After some brief research it became apparent that CDMA devices do not use
  IMEI numbers, but instead MEIDs (Mobile Equipment Identifier).
- MEIDs are hexidecimal instead of numerical, so obviously cannot be converted
+ MEIDs are hexadecimal instead of numerical, so obviously cannot be converted
  directly to a numeric type.
  The code was adjusted to decode MEIDs properly and a new version of the
  application published, and the error reports ceased.
@@ -2264,7 +2277,7 @@ It was observed that many samples had erroneous data either at the start
  This was a result of the user putting the device away in a pocket (as instructe
 d) or picking it back up to check the results.
  A classification of 'DNI', short for 'Do Not Include' was therefore introduced
- which allowed the erroneous windows to be summarilary excluded from later
+ which allowed the erroneous windows to be summarily excluded from later
  analysis.
  Later iterations of the Sensor Logger application included a 10 second
  delay at the start to give the user time to put the device away, and sounded
@@ -2276,8 +2289,8 @@ d) or picking it back up to check the results.
 Another problem with the user submitted data was that some activity descriptions
  didn't make sense.
  With the earliest versions of the Sensor Logger, a significant number of
- users entered their own name or a non-sensical string into the textbox
- labelled 
+ users entered their own name or a nonsensical string into the textbox labeled
+ 
 \begin_inset Quotes eld
 \end_inset
 
@@ -2304,17 +2317,15 @@ Once a reasonable sample of data had been recorded, the PHP script was modified
  for each of the 128 points in each window, as well as the manually-applied
  classification.
  It did not include information as to which windows were from the same sample,
- or the orginal user-supplied activity name.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Sample in appendix
-\end_layout
+ or the original user-supplied activity name.
+ A small sample of this data is included in Appendix 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "sec:Extract-from-export"
 
 \end_inset
 
-
+.
 \end_layout
 
 \begin_layout Standard
@@ -2343,14 +2354,10 @@ median
 mean
 \end_layout
 
-\begin_layout Itemize
-absolute mean
-\end_layout
-
 \begin_layout Standard
 Each of these extractors was run over the set of 128 data points from each
- axis on each sensor, giving a total of 36 features.
- It was planned to add further features including fast fourier transforms
+ axis on each sensor, giving a total of 30 features.
+ It was planned to add further features including Fast Fourier Transforms
  and energy, as suggested by multiple papers consulted in background research.
 \end_layout
 
@@ -2378,74 +2385,86 @@ ref
 \end_inset
 
 , a popular data mining suite developed by the University of Waikato.
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Sample in appendix
-\end_layout
+ A small sample of the ARFF data is included in Appendix 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "sec:Extract-from-ARFF"
 
 \end_inset
 
+.
  The ARFF file was imported into Weka and analysed.
 \end_layout
 
 \begin_layout Standard
-It was found that Weka could correctly classified 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-99%
-\end_layout
-
-\end_inset
-
- of activities (measured using a 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-hold-one cross validation
-\end_layout
-
-\end_inset
-
-) using a K-Nearest Network algorithm with K = 1.
- Furthermore, it became apparent that the error did not significantly increase
- when the 36 features were reduced to just four - the absolute mean and
- the range of the Y and Z accelerometer readings.
- Given the low cost of calculating these features and the very high detection
- rate, further research into other features such as FFTs was not performed.
+Inspection of a graphical representation of the correlation between mean
+ and activity showed that in some samples the mean was negated but of a
+ similar magnitude to other samples.
+ This can be explained by the device being orientated in a different manner
+ when the samples were taken - a static device would record a downwards
+ acceleration of 9.8m/s if it is upright, but -9.8m/s if it is upside down.
+ An extra feature extractor was therefore added which calculated the 
+\emph on
+absolute mean
+\emph default
+.
 \end_layout
 
 \begin_layout Standard
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Trumpet blowing
-\end_layout
-
+With these features, it was found that Weka could correctly classify activities
+ with an accuracy of in excess of 95% (measured by holding back 
+\begin_inset Formula $\frac{1}{3}$
 \end_inset
 
+ of the training data) using a K-Nearest Network algorithm with K = 1.
+ It was therefore apparent that more complicated feature extraction techniques
+ such as Fast Fourier Transforms or Energy would not be necessary to achieve
+ a very high classification rate.
+\end_layout
 
+\begin_layout Standard
+A lot of time was spent attempting to reduce the already small set of features
+ further.
+ Every feature that had to be calculated would result in more CPU usage
+ when implemented on the device, which would in turn reduce battery life
+ by a greater amount.
+ This was done by a combination of experimentation based on educated guesses
+ and assumption, and Weka's built in 
+\begin_inset Quotes eld
+\end_inset
+
+select attributes
+\begin_inset Quotes erd
+\end_inset
+
+ functionality.
+\end_layout
+
+\begin_layout Standard
+In the end, a similar accuracy was achieved using only four features.
+ These were the absolute mean and range of the X and Y axes of the accelerometer.
+ No data at all was used from the magnetic field sensor or the Z axis of
+ the accelerometer.
+ This is an very useful result as the features are extremely cheap to calculate,
+ and almost trivial to implement on the device.
+ No libraries are needed to perform advanced mathematical functions, and
+ individual samples do not need to be stored in memory until a complete
+ window is obtained - the minimum, maximum and total of samples from the
+ two axes simply have to be recorded.
+ This is, perhaps, the first time activity inference has been performed
+ successfully with such a small number of features.
 \end_layout
 
 \begin_layout Standard
 The application was again modified to read the exported data, calculate
  the four interesting features, and create a mapping of data points to activity.
- This map was then serialised and written to a file 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-expand
-\end_layout
-
-\end_inset
-
-.
+ This map was serialised into a file using an 
+\noun on
+ObjectWriter
+\noun default
+, which allows it to be read on both desktop platforms running a standard
+ JVM, and the Android platform which contains compatible serialisation technolog
+y.
 \end_layout
 
 \begin_layout Section
@@ -2477,8 +2496,8 @@ The serialised model was bundled with a new version of the Sensor Logger
  and one to reject and correct it.
  The on-device classification (and any correction made to it) is submitted
  along with all the data previously submitted.
- The user is then presented with a 'Thank you' message, and a unique link
- to the project website where they can view graphs of their activities.
+ Finally, the user is then presented with a 'Thank you' message, and a unique
+ link to the project website where they can view graphs of their activities.
 \begin_inset Note Note
 status open
 
@@ -2512,17 +2531,8 @@ Screenshot
 The Activity Recorder application was the second application published on
  the market.
  In contrast to the sensor logger, it only records the two relevant axes
- of the accelerometer, and all data is kept in memory
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-on the heap?
-\end_layout
-
-\end_inset
-
- instead of being written to a file.
+ of the accelerometer, and all data is kept in memory instead of being written
+ to a file.
 \end_layout
 
 \begin_layout Standard
@@ -2532,22 +2542,147 @@ The activity recorder consists of a background service which records 128
  power.
  The samples are then classified using the same model as the Sensor Logger
  application, and the resulting activity is appended to a list.
- 
-\begin_inset Note Note
-status open
-
-\begin_layout Plain Layout
-Adjacent
-\end_layout
-
-\end_inset
-
- samples which are classified as the same activity are merged together.
+ Consecutive samples which are classified as the same activity are merged
+ together.
 \end_layout
 
 \begin_layout Standard
 The user interface displays a list of activities, along with their start
  time and duration in minutes or hours.
+\end_layout
+
+\begin_layout Subsection
+Acquiring data while screen is off
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Acquiring-data-while"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The activity recorder brought to light a problem that was discovered to
+ be present in the sensor logger as we, but hadn't been noticed at the time.
+ When the device's screen was turned off, both applications stopped receiving
+ sensor events.
+ Some research and experimentation revealed that in order to continue receiving
+ sensor data when the device went to 
+\begin_inset Quotes eld
+\end_inset
+
+sleep
+\begin_inset Quotes erd
+\end_inset
+
+, the application had to acquire a partial wake lock from the system's power
+ manager.
+ A full wake lock keeps the device fully awake with the screen on, whereas
+ a partial wake lock allows background processing to continue while the
+ screen is deactivated.
+\end_layout
+
+\begin_layout Standard
+Once the applications were modified to acquire a partial wake lock, they
+ both received sensor data as expected with the screen off.
+ However, testing on Android 2.0 (
+\begin_inset Quotes eld
+\end_inset
+
+Eclair
+\begin_inset Quotes erd
+\end_inset
+
+) devices still showed the original problem.
+ The cause of this was a change in the functionality of the sensor manager
+ introduced between 1.6 and 2.0 which prevents sensor data being received
+ when the device is sleeping, regardless of any wake locks held.
+ An issue raised on their official issue tracker revealed that the Android
+ developers considered this a bug, and that it would be rectified in a future
+ version.
+ When Android 2.2 (
+\begin_inset Quotes eld
+\end_inset
+
+Froyo
+\begin_inset Quotes erd
+\end_inset
+
+) was released, testing revealed that the issue was indeed fixed, and all
+ applications worked as expected.
+ There therefore exists an incompatibility with handsets running Android
+ 2.0 and 2.1.
+\end_layout
+
+\begin_layout Subsection
+Aggregating classifications to smooth results
+\begin_inset CommandInset label
+LatexCommand label
+name "sub:Aggregating-classifications-to"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Another problem raised by the Activity Recorder application is that of occasiona
+l incorrect results.
+ Because each data was only sampled for five seconds once a minute, it is
+ possible that during those five seconds the activity being performed does
+ not lend itself to proper classification of the user's actual, medium-term
+ activity.
+ For example, if a user is walking for 20 minutes and happens to stop several
+ times to cross roads, samples while the user is stopped will (correctly)
+ indicate that they are standing still, but for all practical purposes they
+ are still engaged in the act of walking.
+ Similarly, when traveling in a car it is possible for occasional samples
+ to be misclassified as traveling by bus, or vice-versa.
+\end_layout
+
+\begin_layout Standard
+To combat this problem, an activity 
+\begin_inset Quotes eld
+\end_inset
+
+aggregator
+\begin_inset Quotes erd
+\end_inset
+
+ was introduced.
+ This accepts classifications and uses them to adjust a set of internal
+ probabilities for each possible (sub-)classification.
+ The algorithm increases the likelihood score of each component in a classificat
+ion by a constant amount, and reduces all other components by a fixed ratio.
+ This smooths out results, and allows for classifications not directly supported
+ by the model when the data is unclear and alternating.
+ This behaviour is most useful when traveling by vehicle and classifications
+ alter between 
+\begin_inset Quotes eld
+\end_inset
+
+car
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+bus
+\begin_inset Quotes erd
+\end_inset
+
+ - both contributed positively to the likelihood of 
+\begin_inset Quotes eld
+\end_inset
+
+CLASSIFIED/VEHICLE
+\begin_inset Quotes erd
+\end_inset
+
+, and this ends up being the result presented by the aggregator.
 \end_layout
 
 \begin_layout Standard
@@ -2563,6 +2698,13 @@ Other sensors
 
 \begin_layout Section
 Bluetooth
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Bluetooth-1"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -2665,7 +2807,7 @@ People
 \begin_inset Text
 
 \begin_layout Plain Layout
-Proportion discoverable
+Discoverable
 \end_layout
 
 \end_inset
@@ -3581,10 +3723,103 @@ le for 30 seconds at a time - the setting is automatically reverted after
 
 \begin_layout Section
 Microphone
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Microphone"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Reading raw data from the Microphone on Android is relatively straight forward
+ thanks to the built-in 
+\noun on
+AudioRecord
+\noun default
+ class.
+ This allows raw data to be retrieved directly into an array of bytes, where
+ it can then be analysed.
+ A class was written which constructs an 
+\noun on
+AudioRecord
+\noun default
+ instance, retrieves a sample of data, and calculates the sound pressure
+ level (SPL).
+ The SPL can be used to measure the ambient volume of the environment the
+ device is in - for example, a quiet room would typically have an SPL of
+ 20-30 dB, a television might raise that to the level of 60 dB, and a busy
+ road could be up to 90 dB.
+ SPL is calculated using the formula 
+\begin_inset Formula $L_{p}=20log_{10}(\frac{p_{rms}}{p_{ref}})$
+\end_inset
+
+.
+ 
+\begin_inset Formula $p_{ref}$
+\end_inset
+
+ is the reference sound level and is usually taken to be 20 micropascals,
+ which is the limit of human hearing; 
+\begin_inset Formula $p_{rms}$
+\end_inset
+
+ is the root mean square pressure being measured.
+\end_layout
+
+\begin_layout Standard
+While the class was able to correctly calculate the SPL, it is not used
+ in any of the published applications.
+ The original intention was to use SPL to assist in activity inference,
+ but as shown in 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "sub:Market-and-user"
+
+\end_inset
+
+ the accelerometer alone achieves a satisfactory classification rate on
+ its own.
+ The large majority of incorrect classifications revolved around the user
+ sitting down and, as sitting is such a universal activity (i.e., it's performed
+ everywhere), knowing the ambient SPL will not help in this classification.
+\end_layout
+
+\begin_layout Standard
+While there are certainly use cases for knowing the SPL (the most obvious
+ being increasing or decreasing the ringer volume in proportion to the SPL
+ to ensure it can be heard), most of them do not involve any other form
+ of context that this project is aiming to expose.
+ It was therefore decided to not include the SPL data in the main context
+ API.
 \end_layout
 
 \begin_layout Section
 Camera
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Camera"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The aim of incorporating data from the device's camera was to determine
+ the ambient lighting conditions.
+ It could possibly then be inferred whether the user was in natural or artificia
+l light, or in darkness.
+ However on consultation with a group of five prospective users it became
+ clear that at the times at which the device would be classifying context,
+ it would almost always be inside a pocket or a bag.
+ The only times the device would be able to detect lighting conditions would
+ be as the user was using it (which is too late as the device should have
+ already adapted to the user's context) or when the device had been left
+ on a desk or shelf.
+ It was therefore decided to not include camera data at this stage of the
+ project.
 \end_layout
 
 \begin_layout Standard
@@ -3600,6 +3835,13 @@ Places
 
 \begin_layout Section
 Use of GPS/GSM blackspots
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Use-of-GPS/GSM"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -3623,7 +3865,7 @@ Unfortunately, modern GPS hardware is much more sensitive and can quite
  easily get a signal indoors in most circumstances.
  One possible solution to this was to monitor the strength of either the
  GPS lock or the GSM signal, and attempt to determine whether or not a differenc
-e was noticable.
+e was noticeable.
  An experiment was therefore conducted to record the GPS and GSM status
  for multiple indoor and outdoor locations.
 \end_layout
@@ -4063,7 +4305,7 @@ The GPS results show even less correlation between indoor and outdoor readings.
  It seems more likely, however, that the numbers are not correlated in any
  way, and a larger experiment would reveal it to be random variance.
  Similarly, the time taken to lock the satellites is typically very small,
- but in a few situations there is a noticable delay.
+ but in a few situations there is a noticeable delay.
  The location which resulted in a three second lock time was repeated after
  a thirty second pause and obtained a sub-second lock time, but the original
  data was included in the results.
@@ -4130,7 +4372,7 @@ network
  location (using cell tower IDs and a built-in database) obtained accuracies
  in the region of 500 metres.
  Network location augmented with the built-in database of WiFi access point
- locations obtained accuraries in the same region as GPS.
+ locations obtained accuracies in the same region as GPS.
  However, WiFi augmentation only works when the user has elected to enable
  WiFi on their device, and this puts a large drain on the battery.
 \end_layout
@@ -4187,6 +4429,1050 @@ Context Analyser
 \end_layout
 
 \begin_layout Standard
+The primary output of this project is the 
+\noun on
+Context Analyser
+\noun default
+ application, and several further applications which use the services exposed
+ by the 
+\noun on
+Context Analyser.
+
+\noun default
+ 
+\end_layout
+
+\begin_layout Section
+The 
+\noun on
+Context Analyser
+\end_layout
+
+\begin_layout Standard
+The 
+\noun on
+Context Analyser
+\noun default
+ itself is an application with a single service, a single activity, and
+ four content providers.
+ Its purpose is to monitor the user's context, analyse it as necessary,
+ and expose the data to other applications which will actually do something
+ useful with it.
+ It reuses components developed for the 
+\noun on
+Activity Recorder
+\noun default
+ application to retrieve and process accelerometer input, and a 
+\noun on
+LocationMonitor
+\noun default
+ class which wraps around Android's built in location services.
+ Persistent data such as places is stored in a 
+\noun on
+SQLite
+\noun default
+ database, with logic in a custom helper class which handles creation and
+ maintenance of tables and allows interaction with the database without
+ exposing SQL to the rest of the application.
+\end_layout
+
+\begin_layout Subsection
+Accelerometer and location components
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename uml-accel.png
+	scale 50
+	rotateAngle 90
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Accelerometer component class diagram
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Accelerometer-component-class"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "fig:Accelerometer-component-class"
+
+\end_inset
+
+ shows the key components used in the activity inference portion of the
+ 
+\noun on
+Context Analyser.
+
+\noun default
+ The 
+\noun on
+accel
+\noun default
+ package handles low-level collection of accelerometer readings.
+ The 
+\noun on
+RealAccelReader
+\noun default
+ class registers itself to receive sensor events and then makes the received
+ data available through a public method.
+ It also handles acquiring of a wake lock as discussed in 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "sub:Acquiring-data-while"
+
+\end_inset
+
+ to keep the device sufficiently 'awake' to collect sensor data.
+ 
+\noun on
+AccelReader
+\noun default
+s are constructed by a factory so that they can be swapped out for test
+ implementations if required, or when using an emulator which lacks real
+ acceleration sensors.
+\end_layout
+
+\begin_layout Standard
+The 
+\noun on
+Sampler
+\noun default
+ class handles automatic, timed sampling of a reader.
+ Once started, it starts its 
+\noun on
+AccelReader
+\noun default
+ and then records a sample every 50ms until it has obtained 128 samples.
+ As it retrieves each sample, it computes the minimum, maximum and sum of
+ both axes that are needed for classification.
+ When 128 samples have been recorded, it executes the 
+\noun on
+run
+\noun default
+ method of a 
+\noun on
+Runnable
+\noun default
+ provided at construction, so the owner can retrieve the results and analyse
+ them appropriately.
+\end_layout
+
+\begin_layout Standard
+The 
+\noun on
+Classifier
+\noun default
+ is identical to that used in both the 
+\noun on
+Sensor Logger
+\noun default
+ and 
+\noun on
+Activity Recorder
+\noun default
+ applications, and applies the K-Nearest Network algorithm to its given
+ input and model.
+ The 
+\noun on
+ModelReader
+\noun default
+ is a utility class which reads and deserialises the model bundled with
+ the application.
+\end_layout
+
+\begin_layout Standard
+The 
+\noun on
+Aggregator
+\noun default
+ handles aggregation of a stream of classifications, smoothing out occasional
+ spurious results as discussed in 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "sub:Aggregating-classifications-to"
+
+\end_inset
+
+.
+ The 
+\noun on
+AutoAggregator
+\noun default
+ is an extension of this which automatically uses a 
+\noun on
+Sampler
+\noun default
+ and a 
+\noun on
+Classifier
+\noun default
+ to obtain the classifications itself.
+ As with 
+\noun on
+AccelReader
+\noun default
+s, it is constructed by a factory so it can be swapped out for a stubbed
+ implementation with ease.
+ The factory will provide a 
+\noun on
+FakeAutoAggregator
+\noun default
+ if it detects it is running on the Android Emulator; this implementation
+ simply cycles through a list of pre-defined activities to allow mocking
+ of the entire activity inference procedure.
+\end_layout
+
+\begin_layout Standard
+Together, these components are capable of inferring and aggregating the
+ user's current activity from accelerometer data.
+ The factory classes facilitate injection of deterministic classes which
+ can be used to test the system or to eliminate the system from any testing
+ entirely.
+\end_layout
+
+\begin_layout Standard
+The location handling package consists of one interface, a factory, and
+ two concrete implementations.
+ The 
+\noun on
+LocationMonitor
+\noun default
+ interface simply specifies methods to retrieve the current latitude, longitude
+ and accuracy.
+ A concrete 
+\noun on
+RealLocationMonitor
+\noun default
+ implements this by registering for location events with Android's built
+ in 
+\noun on
+LocationManager
+\noun default
+ service, while the 
+\noun on
+FakeLocationMonitor
+\noun default
+ merely cycles through a pre-defined list of latitude and longitude pairs.
+ A factory class determines which implementation to return based on whether
+ or not the code is being executed on an emulator.
+\end_layout
+
+\begin_layout Subsection
+The 
+\noun on
+ContextAnalyserService
+\end_layout
+
+\begin_layout Standard
+The 
+\noun on
+ContextAnalyserService
+\noun default
+ is an Android 
+\noun on
+Service
+\noun default
+ that handles periodic querying of the accelerometer and location components
+ described above, and other assorted tasks related to that data.
+ When it starts, the service creates a new 
+\noun on
+AutoAggregator
+\noun default
+, a new 
+\noun on
+DataHelper
+\noun default
+, an instance of Android's built in 
+\noun on
+Geocoder
+\noun default
+ class, and a 
+\noun on
+LocationMonitor
+\noun default
+.
+ It also retrieves a list of place names which have not yet been geocoded,
+ registers a listener for an application preferences setting titled 
+\begin_inset Quotes eld
+\end_inset
+
+run
+\begin_inset Quotes erd
+\end_inset
+
+, and schedules its polling method to be called after a sixty second delay.
+\end_layout
+
+\begin_layout Standard
+Every sixty seconds, the service then:
+\end_layout
+
+\begin_layout Itemize
+Retrieves the current latitude and longitude from its 
+\noun on
+LocationMonitor
+\end_layout
+
+\begin_layout Itemize
+Computes the distance between the last stored location and the new position
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+If the distance is less than 500m, there is no known Place associated with
+ the current location, and this location has been observed at least three
+ times:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Creates a new place with the latitude and longitude as a name
+\end_layout
+
+\begin_layout Itemize
+Tells the data helper to add the place to the database
+\end_layout
+
+\begin_layout Itemize
+Adds the place to the list of place names needing geocoding
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+If the distance is greater than 500m:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Update the stored latitude and longitude to the new values
+\end_layout
+
+\begin_layout Itemize
+If the previous location had an associated Place, tell the data helper to
+ record the visit
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+In both cases:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Ask the data helper to find a Place corresponding to the new location, if
+ a place is found:
+\end_layout
+
+\begin_layout Itemize
+Record the current time as the start time for this visit
+\end_layout
+
+\begin_layout Itemize
+If a place had been visited previously, tell the data helper to record a
+ new journey with the activity log
+\end_layout
+
+\begin_layout Itemize
+If the place is different to the last know place, send a broadcast intent
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Attempts to geocode any places with latitude/longitude names
+\end_layout
+
+\begin_layout Itemize
+Starts the auto aggregator
+\end_layout
+
+\begin_layout Standard
+When the auto aggregator finishes, the service retrieves the new aggregated
+ classification.
+ If the user is not at a known place, but has been to one in the past, the
+ activity is added to the activity log and the service checks for predictions.
+ If the activity is different to the last known activity, a broadcast intent
+ is sent.
+\end_layout
+
+\begin_layout Standard
+Predictions work by checking for journeys which begin with similar activities
+ to those recorded in the activity log.
+ The data helper retrieves all known journeys originating at the user's
+ last known location.
+ Each journey is then analysed to determine if it is compatible with the
+ current activity log.
+ This involves comparing the activities in the journey to make sure that
+ they're the same as those logged, and the amount of time spent doing that
+ activity is reasonably close.
+ The current implementation allows for a ±50% variance in the number of
+ repetitions of an activity.
+ The activity log is also allowed to be a subset of the journey being tested,
+ as long as the subset includes the beginning of the journey (that is, the
+ activity log is allowed to be incomplete).
+ If the activity log is found to be compatible with the journey, the journey
+ is added to a list.
+\end_layout
+
+\begin_layout Standard
+Once a list of compatible journeys has been found, they are grouped by destinati
+on and the number of times each journey was made is summed into a 
+\begin_inset Quotes eld
+\end_inset
+
+score
+\begin_inset Quotes erd
+\end_inset
+
+ for each destination.
+ The best destination is then included in a broadcast intent, and all of
+ the predicted destinations are cached for use by the predictions content
+ provider.
+\end_layout
+
+\begin_layout Standard
+The 
+\noun on
+ContextAnalyserService
+\noun default
+ exposes a 
+\noun on
+Bindable
+\noun default
+ interface with methods for retrieving the current activity and any predictions.
+ This is used for intra-process communication: content providers for the
+ activity and predictions can 
+\emph on
+bind
+\emph default
+ to the service and request the data they need directly.
+ Other content providers simply access the shared SQLite database themselves,
+ so do not need to communicate directly with the service.
+\end_layout
+
+\begin_layout Subsection
+The public API
+\end_layout
+
+\begin_layout Standard
+The primary purpose of the 
+\noun on
+ContextAnalyser
+\noun default
+ application is to expose the contextual information to third-party developers
+ in an easy-to-user manner.
+ To cater to different types of applications, two distinct methods are provided
+ that expose data: a set of 
+\emph on
+broadcast intents
+\emph default
+ which notify interested parties as and when a change occurs, and a collection
+ of 
+\emph on
+content providers
+\emph default
+ that allow contextual data to be queried as it is needed.
+\end_layout
+
+\begin_layout Subsubsection*
+Broadcast Intents
+\end_layout
+
+\begin_layout Standard
+As mentioned above, the 
+\noun on
+ContextAnalyserService
+\noun default
+ fires broadcast intents on certain occasions, namely:
+\end_layout
+
+\begin_layout Itemize
+whenever the (aggregated) activity changes
+\end_layout
+
+\begin_layout Itemize
+whenever the place associated with the user's location changes
+\end_layout
+
+\begin_layout Itemize
+whenever predictions are calculated
+\end_layout
+
+\begin_layout Standard
+Third-party applications create 
+\noun on
+BroadcastReceivers
+\noun default
+ which can receive these intents.
+ 
+\noun on
+BroadcastReceivers
+\noun default
+ can be registered in code or in the application's manifest file; in the
+ latter case, their creation and maintenance is handled by the OS itself,
+ so there is very little overhead in terms of memory or CPU usage for the
+ application.
+ Each of the broadcast intents include relevant data such as the new activity,
+ new place ID, or most likely predicted destination.
+ This allows applications to implement a lightweight receiver which is able
+ to check conditions and launch a service or activity in response to the
+ user's context.
+\end_layout
+
+\begin_layout Subsubsection*
+Content providers
+\end_layout
+
+\begin_layout Standard
+For applications which need more detailed information, or wish to poll the
+ current state instead of receiving it asynchronously, the 
+\noun on
+ContextAnalyser
+\noun default
+ defines a set of Android content providers.
+ An activity or service can query a content provider by simply providing
+ its URI, and optionally a projection, selection, and custom ordering.
+ In return, it receives a Cursor object which can be used to iterate over
+ and retrieve all the results of the query.
+ Content providers are used extensively by the Android OS, for example for
+ accessing contacts, e-mail and SMS messages.
+\end_layout
+
+\begin_layout Standard
+Two content providers - journeys and places - simply pass queries directly
+ on to the backend database, which retrieves data from (or modifies data
+ in) the journey, journeysteps and locations tables.
+ This is extremely simple to implement as the Android 
+\noun on
+SQLiteDatabase
+\noun default
+ class has a query method with the same signature as that implemented by
+ content providers.
+\end_layout
+
+\begin_layout Standard
+A further two content providers - activities and predictions - are backed
+ by data retrieved from the 
+\noun on
+ContextAnalyserService
+\noun default
+ via its bindable interface, as discussed previously.
+ The retrieved data is added to a 
+\noun on
+MatrixCursor
+\noun default
+ and returned to the caller.
+ These two providers, at present, do not allow the caller to specify a projectio
+n, selection arguments, or an ordering.
+ These parameters are all biased towards a SQL-like model, and there is
+ no simple way to apply them to a 
+\noun on
+MatrixCursor.
+
+\noun default
+ Some built-in Android content providers, such as the 
+\noun on
+gmail-ls
+\noun default
+ provider which facilitates access to the user's gmail account, also do
+ not implement projection, selection or ordering; this suggests that in
+ situations where the provider is not backed by a SQLite database, it is
+ acceptable to just ignore these parameters.
+ Of course, they would be more useful if the parameters were respected,
+ so the implementation may be reconsidered in the future.
+\end_layout
+
+\begin_layout Subsubsection*
+API class
+\end_layout
+
+\begin_layout Standard
+In order to use receive intents or use content providers, developers need
+ to know the URIs and key names data structures involved.
+ These are published in the developer documentation (
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "sec:Developer-Guide"
+
+\end_inset
+
+), and an optional lightweight 
+\begin_inset Quotes eld
+\end_inset
+
+API
+\begin_inset Quotes erd
+\end_inset
+
+ is also provided to save developers having to hard code common String and
+ URI values.
+ This API, as discussed in the developer guide, consists of a set of nested
+ public classes with public String and URI constants.
+ Developers simply drop a single JAR archive or a single JAVA source file
+ into their projects, and they can then access constants for the content
+ provider URIs, column names for each exposed content provider, and intent
+ names and metadata for broadcast intents.
+\end_layout
+
+\begin_layout Subsubsection*
+Permissions
+\end_layout
+
+\begin_layout Standard
+In order for the Context Analyser function, it has to ask the user for the
+ relevant 
+\emph on
+permissions
+\emph default
+ to use the accelerometers, access their location, and keep the device awake.
+ All of these permissions are classed as 
+\begin_inset Quotes eld
+\end_inset
+
+dangerous
+\begin_inset Quotes erd
+\end_inset
+
+ and are flagged to the user when they install the application.
+ The Android OS enforces access control based on permissions, and will cause
+ runtime exceptions to be thrown if applications attempt to access a resource
+ they do not have access to.
+\end_layout
+
+\begin_layout Standard
+In order to protect users' privacy, the Context Analyser defines its own
+ set of permissions which third-party applications must request in order
+ to retrieve context information.
+ These permissions are all designated 
+\begin_inset Quotes eld
+\end_inset
+
+dangerous
+\begin_inset Quotes erd
+\end_inset
+
+ so that users will be aware of the information that applications are requesting.
+ Without these permissions, the Context Analyser would open up a loophole
+ whereby applications could retrieve location information from the Context
+ API that they didn't have permission to access directly through the OS.
+ The Android OS makes it extremely simple to enforce these permissions -
+ in most cases a single tag is added in the application's manifest file,
+ or a single method is invoked in code, and the OS handles everything else.
+\end_layout
+
+\begin_layout Standard
+One extra permission was also created which is requested by the Context
+ Analyser itself.
+ This permission is called 
+\begin_inset Quotes eld
+\end_inset
+
+BROADCAST
+\begin_inset Quotes erd
+\end_inset
+
+ and is used to ensure data integrity for third party applications.
+ Applications are encouraged to check for the 
+\begin_inset Quotes eld
+\end_inset
+
+BROADCAST
+\begin_inset Quotes erd
+\end_inset
+
+ permission when receiving broadcast intents (and again, the Android OS
+ makes this as simple as adding a tag to an element in the manifest file)
+ in order to ensure that the broadcasts came from a source that the user
+ trusts to make them.
+ This prevents malicious third-party applications broadcasting erroneous
+ data, or broadcasting high volumes of data, to negatively impact context-aware
+ applications.
+\end_layout
+
+\begin_layout Section
+Places application
+\end_layout
+
+\begin_layout Standard
+The 
+\begin_inset Quotes eld
+\end_inset
+
+places
+\begin_inset Quotes erd
+\end_inset
+
+ application consists of a single activity which shows an Android 
+\noun on
+MapView
+\noun default
+, with two custom overlay layers.
+ One layer renders a star at the latitude/longitude of each place known
+ to the 
+\noun on
+Context Analyser
+\noun default
+, while the second layer renders red lines between places that are connected
+ by journeys.
+ The thickness of the line is proportionate to the number of times the journey
+ has been undertaken.
+\end_layout
+
+\begin_layout Standard
+The application retrieves its data from two of the Context Analyser's content
+ providers.
+ For each location returned by the places content provider, the application
+ creates a new 
+\noun on
+OverlayItem
+\noun default
+ containing the latitude/longitude, name, and a summary of the statistics
+ associated with the place.
+ The corresponding overlay shows a new 
+\emph on
+toast
+\emph default
+ containing the name and statistics when the user clicks on or near the
+ overlay item (see 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "fig:Place-details"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+The journeys overlay constructs a 2-dimensional map of 
+\noun on
+OverlayItems
+\noun default
+ to 
+\noun on
+OverlayItems
+\noun default
+ to the number of times that journey has been performed (i.e., 
+\noun on
+Map<OverlayItem, Map<OverlayItem, Integer>>
+\noun default
+).
+ It is passed a list of items created based on the places content provider,
+ and then retrieves all known journeys from the journeys content provider
+ and uses them to build the map.
+ Journeys are normalised so that the ID of the start point is always less
+ than the ID of the end point as the overlay is not concerned with direction.
+\end_layout
+
+\begin_layout Standard
+As each 
+\noun on
+OverlayItem
+\noun default
+ holds the latitude and longitude of the point, it is therefore trivial
+ to iterate over each pair of items, request the 
+\noun on
+MapView
+\noun default
+ translate the latitude/longitude into screen co-ordinates, and render a
+ line between the two points.
+ The line width is set such that the most traveled journey is 10 pixels
+ wide, and all other journeys are scaled in proportion.
+\end_layout
+
+\begin_layout Section
+Locale plugin
+\end_layout
+
+\begin_layout Standard
+The locale plugin is a lightweight application which connects the 
+\noun on
+Context Analyser
+\noun default
+ to the third-party 
+\noun on
+Locale
+\noun default
+ software, which is designed to allow users to change settings of their
+ device automatically when certain 
+\begin_inset Quotes eld
+\end_inset
+
+situations
+\begin_inset Quotes erd
+\end_inset
+
+ are encountered.
+ By default, situations can include location, time, battery power, orientation
+ and contact information.
+ Many additional plugins are available on the Android Market to augment
+ these conditions.
+ The plugin for the Context Analyser allows users to add conditions for
+ their current activity and (most likely) predicted destination.
+\end_layout
+
+\begin_layout Standard
+In order to show new conditions in 
+\noun on
+Locale
+\noun default
+, the plugin simply has to define an activity which can handle a certain
+ predefined intent.
+ One such activity is created for each condition, and they simply provide
+ a lightweight user interface to allow the user to select the options for
+ the condition.
+ The activity for selecting a destination, for example, queries the places
+ content provider and displays the result in a combobox.
+ The user then selects the desired place, and either presses their back
+ button, or presses menu and taps 
+\begin_inset Quotes eld
+\end_inset
+
+Save
+\begin_inset Quotes erd
+\end_inset
+
+ (this is a slightly odd user interface, but it is a standard amongst 
+\noun on
+Locale 
+\noun default
+plugins and highly recommended by the 
+\noun on
+Locale
+\noun default
+ developers).
+\end_layout
+
+\begin_layout Standard
+A broadcast receiver is then created which responds to queries from 
+\noun on
+Locale.
+
+\noun default
+ It does this by querying the prediction and activity content providers,
+ and comparing the values they return with the values previously supplied
+ for the condition by the user (these are stored in an Intent's 
+\emph on
+extra
+\emph default
+ fields, which are provided to the receiver by 
+\noun on
+Locale
+\noun default
+).
+ It then sets a result code to indicate whether or not the situation is
+ satisfied at present
+\end_layout
+
+\begin_layout Standard
+The broadcast receiver also listens for intents from the content analyser,
+ and sends a special intent to 
+\noun on
+Locale
+\noun default
+ to suggest that it should requery the plugin.
+ This allows 
+\noun on
+Locale
+\noun default
+ to be aware of when conditions change, and adjust its schedule appropriately.
+ This workflow also allows 
+\noun on
+Locale
+\noun default
+ to govern how often the conditions are queried, which allows it to reduce
+ the impact on battery life.
+\end_layout
+
+\begin_layout Section
+Context-aware Home Screen
+\end_layout
+
+\begin_layout Standard
+The context-aware home screen took a substantial amount of development time.
+ It is a replacement for the stock Android 'home' screen which not only
+ gives the user access to their applications and contacts, but displays
+ recent e-mails, text messages, upcoming appointments and missed calls.
+ In addition to this, it learns and adapts to the user's behaviour in a
+ context-sensitive fashion.
+\end_layout
+
+\begin_layout Standard
+The context-aware home screen consists of a set of 
+\begin_inset Quotes eld
+\end_inset
+
+modules
+\begin_inset Quotes erd
+\end_inset
+
+ which each take up a small portion of the screen real estate.
+ Each module displays one or more actionable items, such as a set of application
+ shortcuts, an e-mail message, or a missed call.
+ The home screen supports a number of 
+\begin_inset Quotes eld
+\end_inset
+
+fixed
+\begin_inset Quotes erd
+\end_inset
+
+ modules which are displayed at the top of the screen, and a set of other
+ modules which are displayed below and may be scrolled vertically.
+ This allows important or frequently used modules such as application shortcuts
+ to be visible regardless of the other information displayed.
+\end_layout
+
+\begin_layout Standard
+Each module is expected to tailor its behaviour to the user's current context,
+ either by ordering its contents appropriately, or selectively displaying
+ the most relevant content.
+ For example, the application shortcut module will order the shortcuts by
+ those it anticipates will be most likely to be used in the present context,
+ whereas an e-mail module will chose to display the e-mail messages most
+ likely to be read.
+ In addition, modules which aren't fixed are ordered by the home screen
+ according to the context and previous history.
+\end_layout
+
+\begin_layout Standard
+The current context is represented as a set of tuples of context type and
+ value.
+ For example, a complete description of a context may be:
+\end_layout
+
+\begin_layout LyX-Code
+(location,1),
+\end_layout
+
+\begin_layout LyX-Code
+(destination,2),
+\end_layout
+
+\begin_layout LyX-Code
+(activity,CLASSIFIED/WALKING),
+\end_layout
+
+\begin_layout LyX-Code
+(day,Monday),
+\end_layout
+
+\begin_layout LyX-Code
+(hour,14),
+\end_layout
+
+\begin_layout LyX-Code
+(period,Afternoon)
+\end_layout
+
+\begin_layout Standard
+When the user performs an action, a tuple consisting of the module name
+ and a type and identifier for the action is created.
+ It is then recorded against each tuple in the current context; so if the
+ user tapped an e-mail with the label 
+\begin_inset Quotes eld
+\end_inset
+
+work
+\begin_inset Quotes erd
+\end_inset
+
+ in the above context, some of the generated tuples would be:
+\end_layout
+
+\begin_layout LyX-Code
+(email,label,work,location,1),
+\end_layout
+
+\begin_layout LyX-Code
+(email,label,work,destination,2),
+\end_layout
+
+\begin_layout LyX-Code
+(email,label,work,activity,CLASSIFIED/WALKING),
+\end_layout
+
+\begin_layout LyX-Code
+...
+\end_layout
+
+\begin_layout LyX-Code
+(email,label,work,period,Afternoon)
+\end_layout
+
+\begin_layout Standard
+Such an event would also cause similar data to be logged for the sender
+ of the e-mail and the read state.
+ A helper class is provided by the home screen activity to each module to
+ facilitate storing and querying of such tuples.
+ On the database level, each tuple is associated with a 
+\emph on
+count
+\emph default
+ - the number of times it has been generated by an event.
+\end_layout
+
+\begin_layout Standard
+When a module is deciding how to arrange or select its contents, it queries
+ for all tuples which match the current context.
+ It can then sum the number of times each action occurred in a related context,
+ and use this score in its selection or ordering algorithm.
+ The same algorithm is applied to the ordering of modules on the home screen
+ itself - each interaction is recorded as a tuple of 
+\noun on
+(homescreen, activity, <module>).
+\end_layout
+
+\begin_layout Standard
+Some actions the user performs may be universal, rather than tied to a specific
+ context.
+ For example, a user is more likely to tap on an 
+\emph on
+unread
+\emph default
+ e-mail to read it than to tap an e-mail they've already seen.
+ To compensate for this fact, a special context provider was introduced
+ which constantly provides the tuple 
+\noun on
+(global, true).
+
+\noun default
+ This allows modules to seamlessly incorporate the total number of times
+ an action was performed into their algorithms.
+\end_layout
+
+\begin_layout Standard
 \begin_inset Newpage pagebreak
 \end_inset
 
@@ -4197,69 +5483,251 @@ Context Analyser
 Evaluation
 \end_layout
 
+\begin_layout Standard
+This section contains exerts from the project specification and an evaluation
+ of how well the goals were met.
+\end_layout
+
 \begin_layout Section
-Reports
+Activity classification
+\end_layout
+
+\begin_layout Quote
+The classifier should be able to classify the following activities: walking,
+ running, standing, sitting, traveling in a vehicle.
+ ...
+ It is expected that the classifier should correctly classify all activities
+ with an accuracy of at least 70%, within 30 seconds of the activity being
+ started.
 \end_layout
 
 \begin_layout Standard
-The results of the experimentation described in section 
+The activity inference component of the context analyser is able to uniquely
+ identify all of the activities stated in the specification, with the exception
+ of running.
+ In addition, it can distinguish between traveling by car and bus, and walking
+ up or down stairs.
+ Of over 1,000 data samples submitted by users, not a single one was described
+ as 
+\begin_inset Quotes eld
+\end_inset
+
+running
+\begin_inset Quotes erd
+\end_inset
+
+, which suggests that the omission has not negatively impacted the project
+ in any way.
+\end_layout
+
+\begin_layout Standard
+The accuracy of the classifier when presented with supported activities
+ is over 75% (see 
 \begin_inset CommandInset ref
-LatexCommand ref
-reference "sec:Experimentation"
+LatexCommand prettyref
+reference "sub:Market-and-user"
 
 \end_inset
 
- should be written up as a report.
+).
+ This was all accomplished by using just two features extracted from two
+ axes of the accelerometer; typical research applications that achieve similar
+ accuracies often use hundreds of features and combine many different sensors.
+\end_layout
+
+\begin_layout Standard
+The timescale for activity detection was consciously expanded during this
+ project.
+ To conserve battery life, polling was reduced to once a minute, and the
+ aggregation of results adds a further delay to activities being classified.
+ Brief tests with the context analyser suggest that activities take 2-3
+ minutes to be correctly identified.
+ The change in timescale reflects a shift in aims from enabling applications
+ to respond instantaneously to user activity (of which there are few genuine
+ use cases) to facilitating a less obvious background enhancement of application
+s, as seen in the context home screen application.
+\end_layout
+
+\begin_layout Section
+Experimentation
+\end_layout
+
+\begin_layout Quote
+The results of the experimentation described should be written up as a report.
  The reports must include the data collected in each of the experiments,
  the conclusions drawn from those, and the impact of the results of the
  experiment on the project deliverables.
+\end_layout
+
+\begin_layout Standard
+Several experiments were performed as part of the project.
+ These include investigating Bluetooth ubiquity (
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "sec:Bluetooth-1"
+
+\end_inset
+
+) and methods of determining whether or not a device is indoors (
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "sec:Use-of-GPS/GSM"
+
+\end_inset
+
+).
+ Consideration was also given to the use of data from a camera input (
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "sec:Camera"
+
+\end_inset
+
+), and functioning code was developed to use a Microphone input (
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "sec:Microphone"
+
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Standard
+Ultimately, none of these experiments contributed positively to the end
+ product.
+ The experimentation did, however, save development time which would have
+ been spent on features that would probably have not helped the project.
+ The lack of positive results, while acceptable according to the specification,
+ suggests that other areas should have been considered or alternative approaches
+ attempted.
+ Some possibilities for these are discussed in 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "sec:Future-work"
+
+\end_inset
+
+.
 \end_layout
 
 \begin_layout Section
 Deliverables
 \end_layout
 
-\begin_layout Standard
-On successful completion of the project, there should be three deliverable
- applications as specified in section 
-\begin_inset CommandInset ref
-LatexCommand ref
-reference "sec:Deliverables"
+\begin_layout Quote
+The following items should be delivered: ...
+ Context-aware Framework, ...
+ Activity condition for Locale, ...
+ Context-aware home screen.
+\end_layout
 
+\begin_layout Standard
+A total of four (final) applications were delivered, along with two applications
+ used during the development process.
+ All three applications required by the specification were successfully
+ implemented, along with the 
+\begin_inset Quotes eld
 \end_inset
 
-.
- These can be tested and evaluated in a variety of manners:
+Places
+\begin_inset Quotes erd
+\end_inset
+
+ application which exposes some functionality of the context API which would
+ otherwise be hidden from the user.
 \end_layout
 
-\begin_layout Subsection
-Unit tests
+\begin_layout Quote
+The application should provide two different interfaces to retrieve the
+ user's context.
+ The first should be an implementation of the Android ContentProvider interface.
+ The second interface should use Android broadcast Intents to notify any
+ interested application whenever the user's activity changes.
 \end_layout
 
 \begin_layout Standard
+The API provided by the Context Analyser exposes a total of four content
+ providers, and makes use of three different broadcast intents.
+ These are employed by the Places application, Locale plugin, and context
+ home screen.
+ The two methods compliment each other and facilitate two different methods
+ of interfacing very well.
+\end_layout
+
+\begin_layout Section
+Testing
+\end_layout
+
+\begin_layout Quote
 Throughout the development of the project, unit tests should be created
  to test key functionality of all applications.
  It is expected that at the completion of the project, all unit tests should
  pass successfully, and they will have a code coverage of 80% or above.
 \end_layout
 
-\begin_layout Subsection
-System tests
+\begin_layout Standard
+While unit tests were employed throughout the project, the emphasis was
+ on testing small parts of complex or potentially unstable code, and code
+ which was not easily covered by systems tests.
+ Tests were split between those ran on a standard JVM from the development
+ environment, and those that needed to be ran on the device itself with
+ an Android-specific test harness.
+ While no figure for code coverage is available due to this split, and due
+ to lack of coverage tools for the latter type of tests, it is expected
+ that the figure would be well below 80% line coverage.
 \end_layout
 
 \begin_layout Standard
+This represents a failure to adhere to Test-Driven Development (TDD) as
+ originally intended (but not documented).
+ This involves writing unit tests as a form of 
+\begin_inset Quotes eld
+\end_inset
+
+specification
+\begin_inset Quotes erd
+\end_inset
+
+ before implementing the unit itself.
+ With this project, however, a lot of code started out as small 
+\begin_inset Quotes eld
+\end_inset
+
+experiments
+\begin_inset Quotes erd
+\end_inset
+
+ to determine whether or not something would work, or the exact output of
+ some built-in functionality; it then evolved into a full implementation,
+ and adding unit tests after the fact was not considered a high priority
+ for most code.
+\end_layout
+
+\begin_layout Quote
 The classifier application should also have a suite of system tests.
  These should consist of a set of fake or pre-recorded inputs which are
  fed into the application in place of raw sensor data.
- The output of the classifier (via the API) can then be compared to expected
- output for the data.
-\end_layout
-
-\begin_layout Subsection
-User acceptance testing
+ The output of the classifier can then be compared to expected output for
+ the data.
 \end_layout
 
 \begin_layout Standard
+The input sources for the framework are all located behind factory classes.
+ These classes are able to switch out the real information for a stubbed
+ version which simulates the data being received; this is automatically
+ done if the application is ran on the Android Emulator, which does not
+ emulate sensor inputs of any kind.
+ The stubbed classes allow for easy testing of the context framework and
+ the applications that use it, which makes for verification of the whole
+ system extremely easy.
+\end_layout
+
+\begin_layout Section
+User testing and feedback
+\end_layout
+
+\begin_layout Quote
 The Locale addon and context-aware home screen should be subject to user
  acceptance testing for evaluation.
  This should take the form of providing the applications to multiple end
@@ -4267,81 +5735,114 @@ The Locale addon and context-aware home screen should be subject to user
  for certain tasks to complete).
  The users should then be presented with a questionnaire which they can
  use to evaluate the functionality, utility and design of the applications.
-\end_layout
-
-\begin_layout Subsubsection
-Android market
-\end_layout
-
-\begin_layout Standard
-In addition to providing the applications to a closed set of users, the
+ ...
+ In addition to providing the applications to a closed set of users, the
  applications should be published to the Android market.
- This will allow any owner of a compatible Android device to download and
- use the applications.
- The market also allows users to rate the application and leave comments,
- which will be an extremely useful method of evaluating the success of the
- applications.
 \end_layout
 
 \begin_layout Standard
-As part of this, the classifier application/framework will be published,
- and should include instructions for developers detailing how they can make
- their applications context-aware.
- The interest expressed and number of applications which use it (if any)
- will be an indicator of the effectiveness of the API and its documentation.
-\end_layout
-
-\begin_layout Subsection
-Classification scope
-\end_layout
-
-\begin_layout Standard
-The classifier should be able to classify the following activities:
-\end_layout
-
-\begin_layout Itemize
-walking
-\end_layout
-
-\begin_layout Itemize
-running
-\end_layout
-
-\begin_layout Itemize
-standing
-\end_layout
-
-\begin_layout Itemize
-sitting
-\end_layout
-
-\begin_layout Itemize
-traveling in a vehicle
+All four 
+\noun on
+Context Analyser
+\noun default
+ applications were given to a small group of test users, along with copies
+ of the user manuals and developer's guide.
+ No questionnaires were used, but the users were asked to give feedback
+ and evaluate.
+ Both of the preliminary data gathering applications were published to the
+ Android Market where they received comments and ratings by users.
+ At the time of writing, the 
+\noun on
+Context Analyser
+\noun default
+ suite had not yet been published to the market.
 \end_layout
 
 \begin_layout Standard
-These should be evaluated by means of a leave-one-out cross-validation test,
- with data collected from one or more users and annotated by hand.
- It is expected that the classifier should correctly classify all activities
- with an accuracy of at least 70%, within 30 seconds of the activity being
- started.
+The two test applications published to the market, which were never intended
+ to be particularly valuable to end users, had between 100 and 500 downloads,
+ and both received an average rating between 3 and 4 stars (annotated as
+ 
+\begin_inset Quotes eld
+\end_inset
+
+Average
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+Above Average
+\begin_inset Quotes erd
+\end_inset
+
+ within the Market UI, respectively).
+ Some positive comments were left, such as the following comment regarding
+ the Sensor Logger application:
 \end_layout
 
-\begin_layout Subsection
+\begin_layout Quote
+It works on myTouch3G but it would be better if it ran in background and
+ actually kept a log of what you do throughout the day.
+ At least it was right!
+\end_layout
+
+\begin_layout Standard
+Negative feedback mostly revolved around activities which the applications
+ were not trained for being incorrectly classified.
+ As evidenced with the annotated data which was submitted, a lot of users
+ attempted to get the application to classify them sleeping, and were presented
+ with seemingly bizarre results such as 
+\begin_inset Quotes eld
+\end_inset
+
+Traveling by bus
+\begin_inset Quotes erd
+\end_inset
+
+.
+ This is because one sample for traveling by bus was close to a 
+\begin_inset Quotes eld
+\end_inset
+
+stationary
+\begin_inset Quotes erd
+\end_inset
+
+ reading - a vertical acceleration of 9.8m/s, no horizontal acceleration,
+ and little variance.
+\end_layout
+
+\begin_layout Standard
+Methods to correct or detect this type of erroneous result would have given
+ a much better user experience, and reduced the small amount of negative
+ feedback received, but no such methods were attempted during this project.
+ This was because early testing ignored activities which the classifier
+ did not know of, and realisation of the scope of the problem came too late
+ into the project to make the changes necessary.
+ Some ideas for combating this problem are presented in 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "sec:Future-work"
+
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Note Note
+status open
+
+\begin_layout Plain Layout
 Resource usage
 \end_layout
 
-\begin_layout Standard
-Finally, the applications should be evaluated based on their resource usage.
- One of the main concerns will be battery usage (caused both by the application
- using processor time, and activating sensors), but attention must also
- be paid to memory consumption (especially after extended use).
- The goal should be to ensure that the resource usage of the applications
- in this project do not adversely impact the functionality of the device;
- that is, battery life should not be reduced so significantly that it requires
- users to change their normal charging behaviour, and memory usage should
- not be so high as to cause other applications to become sluggish or be
- closed by the operating system.
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -4353,6 +5854,192 @@ Finally, the applications should be evaluated based on their resource usage.
 
 \begin_layout Part
 Conclusion
+\end_layout
+
+\begin_layout Section
+Project outcomes
+\end_layout
+
+\begin_layout Section
+Future work
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Future-work"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+There are many areas in this project which could be expanded on or enhanced
+ in some way.
+ Some of these are discussed below.
+\end_layout
+
+\begin_layout Subsection
+Using GSM cell tower 
+\begin_inset Quotes eld
+\end_inset
+
+turnover
+\begin_inset Quotes erd
+\end_inset
+
+ to enhance activity classification
+\end_layout
+
+\begin_layout Standard
+While experiments with using GSM and GPS signal strength to determine interestin
+g locations were unsuccessful, there is a possibility that some GSM data
+ can be used in order to augment the existing activity classification system.
+ In order to promptly hand off communications to alternative cell sites
+ when the user moves around, all mobile telephones track the cell IDs and
+ signal strengths of their 
+\emph on
+neighbouring
+\emph default
+ cell towers as well as the current one.
+\end_layout
+
+\begin_layout Standard
+It is possible that measuring the rate of change in either the strength
+ of neighbouring cell towers, or indeed the change in cell towers themselves,
+ could be used to infer the approximate speed the user is traveling at.
+ While this could be a piece of standalone contextual information, it would
+ be possible to integrate this with the activity inference system to help
+ reduce incorrect results.
+\end_layout
+
+\begin_layout Standard
+As discussed earlier, a large percentage of incorrectly classified samples
+ involved the user sitting down and being misclassified as being in a vehicle.
+ A simple decision tree could be implemented that biased the activity inference
+ algorithm to favour the 
+\begin_inset Quotes eld
+\end_inset
+
+sitting
+\begin_inset Quotes erd
+\end_inset
+
+ classification over vehicle-based ones if the user was not moving at speed.
+ This has the potential to increase accuracy to the region of 90%.
+\end_layout
+
+\begin_layout Subsection
+Automatic classification of places
+\end_layout
+
+\begin_layout Standard
+While the context analyser correctly identifies interesting places, it would
+ be useful to know what type of place they were.
+ 
+\begin_inset Quotes eld
+\end_inset
+
+Home
+\begin_inset Quotes erd
+\end_inset
+
+ and 
+\begin_inset Quotes eld
+\end_inset
+
+Work
+\begin_inset Quotes erd
+\end_inset
+
+ could potentially be inferred by the times of day spent at each location;
+ interchanges could be identified by the duration of visits and the activity
+ involved in getting to and from the location, etc.
+\end_layout
+
+\begin_layout Standard
+This would enhance the behaviour of contextual location-aware services,
+ which currently have to rely on analysing the user's activity (either their
+ real life activity or their interactions with the phone) in order to correctly
+ adapt their behaviour to places.
+ Instead of observing that a user frequently reads e-mails at place #17,
+ an application could infer that as place #17 is a work place, the user
+ is more likely to want to read e-mail than play games.
+\end_layout
+
+\begin_layout Subsection
+On-device training for new activities
+\end_layout
+
+\begin_layout Standard
+Because it uses an instance-based learning algorithm, it would be very easy
+ to add new samples to the activity classification model on the device itself.
+ However, there are various challenges which would make this more difficult.
+ At present the model data is stored in a binary file bundled with the Context
+ Analyser; this means that it is not modifiable at runtime.
+ In order to integrate new data, it would either have to be extracted to
+ storage on the device and then modified, or imported into a database.
+\end_layout
+
+\begin_layout Standard
+In addition, it would be hard to ensure that data entered on the device
+ was of a good quality.
+ Without a way to explore the model itself, the user has no way of finding
+ and correcting or deleting poor quality training samples which lead to
+ false classifications.
+ Finally, removing the developer from the update process means that new
+ activities have to be added by each and every user, instead of added once
+ by the developer and shared to all users.
+ Further work on this topic would have to explore ways to allow users to
+ add high quality data, and then ensure that data is shared appropriately.
+\end_layout
+
+\begin_layout Subsection
+\begin_inset Quotes eld
+\end_inset
+
+Omniscient
+\begin_inset Quotes erd
+\end_inset
+
+ context home screen
+\end_layout
+
+\begin_layout Standard
+The present context home screen only records what happens when the user
+ directly interacts with it.
+ Further work could expand this to make the home screen aware of all actions
+ that were performed on the device, and to incorporate these into the dashboard
+ to further improve the user experience.
+\end_layout
+
+\begin_layout Standard
+An obvious example of this is monitoring outgoing phone calls, which can
+ be invoked from a multitude of applications without directly tapping the
+ contact on the home screen.
+ At present, the home screen sees a tap on the 
+\begin_inset Quotes eld
+\end_inset
+
+Dialer
+\begin_inset Quotes erd
+\end_inset
+
+ application (for example) and nothing else; if it monitored phone calls
+ and other activities it could also make the contact involved more prominent
+ on the home screen.
+\end_layout
+
+\begin_layout Standard
+Another use would be monitoring the time spent in applications (rather than
+ just the number of launches), and which activities within those are accessed.
+ If a user repeatedly opens the market application to browse to the most
+ recently added games, the context home screen may be able to detect that
+ behaviour and automatically add a 
+\emph on
+new
+\emph default
+ shortcut which performs this action automatically for them.
+ Work would need to be done in order to determine whether or not this was
+ possible in a general case for any application.
 \end_layout
 
 \begin_layout Standard
@@ -4616,7 +6303,7 @@ name "fig:Places-application"
 
 The places application displays a map and marks each detected place with
  an orange star.
- Places you've travelled between are connected with a red line - the thicker
+ Places you've traveled between are connected with a red line - the thicker
  the line, the more frequently you make that journey.
  In 
 \begin_inset CommandInset ref
@@ -4746,7 +6433,7 @@ Locale
 Context Analyser
 \noun default
  application automatically determines your current activity (such as 'walking'
- or 'sitting down'), and your predicted destination if you're travelling.
+ or 'sitting down'), and your predicted destination if you're traveling.
  This plugin requires that you have both 
 \noun on
 Context Analyser
@@ -5073,7 +6760,7 @@ reference "fig:Locale-plugin-selecting"
 
 ) you wish to match.
  For activities, you can select one of sitting, standing, walking, walking
- up stairs, walking down stairs, dancing, travelling bar car, or travelling
+ up stairs, walking down stairs, dancing, traveling bar car, or traveling
  by bus.
  For destination, you may select any place which the 
 \noun on
@@ -5155,6 +6842,199 @@ User Guide - Context Home Screen
 \end_layout
 
 \begin_layout Standard
+The 
+\begin_inset Quotes eld
+\end_inset
+
+context-aware home screen
+\begin_inset Quotes erd
+\end_inset
+
+ replaces your phone's normal home screen with an information rich dashboard
+ which can adapt to offer different information based on your current context.
+ As you use the home screen (by, for example, launching applications, opening
+ e-mails, etc), the home screen remembers what you were doing, when you
+ did it, and where you were at the time.
+ It then applies this information to automatically make the shortcuts or
+ messages it thinks you will be most interested in more prominent.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename home-select.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Home screen selection
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Home-screen-selection"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+Once the context-aware home screen is installed, pressing the 
+\begin_inset Quotes eld
+\end_inset
+
+Home
+\begin_inset Quotes erd
+\end_inset
+
+ key or turning on your device will prompt you as to which application you
+ wish to provide the 
+\begin_inset Quotes eld
+\end_inset
+
+Home
+\begin_inset Quotes erd
+\end_inset
+
+ functionality, as seen in 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "fig:Home-screen-selection"
+
+\end_inset
+
+.
+ Select 
+\begin_inset Quotes eld
+\end_inset
+
+Context Home
+\begin_inset Quotes erd
+\end_inset
+
+ to open the context home screen.
+ If you want this to 
+\emph on
+always
+\emph default
+ open when you press home, tick the 
+\begin_inset Quotes eld
+\end_inset
+
+Use by default for this action
+\begin_inset Quotes erd
+\end_inset
+
+ checkbox at the bottom of the prompt before making your choice.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status collapsed
+
+\begin_layout Plain Layout
+\begin_inset Graphics
+	filename home-main.png
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Context home screen
+\begin_inset CommandInset label
+LatexCommand label
+name "fig:Context-home-screen"
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+The context home screen is shown in 
+\begin_inset CommandInset ref
+LatexCommand prettyref
+reference "fig:Context-home-screen"
+
+\end_inset
+
+.
+ The top two lines of the home screen show shortcuts for your installed
+ applications and contacts who have pictures associated with them.
+ You can open the application or contact information screen by tapping on
+ the appropriate image.
+ To scroll left or right, simply drag your finger across the shortcuts.
+ You may also use your device's trackball to navigate around the screen,
+ if it has one.
+\end_layout
+
+\begin_layout Standard
+The rest of the home screen shows you your recent e-mails, text messages,
+ appointments, missed calls, and other information.
+ You can scroll up and down in this area by dragging your finger up or down.
+ Tapping on an item will open it in the relevant application.
+ The context home screen will attempt to show contact pictures for each
+ event where they are available; if the sender is not associated with a
+ contact, or the contact has no photograph, then a white 
+\begin_inset Quotes eld
+\end_inset
+
+running man
+\begin_inset Quotes erd
+\end_inset
+
+ will be displayed.
+\end_layout
+
+\begin_layout Standard
+As you use the context home screen, you should notice that the applications
+ you use most frequently start appearing nearer to the start of the list
+ and the types of event that you click on trickle up towards the top of
+ the screen.
+ If you regularly call someone every Saturday evening, you should find that
+ person at the top of your contacts list when you look on Saturday evening.
+ The more you use the context home screen, the better it adapts to your
+ needs!
+\end_layout
+
+\begin_layout Standard
 \begin_inset Newpage pagebreak
 \end_inset
 
@@ -5163,6 +7043,13 @@ User Guide - Context Home Screen
 
 \begin_layout Section
 Developer Guide
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Developer-Guide"
+
+\end_inset
+
+
 \end_layout
 
 \begin_layout Standard
@@ -5357,7 +7244,7 @@ CLASSIFIED/WALKING/STAIRS/UP
 
 \begin_layout Standard
 It is possible for activities to contain only a part of the hierarchy -
- for example if the readings alternate between classifications for travelling
+ for example if the readings alternate between classifications for traveling
  by bus and by car, they will be aggregated and the resulting activity will
  be simply CLASSIFIED/VEHICLE
 \noun on
@@ -5373,8 +7260,8 @@ A
 \series bold
 journey
 \series default
- is a recorded sequence of activites which occured when the user moved from
- one place to another.
+ is a recorded sequence of activities which occurred when the user moved
+ from one place to another.
  Whenever the user leaves a known place, the 
 \noun on
 Context Analyser
@@ -5385,7 +7272,7 @@ Context Analyser
 \series bold
 journey steps
 \series default
-, which describe a single activity and a number of reptitions.
+, which describe a single activity and a number of repetitions.
 \end_layout
 
 \begin_layout Standard
@@ -5403,11 +7290,11 @@ The journey will consist of two journey steps:
 
 \begin_deeper
 \begin_layout Itemize
-Step one will have an activity of CLASSIFIED/WALKING with five reptitions
+Step one will have an activity of CLASSIFIED/WALKING with five repetitions
 \end_layout
 
 \begin_layout Itemize
-Step two will have an activity of CLASSIFIED/VEHICLE/BUS with ten reptitions
+Step two will have an activity of CLASSIFIED/VEHICLE/BUS with ten repetitions
 \end_layout
 
 \end_deeper
@@ -5419,7 +7306,7 @@ When the user is on a journey, the Context Analyser compares their current
 predictions
 \series default
 .
- The number of times each matching journey occured is summed and the result
+ The number of times each matching journey occurred is summed and the result
  is used as a 'score' for the destination involved.
  The destination with the highest score is considered the most likely destinatio
 n for the user.
@@ -5439,7 +7326,7 @@ each step has the same activity
 \end_layout
 
 \begin_layout Itemize
-the number of reptitions in each completed step (not the last step) is:
+the number of repetitions in each completed step (not the last step) is:
 \end_layout
 
 \begin_deeper
@@ -5453,7 +7340,7 @@ no greater than 150% of the historical value
 
 \end_deeper
 \begin_layout Itemize
-the number of repititions of the last step is:
+the number of repetitions of the last step is:
 \end_layout
 
 \begin_deeper
@@ -6096,7 +7983,7 @@ int
 \begin_inset Text
 
 \begin_layout Plain Layout
-The number of times the activity occured
+The number of times the activity occurred
 \end_layout
 
 \end_inset
@@ -6763,6 +8650,387 @@ ContextApi
 ContextApi.Places.ColumnNames
 \noun default
  class.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Extract from export of window data
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Extract-from-export"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Quote
+\noindent
+\align left
+
+\size footnotesize
+Activity: CLASSIFIED/WALKING
+\end_layout
+
+\begin_layout Quote
+\noindent
+\align left
+
+\size footnotesize
+1264518159452:-7.804459,-1.3620348,-0.55843425,99.4375,73.3125,-32.6875, 1264518159502
+:-8.853226,-0.53119355,-0.0,100.4375,72.0625,-33.6875, 1264518159557:-11.699879,0.830841
+2,-1.2803127,101.1875,70.8125,-32.9375, 1264518159601:-13.797412,-0.24516626,-1.1168685
+,101.4375,70.5625,-31.9375, 1264518159652:-10.59663,-4.8760843,1.96133,102.375,71.5625,-
+31.1875, 1264518159702:-10.528529,-5.3119354,0.6946377,102.125,71.5625,-29.6875,
+ 1264518159751:-14.219643,-2.506144,2.4108016,102.375,69.5625,-28.0, 1264518159801:-9.2
+75456,-1.2666923,1.253072,102.875,69.8125,-29.0, 1264518159852:-5.1621118,-0.7491191,0.2
+7240697,103.125,69.8125,-30.6875, 1264518159901:-3.568531,-0.8036005,0.88532263,103.625
+,68.5625,-31.9375, 1264518159951:-4.4810944,-0.51757324,1.253072,103.625,69.0625,-31.687
+5, 1264518160001:-6.9191365,1.4028958,1.0487667,103.875,70.5625,-30.4375, 126451816006
+1:-13.007432,1.3484144,0.32688835,105.0625,70.5625,-29.0, 1264518160102:-16.42614,1.2394
+516,-0.10896278,104.375,71.3125,-27.25, 1264518160152:-15.908566,-2.3018389,-0.06810174
+,104.625,71.0625,-27.25, 1264518160202:-9.915613,-4.780742,1.6344417,105.3125,71.0625,-2
+9.0, 1264518160251:-10.242501,-2.465283,2.73769,105.0625,70.3125,-30.4375, 126451816030
+1:-10.351464,-4.8897047,0.58567494,104.375,71.3125,-32.6875, 1264518160351:-7.600154,-2.
+0294318,0.81722087,102.375,73.0625,-33.6875, 1264518160401:-6.1291566,-1.0760075,0.7218
+784,101.1875,72.3125,-34.375, 1264518160451:-5.3936577,-1.5527196,0.3677494,101.1875,71.
+8125,-35.625, 1264518160502:-6.101916,-1.3892754,-0.23154591,100.6875,72.0625,-35.625,
+ 1264518160551:-7.2187843,-1.525479,-0.8308412,100.9375,68.0625,-36.625, 1264518160694
+:-15.227549,-2.2609777,0.6401563,101.4375,68.0625,-36.625, 1264518160697:-15.227549,-2.2
+609777,0.6401563,101.4375,68.0625,-36.625, 1264518160701:-15.227549,-2.2609777,0.640156
+3,101.4375,68.0625,-36.625, 1264518160752:-9.956474,-3.840938,3.405087,103.125,68.8125,-
+36.375, 1264518160802:-12.598822,-5.298315,0.32688835,103.875,69.3125,-34.875,
+ 1264518160858:-13.756551,-2.9283748,2.5333846,105.0625,69.3125,-32.6875, 126451816090
+1:-8.962189,-1.6344417,0.9942854,105.5625,68.0625,-34.125, 1264518160951:-4.399372,-1.47
+09976,0.54481393,104.625,68.8125,-35.875, 1264518161001:-3.050958,-1.4573772,0.58567494
+,105.0625,68.5625,-35.875, 1264518161051:-4.5491962,0.19068487,0.6537767,105.0625,67.812
+5,-35.375, 1264518161101:-6.7965536,1.3484144,0.87170225,105.5625,69.3125,-33.4375,
+ 1264518161151:-12.993812,1.920469,1.253072,107.3125,70.3125,-30.4375, 1264518161201:-
+16.303556,0.53119355,0.14982383,106.8125,71.0625,-29.5, 1264518161251:-14.09706,-4.75350
+14,0.20430522,105.5625,71.0625,-29.0, 1264518161301:-10.746454,-4.971427,1.4709976,105.5
+625,70.3125,-30.1875, 1264518161351:-11.34575,-4.0588636,1.525479,104.125,70.5625,-32.93
+75, 1264518161401:-8.989429,-4.930566,0.88532263,103.375,70.8125,-35.125, 126451816145
+1:-6.4560447,-2.1111538,0.47671217,101.625,71.3125,-35.125, 
+\end_layout
+
+\begin_layout Standard
+\begin_inset Newpage pagebreak
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Extract from ARFF representation
+\begin_inset CommandInset label
+LatexCommand label
+name "sec:Extract-from-ARFF"
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@RELATION activity
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Absolute Mean (series 0)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Absolute Mean (series 1)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Absolute Mean (series 2)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Absolute Mean (series 3)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Absolute Mean (series 4)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Absolute Mean (series 5)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Maximum (series 0)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Maximum (series 1)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Maximum (series 2)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Maximum (series 3)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Maximum (series 4)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Maximum (series 5)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Mean (series 0)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Mean (series 1)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Mean (series 2)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Mean (series 3)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Mean (series 4)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Mean (series 5)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Median (series 0)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Median (series 1)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Median (series 2)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Median (series 3)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Median (series 4)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Median (series 5)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Minimum (series 0)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Minimum (series 1)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Minimum (series 2)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Minimum (series 3)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Minimum (series 4)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Minimum (series 5)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Range (series 0)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Range (series 1)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Range (series 2)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Range (series 3)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Range (series 4)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE "Range (series 5)" numeric
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@ATTRIBUTE classification {CLASSIFIED/VEHICLE/CAR, CLASSIFIED/IDLE/STANDING,
+ CLASSIFIED/VEHICLE/BUS, CLASSIFIED/WALKING, CLASSIFIED/IDLE/SITTING, CLASSIFIED
+/WALKING/STAIRS/DOWN, CLASSIFIED/DANCING, CLASSIFIED/WALKING/STAIRS/UP}
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+@DATA
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+0.44361898, 4.7165775, 8.409821, 10.608887, 10.081055, 16.005371, 5.5162406, 9.479762,
+ 11.35937, 15.125, 1.4E-45, 1.4E-45, -0.44361898, 4.7165775, 8.409821, 10.608887,
+ -10.081055, -16.005371, -0.19068487, 4.9169455, 8.7034025, 10.9375, -9.875, -15.6875,
+ -3.8273177, 1.4437568, 3.4187074, -0.0625, -18.6875, -23.0625, 9.343558, 8.036005,
+ 7.940663, 15.1875, 18.6875, 23.0625, CLASSIFIED/VEHICLE/CAR
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+3.9024422, 2.722155, 8.665946, 12.640137, 3.3691406, 15.688477, 1.4E-45, 4.6036777,
+ 15.649779, 15.125, 1.4E-45, 1.4E-45, -3.9024422, 2.722155, 8.665946, 12.640137,
+ -3.3691406, -15.688477, -3.840938, 2.7240696, 8.499097, 12.6875, -3.375, -15.6875,
+ -7.518432, 1.0351465, 4.69902, 8.75,-5.875, -17.625, 7.518432, 3.5685313, 10.95076,
+ 6.375, 5.875, 17.625, CLASSIFIED/VEHICLE/CAR
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+2.9535933, 1.9287692, 9.193417, 8.516602, 3.9960938, 16.75, 1.4E-45, 3.173541, 14.669114,
+ 11.1875, 1.4E-45, 1.4E-45, -2.9535933, 1.9287692, 9.193417, 8.516602, -3.9960938,
+ -16.75, -2.901134, 2.083913, 9.275456, 8.5, -3.875, -16.875, -5.0803895, 0.50395286,
+ 4.6445384, 5.5625, -6.625, -18.875, 5.0803895, 2.669588, 10.024576, 5.625, 6.625,
+ 18.875, CLASSIFIED/VEHICLE/CAR
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+3.7644293, 0.39350045, 9.493064, 4.345215, 4.4628906, 17.933105, 1.4E-45, 2.002191,
+ 15.704261, 10.75, 1.4E-45, 1.4E-45, -3.7644293, 0.39350045, 9.493064, 4.345215,
+ -4.4628906, -17.933105, -3.5957718, 0.50395286, 9.493382, 4.8125, -4.375, -17.875,
+ -8.567199, -1.3756552, 6.006573, -2.0, -7.125, -20.5625, 8.567199, 3.3778462, 9.697687,
+ 12.75, 7.125, 20.5625, CLASSIFIED/VEHICLE/CAR 
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+1.8751402, 2.4263377, 9.45008, 0.78222656, 5.080078, 16.560059, 1.4E-45, 3.8954194,
+ 9.874752, 2.625, 1.4E-45, 1.4E-45, -1.8751402, 2.4263377, 9.45008, 0.78222656,
+ -5.080078, -16.560059, -1.8387469, 2.587866, 9.425281, 0.9375, -5.125, -16.625,
+ -2.4789033, 1.334794, 9.220976, -1.3125, -6.625, -17.875, 2.4789033, 2.5606253,
+ 0.65377617, 3.9375, 6.625, 17.875, CLASSIFIED/VEHICLE/CAR
+\end_layout
+
+\begin_layout Quotation
+
+\size footnotesize
+1.7938437, 2.6545851, 9.423793, 0.110839844, 4.611328, 16.045898, 1.4E-45, 4.099725,
+ 9.697687, 1.625, 1.4E-45, 1.4E-45, -1.7938437, 2.6545851, 9.423793, 0.110839844,
+ -4.611328, -16.045898, -1.8115063, 2.7240696, 9.41166, 0.1875, -4.625, -16.125,
+ -2.5333846, 1.4437568, 9.248216, -1.0625, -5.625, -17.375, 2.5333846, 2.655968,
+ 0.44947147, 2.6875, 5.625, 17.375, CLASSIFIED/VEHICLE/CAR 
 \end_layout
 
 \begin_layout Standard
