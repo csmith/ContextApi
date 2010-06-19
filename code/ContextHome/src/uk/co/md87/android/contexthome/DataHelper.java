@@ -50,20 +50,21 @@ public class DataHelper {
       + " WHERE module = ? AND actiontype = ? AND actionvalue = ?"
       + " AND contexttype = ? AND contextvalue = ?";
 
+    private final List<ContextType> contexts;
     private final SQLiteDatabase db;
     private final SQLiteStatement insertActionStatement,
             updateActionStatement;
 
-    public DataHelper(final Context context) {
+    public DataHelper(final Context context, final List<ContextType> contexts) {
         final OpenHelper helper = new OpenHelper(context);
         this.db = helper.getWritableDatabase();
+        this.contexts = contexts;
 
         this.insertActionStatement = db.compileStatement(INSERT_ACTION);
         this.updateActionStatement = db.compileStatement(UPDATE_ACTION);
     }
 
-    public void registerAction(final String module, final List<ContextType> contexts,
-            final Map<String, String> actions) {
+    public void registerAction(final String module, final Map<String, String> actions) {
         // TODO: It'd be nice if the two statements could be merged
         insertActionStatement.bindString(0, module);
         updateActionStatement.bindString(0, module);
@@ -85,8 +86,7 @@ public class DataHelper {
         }
     }
 
-    public Map<String, Map<String, Integer>> getActions(final String module,
-            final List<ContextType> contexts) {
+    public Map<String, Map<String, Integer>> getActions(final String module) {
         final Map<String, Map<String, Integer>> res = new HashMap<String, Map<String, Integer>>();
 
         final StringBuilder query = new StringBuilder("SELECT sum(number) AS total, "

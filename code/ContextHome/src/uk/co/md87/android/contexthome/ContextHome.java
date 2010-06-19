@@ -26,10 +26,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.LinearLayout;
-import uk.co.md87.android.contexthome.modules.AppsModule;
-import uk.co.md87.android.contexthome.modules.ContactsModule;
-import uk.co.md87.android.contexthome.modules.EmailModule;
-import uk.co.md87.android.contexthome.modules.SmsModule;
+
+import uk.co.md87.android.contexthome.contexts.*;
+import uk.co.md87.android.contexthome.modules.*;
 
 /**
  * A home screen that displays e-mails, text messages, etc, and responds to
@@ -49,6 +48,10 @@ public class ContextHome extends Activity {
     
     private final Module[] modules = new Module[]{
         new EmailModule(), new SmsModule(),
+    };
+
+    private final ContextType[] contexts = new ContextType[]{
+        new GlobalContext(), new HourContext(), new PeriodContext()
     };
 
     /** Called when the activity is first created. */
