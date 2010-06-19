@@ -31,11 +31,14 @@ import android.net.Uri;
 import android.provider.Contacts;
 import android.provider.Contacts.People;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.List;
 
 import uk.co.md87.android.contexthome.Module;
 import uk.co.md87.android.contexthome.R;
@@ -66,40 +69,54 @@ public class EmailModule implements Module {
                 LayoutParams.WRAP_CONTENT);
         params.weight = 1;
 
-        boolean success = cursor.moveToFirst();
-        for (int i = 0; i < weight && success; ) {
-            final long convId = cursor.getLong(convIdIndex);
+        final List<Object[]> messages = new ArrayList<Object[]>(weight);
+        final List<Long> convIds = new ArrayList<Long>();
+
+        if (cursor.moveToFirst()) {
+            do {
+                convIds.add(cursor.getLong(convIdIndex));
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
+
+        Log.e("!!!!!", convIds.toString());
+
+        for (Long convId : convIds) {
             final Uri uri = inboxUri.buildUpon().appendEncodedPath(String.valueOf(convId)
                     + "/messages").build();
 
             final Cursor messageCursor = context.getContentResolver().query(uri,
                 new String[] { "fromAddress", "subject", "messageId" }, null, null, null);
 
+            while (messageCursor.getExtras().getString("status").equals("LOADING")) {
+                messageCursor.requery();
+                Thread.yield();
+            }
+
             if (messageCursor.moveToFirst()) {
                 final int subjectIndex = messageCursor.getColumnIndex("subject");
                 final int addressIndex = messageCursor.getColumnIndex("fromAddress");
-                final int messageIdIndex = messageCursor.getColumnIndex("messageId");
 
                 final String body = messageCursor.getString(subjectIndex);
                 final String address = messageCursor.getString(addressIndex);
                 final int count = messageCursor.getCount();
-                final long messageId = messageCursor.getLong(messageIdIndex);
 
-                layout.addView(getView(context, body, address, messageId, count), params);
-
-                i++;
+                messages.add(new Object[] { body, address, count });
             }
 
             messageCursor.close();
-            success = cursor.moveToNext();
         }
-        cursor.close();
-        
+
+        for (Object[] message : messages) {
+            layout.addView(getView(context, (String) message[0],
+                    (String) message[1], (Integer) message[2]), params);
+        }
 
         return layout;
     }
 
-    private View getView(final Context context, String text, String address, final long messageId, int count) {
+    private View getView(final Context context, String text, String address, int count) {
         final View view = View.inflate(context, R.layout.titledimage, null);
         view.setClickable(true);
         view.setFocusable(true);
