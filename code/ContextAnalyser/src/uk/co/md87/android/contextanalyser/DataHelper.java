@@ -79,7 +79,7 @@ public class DataHelper {
             insertJourneyStepStatement, updateLocationStatement,
             updateLocationVisitStatement, updateJourneyStatement;
 
-    private SQLiteDatabase db;
+    private final SQLiteDatabase db;
 
     public DataHelper(final Context context) {
         final OpenHelper helper = new OpenHelper(context);

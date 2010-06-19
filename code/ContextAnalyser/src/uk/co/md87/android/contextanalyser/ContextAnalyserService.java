@@ -76,9 +76,9 @@ public class ContextAnalyserService extends Service
 
     public static final int CONTEXT_PLACE = 1;
 
-    public static final boolean DEBUG = false;
+    public static final boolean DEBUG = true;
 
-    private static final int POLLING_DELAY = 60000;
+    private static final int POLLING_DELAY = 6000;
 
     private final Runnable scheduleRunnable = new Runnable() {
 
