@@ -44,24 +44,30 @@ public class ContextHome extends Activity {
 
     private LinearLayout layout, fixedLayout;
 
-    private final ContextType[] contexts = new ContextType[]{
-        new GlobalContext(), new HourContext(), new PeriodContext()
-    };
+    private ContextType[] contexts;
 
-    private final DataHelper helper = new DataHelper(this, Arrays.asList(contexts));
+    private DataHelper helper;
 
-    private final Module[] fixedModules = new Module[] {
-        new ContactsModule(helper), new AppsModule(helper)
-    };
-
-    private final Module[] modules = new Module[]{
-        new EmailModule(helper), new SmsModule(helper),
-    };
+    private Module[] modules, fixedModules;
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
+
+        contexts = new ContextType[]{
+            new GlobalContext(), new HourContext(), new PeriodContext()
+        };
+
+        helper = new DataHelper(this, Arrays.asList(contexts));
+
+        fixedModules = new Module[] {
+            new ContactsModule(helper), new AppsModule(helper)
+        };
+
+        modules = new Module[]{
+            new EmailModule(helper), new SmsModule(helper),
+        };
 
         setContentView(R.layout.container);
         
