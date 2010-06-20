@@ -22,23 +22,20 @@
 
 package uk.co.md87.android.contexthome.modules;
 
-import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.net.Uri;
-import android.provider.Contacts;
-import android.provider.Contacts.People;
-import android.text.Html;
-import android.util.Log;
+import android.os.Handler;
 import android.view.View;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
 import android.widget.LinearLayout.LayoutParams;
-import android.widget.TextView;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import uk.co.md87.android.contexthome.DataHelper;
 
 import uk.co.md87.android.contexthome.Module;
@@ -49,7 +46,7 @@ import uk.co.md87.android.contexthome.R;
  *
  * @author chris
  */
-public class EmailModule extends Module {
+public class EmailModule extends Module implements Comparator<Email> {
 
     public EmailModule(DataHelper helper) {
         super(helper);
@@ -57,10 +54,12 @@ public class EmailModule extends Module {
 
     /** {@inheritDoc} */
     @Override
-    public View getView(final Context context, final int weight) {
-        final LinearLayout layout = new LinearLayout(context);
-        layout.setOrientation(LinearLayout.VERTICAL);
+    public void addViews(final ViewGroup parent, final Context context, final int weight) {
+        final Handler handler = new Handler();
 
+        new Thread(new Runnable() {
+
+            public void run() {
         final Uri inboxUri = Uri.parse("content://gmail-ls/"
             + "conversations/" + context.getSharedPreferences("email",
             Context.MODE_WORLD_READABLE).getString("account", "chris87@gmail.com"));
@@ -68,103 +67,72 @@ public class EmailModule extends Module {
         final Cursor cursor = context.getContentResolver().query(inboxUri,
                 new String[] { "conversation_id" }, null, null, null);
 
+        while (cursor.getExtras().getString("status").equals("LOADING")) {
+            cursor.requery();
+            Thread.yield();
+        }
+
         final int convIdIndex = cursor.getColumnIndex("conversation_id");
 
         final LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
                 LayoutParams.WRAP_CONTENT);
         params.weight = 1;
 
-        final List<Object[]> messages = new ArrayList<Object[]>(weight);
-        final List<Long> convIds = new ArrayList<Long>();
+        final List<Email> messages = new ArrayList<Email>(weight);
 
         if (cursor.moveToFirst()) {
             do {
-                convIds.add(cursor.getLong(convIdIndex));
+                final View view = View.inflate(context, R.layout.titledimage, null);
+                view.setClickable(true);
+                view.setFocusable(true);
+                view.setOnClickListener(new View.OnClickListener() {
+
+                    public void onClick(View arg0) {
+                        final Intent intent = new Intent();
+                        intent.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivity");
+                        context.startActivity(intent);
+
+                        recordAction(getMap((Email) arg0.getTag()));
+                    }
+                });
+
+                final Email message = new Email(handler, context,
+                        cursor.getLong(convIdIndex), view);
+                view.setTag(message);
+
+                messages.add(message);
             } while (cursor.moveToNext());
         }
 
         cursor.close();
 
-        Log.e("!!!!!", convIds.toString());
+        Collections.sort(messages, EmailModule.this);
 
-        for (Long convId : convIds) {
-            final Uri uri = inboxUri.buildUpon().appendEncodedPath(String.valueOf(convId)
-                    + "/messages").build();
+        handler.post(new Runnable() {
 
-            final Cursor messageCursor = context.getContentResolver().query(uri,
-                new String[] { "fromAddress", "subject", "messageId" }, null, null, null);
-
-            while (messageCursor.getExtras().getString("status").equals("LOADING")) {
-                messageCursor.requery();
-                Thread.yield();
-            }
-
-            if (messageCursor.moveToFirst()) {
-                final int subjectIndex = messageCursor.getColumnIndex("subject");
-                final int addressIndex = messageCursor.getColumnIndex("fromAddress");
-
-                final String body = messageCursor.getString(subjectIndex);
-                final String address = messageCursor.getString(addressIndex);
-                final int count = messageCursor.getCount();
-
-                messages.add(new Object[] { body, address, count });
-            }
-
-            messageCursor.close();
+                    public void run() {
+                                for (Email message : messages) {
+            parent.addView(message.getView(), params);
         }
-
-        for (Object[] message : messages) {
-            layout.addView(getView(context, (String) message[0],
-                    (String) message[1], (Integer) message[2]), params);
-        }
-
-        return layout;
+                    }
+                });
+                    }
+        }).start();
     }
 
-    private View getView(final Context context, final String text, final String address,
-            final int count) {
-        final View view = View.inflate(context, R.layout.titledimage, null);
-        view.setClickable(true);
-        view.setFocusable(true);
-        view.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View arg0) {
-                final Intent intent = new Intent();
-                intent.setClassName("com.google.android.gm", "com.google.android.gm.ConversationListActivity");
-                context.startActivity(intent);
-            }
-        });
-
-        final Uri contactUri = Uri.parse("content://contacts/contact_methods");
-
-        final String name = address.replaceAll("^.*\"(.*?)\".*$", "$1")
-                .replaceAll("(.*), (.*)", "$2 $1");
-        final String email = address.replaceAll("^.*<(.*?)>.*$", "$1");
-
-        final Cursor cursor = context.getContentResolver().query(contactUri,
-                new String[] { "person", "name" }, "data LIKE ?", new String[] { email }, null);
-
-        final TextView title = (TextView) view.findViewById(R.id.title);
-        final ImageView image = (ImageView) view.findViewById(R.id.image);
-
-        if (cursor.moveToFirst()) {
-            title.setText(Html.fromHtml("<b>" + cursor.getString(cursor
-                    .getColumnIndex("name")) + "</b> (" + count + ")"));
-            Uri uri = ContentUris.withAppendedId(People.CONTENT_URI,
-                    cursor.getLong(cursor.getColumnIndex("person")));
-            image.setImageBitmap(Contacts.People.loadContactPhoto(context,
-                    uri, R.drawable.blank, null));
-        } else {
-            title.setText(Html.fromHtml("<b>" + (name.length() == 0 ? email : name) + "</b> ("
-                    + count + ")"));
+    public Map<String, String> getMap(final Email email) {
+        final Map<String, String> params = new HashMap<String, String>();
+        if (email.getId() >= 0) {
+            params.put("contactid", String.valueOf(email.getId()));
         }
 
-        cursor.close();
+        params.put("contactemail", email.getAddress());
 
-        final TextView body = (TextView) view.findViewById(R.id.body);
-        body.setText(text);
+        return params;
+    }
 
-        return view;
+    public int compare(final Email arg0, final Email arg1) {
+        return getScore(getMap(arg1)) - getScore(getMap(arg0));
     }
 
 }

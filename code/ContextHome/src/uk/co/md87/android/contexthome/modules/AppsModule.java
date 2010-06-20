@@ -27,9 +27,12 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.os.Handler;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -54,8 +57,13 @@ public class AppsModule extends Module implements Comparator<ResolveInfo> {
 
     /** {@inheritDoc} */
     @Override
-    public View getView(final Context context, final int weight) {
+    public void addViews(final ViewGroup parent, final Context context, final int weight) {
         final View view = View.inflate(context, R.layout.scroller, null);
+        final Handler handler = new Handler();
+
+        new Thread(new Runnable() {
+
+            public void run() {
         final LinearLayout layout = (LinearLayout) view.findViewById(R.id.content);
         final PackageManager pm = context.getPackageManager();
         final Intent intent = new Intent(Intent.ACTION_MAIN);
@@ -75,7 +83,9 @@ public class AppsModule extends Module implements Comparator<ResolveInfo> {
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
 
         final List<ResolveInfo> infos = pm.queryIntentActivities(intent, 0);
-        Collections.sort(infos, this);
+        Collections.sort(infos, AppsModule.this);
+
+        final List<View> views = new ArrayList<View>(infos.size());
         
         for (ResolveInfo res : infos) {
             final ImageView image = new ImageView(context);
@@ -86,10 +96,21 @@ public class AppsModule extends Module implements Comparator<ResolveInfo> {
             image.setOnClickListener(listener);
             image.setPadding(2, 2, 2, 2);
             image.setBackgroundResource(R.drawable.grid_selector);
-            layout.addView(image, 52, 52);
+            views.add(image);
         }
 
-        return view;
+        handler.post(new Runnable() {
+
+                    public void run() {
+                        for (View myView : views) {
+                            layout.addView(myView, 52, 52);
+                        }
+                    }
+                });
+        }
+        }).start();
+
+        parent.addView(view);
     }
 
     public Map<String, String> getMap(final ResolveInfo info) {

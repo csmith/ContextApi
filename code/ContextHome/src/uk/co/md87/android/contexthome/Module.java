@@ -23,7 +23,9 @@
 package uk.co.md87.android.contexthome;
 
 import android.content.Context;
+import android.text.Layout;
 import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.Map;
 
@@ -66,6 +68,6 @@ public abstract class Module {
         helper.registerAction(module, params);
     }
 
-    public abstract View getView(final Context context, final int weight);
+    public abstract void addViews(final ViewGroup parent, final Context context, final int weight);
 
 }

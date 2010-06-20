@@ -27,9 +27,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.Contacts.People;
 import android.provider.Contacts.Photos;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import java.util.ArrayList;
@@ -56,7 +58,7 @@ public class ContactsModule extends Module implements Comparator<Long> {
 
     /** {@inheritDoc} */
     @Override
-    public View getView(final Context context, final int weight) {
+    public void addViews(final ViewGroup parent, final Context context, final int weight) {
         final View view = View.inflate(context, R.layout.scroller, null);
         final LinearLayout layout = (LinearLayout) view.findViewById(R.id.content);
 
@@ -72,25 +74,42 @@ public class ContactsModule extends Module implements Comparator<Long> {
             }
         };
 
-        final Cursor cursor = context.getContentResolver().query(Photos.CONTENT_URI,
-                new String[] { "person" }, "exists_on_server != 0", null, null);
+        final Handler handler = new Handler();
 
-        final int column = cursor.getColumnIndex("person");
-        final List<Long> hits = new ArrayList<Long>(cursor.getCount());
-        if (cursor.moveToFirst()) {
-            int i = 0;
-            do {
-                hits.add(cursor.getLong(column));
-            } while (cursor.moveToNext());
-        }
-        
-        Collections.sort(hits, this);
+        new Thread(new Runnable() {
 
-        for (Long id : hits) {
-            layout.addView(getView(context, listener, id), 52, 52);
-        }
+            public void run() {
+                final Cursor cursor = context.getContentResolver().query(Photos.CONTENT_URI,
+                        new String[] { "person" }, "exists_on_server != 0", null, null);
 
-        return view;
+                final int column = cursor.getColumnIndex("person");
+                final List<Long> hits = new ArrayList<Long>(cursor.getCount());
+                if (cursor.moveToFirst()) {
+                    do {
+                        hits.add(cursor.getLong(column));
+                    } while (cursor.moveToNext());
+                }
+
+                Collections.sort(hits, ContactsModule.this);
+
+                final List<View> views = new ArrayList<View>(hits.size());
+
+                for (Long id : hits) {
+                    views.add(getView(context, listener, id));
+                }
+
+                handler.post(new Runnable() {
+
+                    public void run() {
+                        for (View myView : views) {
+                            layout.addView(myView, 52, 52);
+                        }
+                    }
+                });
+            }
+        }).start();
+
+        parent.addView(view);
     }
 
     private final View getView(final Context context, View.OnClickListener listener,

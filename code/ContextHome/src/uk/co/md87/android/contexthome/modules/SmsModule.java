@@ -27,6 +27,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
+import android.os.Handler;
 import android.provider.Contacts;
 import android.provider.Contacts.People;
 import android.text.Html;
@@ -36,6 +37,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.List;
 import uk.co.md87.android.contexthome.DataHelper;
 import uk.co.md87.android.contexthome.Module;
 import uk.co.md87.android.contexthome.R;
@@ -55,10 +58,12 @@ public class SmsModule extends Module {
 
     /** {@inheritDoc} */
     @Override
-    public View getView(final Context context, final int weight) {
-        final LinearLayout layout = new LinearLayout(context);
-        layout.setOrientation(LinearLayout.VERTICAL);
+    public void addViews(final ViewGroup parent, final Context context, final int weight) {
+        final Handler handler = new Handler();
 
+        new Thread(new Runnable() {
+
+            public void run() {
         final Cursor cursor = context.getContentResolver().query(INBOX_URI,
                 new String[] { "thread_id", "date", "body", "address" }, null, null, "date DESC");
         final int idIndex = cursor.getColumnIndex("thread_id");
@@ -69,23 +74,30 @@ public class SmsModule extends Module {
                 LayoutParams.WRAP_CONTENT);
         params.weight = 1;
 
+        final List<View> views = new ArrayList<View>(weight);
         boolean success = cursor.moveToFirst();
         for (int i = 0; i < weight && success; i++) {
             final String body = cursor.getString(bodyIndex);
             final String address = cursor.getString(addressIndex);
 
-            layout.addView(getView(context, layout, body, address, cursor.getLong(idIndex)),
-                    params);
+            final View view = getView(context, body, address, cursor.getLong(idIndex));
+
+        handler.post(new Runnable() {
+
+                    public void run() {
+                        parent.addView(view);
+                    }
+                });
 
             success = cursor.moveToNext();
         }
         cursor.close();
-        
-
-        return layout;
+       
+                    }
+        }).start();
     }
 
-    private View getView(final Context context, ViewGroup layout, String text,
+    private View getView(final Context context, String text,
             String address, final long threadId) {
         final View view = View.inflate(context, R.layout.titledimage, null);
         view.setClickable(true);

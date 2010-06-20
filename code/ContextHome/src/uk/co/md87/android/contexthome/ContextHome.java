@@ -24,6 +24,7 @@ package uk.co.md87.android.contexthome;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.LinearLayout;
 import java.util.Arrays;
@@ -38,9 +39,6 @@ import uk.co.md87.android.contexthome.modules.*;
  * @author chris
  */
 public class ContextHome extends Activity {
-
-    private static final LayoutParams MODULE_PARAMS
-            = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
     private LinearLayout layout, fixedLayout;
 
@@ -81,12 +79,20 @@ public class ContextHome extends Activity {
         fixedLayout.removeAllViews();
         layout.removeAllViews();
 
+        long start, end;
+
         for (Module module : fixedModules) {
-            fixedLayout.addView(module.getView(this, 1), MODULE_PARAMS);
+            start = System.currentTimeMillis();
+            module.addViews(fixedLayout, this, 1);
+            end = System.currentTimeMillis();
+            Log.v("ContextHome", module.getClass().getSimpleName() + ": " + (end - start));
         }
 
         for (Module module : modules) {
-            layout.addView(module.getView(this, 10), MODULE_PARAMS);
+            start = System.currentTimeMillis();
+            module.addViews(layout, this, 10);
+            end = System.currentTimeMillis();
+            Log.v("ContextHome", module.getClass().getSimpleName() + ": " + (end - start));
         }
     }
 
