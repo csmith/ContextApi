@@ -22,17 +22,21 @@
 
 package uk.co.md87.android.contexthome.modules;
 
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import java.util.Collections;
+import java.util.Comparator;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import uk.co.md87.android.contexthome.DataHelper;
 import uk.co.md87.android.contexthome.Module;
 import uk.co.md87.android.contexthome.R;
@@ -42,7 +46,7 @@ import uk.co.md87.android.contexthome.R;
  *
  * @author chris
  */
-public class AppsModule extends Module {
+public class AppsModule extends Module implements Comparator<ResolveInfo> {
 
     public AppsModule(DataHelper helper) {
         super(helper);
@@ -58,22 +62,27 @@ public class AppsModule extends Module {
         final View.OnClickListener listener = new View.OnClickListener() {
 
             public void onClick(View view) {
-                final ActivityInfo info = (ActivityInfo) view.getTag();
+                final ResolveInfo info = (ResolveInfo) view.getTag();
                 final Intent intent = new Intent();
                 intent.setAction(Intent.ACTION_MAIN);
-                intent.setClassName(info.packageName, info.name);
+                intent.setClassName(info.activityInfo.packageName, info.activityInfo.name);
                 context.startActivity(intent);
+
+                recordAction(getMap(info));
             }
         };
 
         intent.addCategory(Intent.CATEGORY_LAUNCHER);
+
+        final List<ResolveInfo> infos = pm.queryIntentActivities(intent, 0);
+        Collections.sort(infos, this);
         
-        for (ResolveInfo res : pm.queryIntentActivities(intent, 0)) {
+        for (ResolveInfo res : infos) {
             final ImageView image = new ImageView(context);
             image.setImageDrawable(res.activityInfo.loadIcon(pm));
             image.setFocusable(true);
             image.setClickable(true);
-            image.setTag(res.activityInfo);
+            image.setTag(res);
             image.setOnClickListener(listener);
             image.setPadding(2, 2, 2, 2);
             image.setBackgroundResource(R.drawable.grid_selector);
@@ -81,6 +90,17 @@ public class AppsModule extends Module {
         }
 
         return view;
+    }
+
+    public Map<String, String> getMap(final ResolveInfo info) {
+        final Map<String, String> params = new HashMap<String, String>();
+        params.put("app", info.activityInfo.packageName);
+
+        return params;
+    }
+
+    public int compare(final ResolveInfo arg0, final ResolveInfo arg1) {
+        return getScore(getMap(arg1)) - getScore(getMap(arg0));
     }
 
 }

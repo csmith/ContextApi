@@ -121,7 +121,8 @@ public class EmailModule extends Module {
         return layout;
     }
 
-    private View getView(final Context context, String text, String address, int count) {
+    private View getView(final Context context, final String text, final String address,
+            final int count) {
         final View view = View.inflate(context, R.layout.titledimage, null);
         view.setClickable(true);
         view.setFocusable(true);

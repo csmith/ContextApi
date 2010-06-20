@@ -25,6 +25,8 @@ package uk.co.md87.android.contexthome;
 import android.content.Context;
 import android.view.View;
 
+import java.util.Map;
+
 /**
  * A module which can be displayed on the context-aware home screen.
  *
@@ -32,10 +34,36 @@ import android.view.View;
  */
 public abstract class Module {
 
+    private final String module;
     private final DataHelper helper;
+    private Map<String, Integer> actions;
 
     public Module(final DataHelper helper) {
+        this.module = getClass().getSimpleName().replace("Module", "").toLowerCase();
         this.helper = helper;
+
+        refreshActions();
+    }
+
+    public void refreshActions() {
+        actions = helper.getActions(module);
+    }
+
+    protected int getScore(final Map<String, String> params) {
+        int total = 0;
+
+        for (Map.Entry<String, String> pair : params.entrySet()) {
+            final String key = pair.getKey() + "/" + pair.getValue();
+            if (actions.containsKey(key)) {
+                total += actions.get(key);
+            }
+        }
+
+        return total;
+    }
+
+    protected void recordAction(final Map<String, String> params) {
+        helper.registerAction(module, params);
     }
 
     public abstract View getView(final Context context, final int weight);

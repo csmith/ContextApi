@@ -32,6 +32,12 @@ import android.provider.Contacts.Photos;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import uk.co.md87.android.contexthome.DataHelper;
 
 import uk.co.md87.android.contexthome.Module;
@@ -42,7 +48,7 @@ import uk.co.md87.android.contexthome.R;
  *
  * @author chris
  */
-public class ContactsModule extends Module {
+public class ContactsModule extends Module implements Comparator<Long> {
 
     public ContactsModule(DataHelper helper) {
         super(helper);
@@ -62,6 +68,7 @@ public class ContactsModule extends Module {
                 intent.setData((Uri) view.getTag());
                 context.startActivity(intent);
 
+                recordAction(getMap(ContentUris.parseId((Uri) view.getTag())));
             }
         };
 
@@ -69,10 +76,18 @@ public class ContactsModule extends Module {
                 new String[] { "person" }, "exists_on_server != 0", null, null);
 
         final int column = cursor.getColumnIndex("person");
+        final List<Long> hits = new ArrayList<Long>(cursor.getCount());
         if (cursor.moveToFirst()) {
+            int i = 0;
             do {
-                layout.addView(getView(context, listener, cursor.getLong(column)), 52, 52);
+                hits.add(cursor.getLong(column));
             } while (cursor.moveToNext());
+        }
+        
+        Collections.sort(hits, this);
+
+        for (Long id : hits) {
+            layout.addView(getView(context, listener, id), 52, 52);
         }
 
         return view;
@@ -92,6 +107,17 @@ public class ContactsModule extends Module {
         image.setPadding(2, 2, 2, 2);
 
         return image;
+    }
+
+    public Map<String, String> getMap(final Long id) {
+        final Map<String, String> params = new HashMap<String, String>();
+        params.put("contactid", String.valueOf(id));
+
+        return params;
+    }
+
+    public int compare(final Long arg0, final Long arg1) {
+        return getScore(getMap(arg1)) - getScore(getMap(arg0));
     }
 
 }

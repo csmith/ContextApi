@@ -28,6 +28,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteStatement;
 import android.util.Log;
+import java.util.Arrays;
 
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +41,8 @@ import java.util.Map;
  * @author chris
  */
 public class DataHelper {
+
+    public static final String[] SHARED_KEYS = new String[] { "contactid" };
 
     private static final String DATABASE_NAME = "contexthome.db";
     private static final int DATABASE_VERSION = 1;
@@ -67,42 +70,52 @@ public class DataHelper {
 
     public void registerAction(final String module, final Map<String, String> actions) {
         // TODO: It'd be nice if the two statements could be merged
-        insertActionStatement.bindString(0, module);
-        updateActionStatement.bindString(0, module);
+        insertActionStatement.bindString(1, module);
+        updateActionStatement.bindString(1, module);
 
         for (Map.Entry<String, String> action : actions.entrySet()) {
-            insertActionStatement.bindString(1, action.getKey());
-            insertActionStatement.bindString(2, action.getValue());
-            updateActionStatement.bindString(1, action.getKey());
-            updateActionStatement.bindString(2, action.getValue());
+            insertActionStatement.bindString(2, action.getKey());
+            insertActionStatement.bindString(3, action.getValue());
+            updateActionStatement.bindString(2, action.getKey());
+            updateActionStatement.bindString(3, action.getValue());
 
             for (ContextType context : contexts) {
-                insertActionStatement.bindString(3, context.getName());
-                insertActionStatement.bindString(4, context.getValue());
-                updateActionStatement.bindString(3, context.getName());
-                updateActionStatement.bindString(4, context.getValue());
+                insertActionStatement.bindString(4, context.getName());
+                insertActionStatement.bindString(5, context.getValue());
+                updateActionStatement.bindString(4, context.getName());
+                updateActionStatement.bindString(5, context.getValue());
                 insertActionStatement.execute();
                 updateActionStatement.execute();
             }
         }
     }
 
-    public Map<String, Map<String, Integer>> getActions(final String module) {
-        final Map<String, Map<String, Integer>> res = new HashMap<String, Map<String, Integer>>();
+    public Map<String, Integer> getActions(final String module) {
+        final Map<String, Integer> res = new HashMap<String, Integer>();
 
         final StringBuilder query = new StringBuilder("SELECT sum(number) AS total, "
-                + " actiontype, actionvalue FROM actions WHERE module = ? AND (0");
+                + " actiontype, actionvalue FROM actions WHERE (module = ?");
+
+        for (String key : SHARED_KEYS) {
+            query.append(" OR actiontype = \'");
+            query.append(key);
+            query.append('\'');
+        }
+
+        query.append(") AND (0");
         final String[] params = new String[1 + contexts.size() * 2];
         final String extraQuery = " OR (contexttype = ? AND contextvalue = ?)";
 
         int i = 1;
+        params[0] = module;
         for (ContextType context : contexts) {
             params[i++] = context.getName();
             params[i++] = context.getValue();
             query.append(extraQuery);
         }
 
-        query.append(") GROUP BY contexttype, contextvalue ORDER BY total DESC");
+        query.append(") GROUP BY actiontype, actionvalue ORDER BY total DESC");
+        Log.d("DataHelper", "Query: " + query + ", Params: " + Arrays.toString(params));
         final Cursor cursor = db.rawQuery(query.toString(), params);
 
         if (cursor.moveToFirst()) {
@@ -111,17 +124,14 @@ public class DataHelper {
             final int valueColumn = cursor.getColumnIndex("actionvalue");
 
             do {
-                final String type = cursor.getString(typeColumn);
-
-                if (!res.containsKey(type)) {
-                    res.put(type, new HashMap<String, Integer>());
-                }
-
-                res.get(type).put(cursor.getString(valueColumn), cursor.getInt(totalColumn));
+                res.put(cursor.getString(typeColumn) + "/"
+                        + cursor.getString(valueColumn), cursor.getInt(totalColumn));
             } while (cursor.moveToNext());
         }
 
         cursor.close();
+
+        Log.d("DataHelper", res.toString());
 
         return res;
     }
