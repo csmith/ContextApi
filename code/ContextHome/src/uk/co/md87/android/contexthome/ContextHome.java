@@ -26,6 +26,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.LinearLayout;
+import java.util.Arrays;
 
 import uk.co.md87.android.contexthome.contexts.*;
 import uk.co.md87.android.contexthome.modules.*;
@@ -42,16 +43,19 @@ public class ContextHome extends Activity {
             = new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.WRAP_CONTENT);
 
     private LinearLayout layout, fixedLayout;
-    private final Module[] fixedModules = new Module[] {
-        new ContactsModule(), new AppsModule()
-    };
-    
-    private final Module[] modules = new Module[]{
-        new EmailModule(), new SmsModule(),
-    };
 
     private final ContextType[] contexts = new ContextType[]{
         new GlobalContext(), new HourContext(), new PeriodContext()
+    };
+
+    private final DataHelper helper = new DataHelper(this, Arrays.asList(contexts));
+
+    private final Module[] fixedModules = new Module[] {
+        new ContactsModule(helper), new AppsModule(helper)
+    };
+
+    private final Module[] modules = new Module[]{
+        new EmailModule(helper), new SmsModule(helper),
     };
 
     /** Called when the activity is first created. */

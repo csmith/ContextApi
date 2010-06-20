@@ -32,6 +32,7 @@ import android.provider.Contacts.Photos;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import uk.co.md87.android.contexthome.DataHelper;
 
 import uk.co.md87.android.contexthome.Module;
 import uk.co.md87.android.contexthome.R;
@@ -41,7 +42,11 @@ import uk.co.md87.android.contexthome.R;
  *
  * @author chris
  */
-public class ContactsModule implements Module {
+public class ContactsModule extends Module {
+
+    public ContactsModule(DataHelper helper) {
+        super(helper);
+    }
 
     /** {@inheritDoc} */
     @Override

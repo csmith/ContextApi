@@ -39,6 +39,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
+import uk.co.md87.android.contexthome.DataHelper;
 
 import uk.co.md87.android.contexthome.Module;
 import uk.co.md87.android.contexthome.R;
@@ -48,7 +49,11 @@ import uk.co.md87.android.contexthome.R;
  *
  * @author chris
  */
-public class EmailModule implements Module {
+public class EmailModule extends Module {
+
+    public EmailModule(DataHelper helper) {
+        super(helper);
+    }
 
     /** {@inheritDoc} */
     @Override

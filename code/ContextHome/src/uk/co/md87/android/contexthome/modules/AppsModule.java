@@ -33,6 +33,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import uk.co.md87.android.contexthome.DataHelper;
 import uk.co.md87.android.contexthome.Module;
 import uk.co.md87.android.contexthome.R;
 
@@ -41,7 +42,11 @@ import uk.co.md87.android.contexthome.R;
  *
  * @author chris
  */
-public class AppsModule implements Module {
+public class AppsModule extends Module {
+
+    public AppsModule(DataHelper helper) {
+        super(helper);
+    }
 
     /** {@inheritDoc} */
     @Override

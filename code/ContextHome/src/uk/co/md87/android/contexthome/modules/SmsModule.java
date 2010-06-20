@@ -36,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
+import uk.co.md87.android.contexthome.DataHelper;
 import uk.co.md87.android.contexthome.Module;
 import uk.co.md87.android.contexthome.R;
 
@@ -44,9 +45,13 @@ import uk.co.md87.android.contexthome.R;
  *
  * @author chris
  */
-public class SmsModule implements Module {
+public class SmsModule extends Module {
 
     private static final Uri INBOX_URI = Uri.parse("content://sms/inbox");
+
+    public SmsModule(DataHelper helper) {
+        super(helper);
+    }
 
     /** {@inheritDoc} */
     @Override

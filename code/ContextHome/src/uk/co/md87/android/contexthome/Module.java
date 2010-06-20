@@ -30,8 +30,14 @@ import android.view.View;
  *
  * @author chris
  */
-public interface Module {
+public abstract class Module {
 
-    View getView(final Context context, final int weight);
+    private final DataHelper helper;
+
+    public Module(final DataHelper helper) {
+        this.helper = helper;
+    }
+
+    public abstract View getView(final Context context, final int weight);
 
 }
