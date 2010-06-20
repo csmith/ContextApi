@@ -43,13 +43,15 @@ public class Email implements Runnable {
     private final long convId;
     private final Handler handler;
     private final Context context;
+    private final EmailModule module;
     private final View view;
     private long id = -1;
 
-    public Email(Handler handler, Context context, long convId, View view) {
+    public Email(Handler handler, Context context, EmailModule module, long convId, View view) {
         this.handler = handler;
         this.convId = convId;
         this.context = context;
+        this.module = module;
         this.view = view;
         
         new Thread(this).start(); // Ick!
@@ -142,6 +144,8 @@ public class Email implements Runnable {
         }
 
         cursor.close();
+
+        module.updateScore(this);
 
         final TextView body = (TextView) view.findViewById(R.id.body);
 

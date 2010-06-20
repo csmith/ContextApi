@@ -36,6 +36,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import uk.co.md87.android.contexthome.ContextHome;
 import uk.co.md87.android.contexthome.DataHelper;
 
 import uk.co.md87.android.contexthome.Module;
@@ -78,8 +79,6 @@ public class EmailModule extends Module implements Comparator<Email> {
                 LayoutParams.WRAP_CONTENT);
         params.weight = 1;
 
-        final List<Email> messages = new ArrayList<Email>(weight);
-
         if (cursor.moveToFirst()) {
             do {
                 final View view = View.inflate(context, R.layout.titledimage, null);
@@ -96,28 +95,27 @@ public class EmailModule extends Module implements Comparator<Email> {
                     }
                 });
 
-                final Email message = new Email(handler, context,
+                final Email message = new Email(handler, context, EmailModule.this,
                         cursor.getLong(convIdIndex), view);
                 view.setTag(message);
-
-                messages.add(message);
-            } while (cursor.moveToNext());
-        }
-
-        cursor.close();
-
-        Collections.sort(messages, EmailModule.this);
+                updateScore(message);
 
         handler.post(new Runnable() {
 
                     public void run() {
-                                for (Email message : messages) {
             parent.addView(message.getView(), params);
-        }
                     }
                 });
+            } while (cursor.moveToNext());
+        }
+
+        cursor.close();
                     }
         }).start();
+    }
+
+    public void updateScore(final Email email) {
+        email.getView().setTag(R.id.score, getScore(getMap(email)));
     }
 
     public Map<String, String> getMap(final Email email) {

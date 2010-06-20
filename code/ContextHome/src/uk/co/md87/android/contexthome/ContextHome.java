@@ -24,7 +24,10 @@ package uk.co.md87.android.contexthome;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.Menu;
+import android.view.View;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.LinearLayout;
 import java.util.Arrays;
@@ -38,7 +41,9 @@ import uk.co.md87.android.contexthome.modules.*;
  *
  * @author chris
  */
-public class ContextHome extends Activity {
+public class ContextHome extends Activity implements Runnable {
+
+    public static int TAG_SCORE = 10;
 
     private LinearLayout layout, fixedLayout;
 
@@ -46,7 +51,11 @@ public class ContextHome extends Activity {
 
     private DataHelper helper;
 
+    private int previousCount = 0;
+
     private Module[] modules, fixedModules;
+
+    private final Handler handler = new Handler();
 
     /** Called when the activity is first created. */
     @Override
@@ -93,6 +102,49 @@ public class ContextHome extends Activity {
             module.addViews(layout, this, 10);
             end = System.currentTimeMillis();
             Log.v("ContextHome", module.getClass().getSimpleName() + ": " + (end - start));
+        }
+
+        handler.postDelayed(this, 1000);
+    }
+
+    public boolean sortModules() {
+        boolean changed = false;
+        
+        int lastScore = Integer.MAX_VALUE;
+        
+        for (int i = 0; i < layout.getChildCount(); i++) {
+            final View view = layout.getChildAt(i);
+
+            if (view.getTag(R.id.score) == null) {
+                Log.w("ContextHome", "Removing view without score");
+                layout.removeViewAt(i);
+                i--;
+                continue;
+            }
+
+            final int score = (Integer) view.getTag(R.id.score);
+
+            while (score > lastScore) {
+                // TODO: This could be optimised quite a lot
+                changed = true;
+                layout.removeViewAt(i);
+                layout.addView(view, --i);
+                lastScore = i == 0 ? Integer.MAX_VALUE
+                        : (Integer) layout.getChildAt(i - 1).getTag(R.id.score);
+            }
+
+            lastScore = (Integer) layout.getChildAt(i).getTag(R.id.score);
+        }
+
+        changed |= layout.getChildCount() > previousCount;
+        previousCount = layout.getChildCount();
+
+        return changed;
+    }
+
+    public void run() {
+        if (sortModules()) {
+            handler.postDelayed(this, 1000);
         }
     }
 

@@ -34,11 +34,9 @@ import android.text.Html;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
-import java.util.ArrayList;
-import java.util.List;
+import uk.co.md87.android.contexthome.ContextHome;
+
 import uk.co.md87.android.contexthome.DataHelper;
 import uk.co.md87.android.contexthome.Module;
 import uk.co.md87.android.contexthome.R;
@@ -70,17 +68,13 @@ public class SmsModule extends Module {
         final int bodyIndex = cursor.getColumnIndex("body");
         final int addressIndex = cursor.getColumnIndex("address");
 
-        final LayoutParams params = new LayoutParams(LayoutParams.FILL_PARENT,
-                LayoutParams.WRAP_CONTENT);
-        params.weight = 1;
-
-        final List<View> views = new ArrayList<View>(weight);
         boolean success = cursor.moveToFirst();
         for (int i = 0; i < weight && success; i++) {
             final String body = cursor.getString(bodyIndex);
             final String address = cursor.getString(addressIndex);
 
-            final View view = getView(context, body, address, cursor.getLong(idIndex));
+            final View view = getView(context, handler, body, address, cursor.getLong(idIndex));
+            view.setTag(R.id.score, 0); // TODO
 
         handler.post(new Runnable() {
 
@@ -97,8 +91,8 @@ public class SmsModule extends Module {
         }).start();
     }
 
-    private View getView(final Context context, String text,
-            String address, final long threadId) {
+    private View getView(final Context context, final Handler handler,
+            final String text, final String address, final long threadId) {
         final View view = View.inflate(context, R.layout.titledimage, null);
         view.setClickable(true);
         view.setFocusable(true);
@@ -112,7 +106,10 @@ public class SmsModule extends Module {
             }
         });
 
-        final Uri contactUri = Uri.withAppendedPath(Contacts.Phones.CONTENT_FILTER_URL,
+        new Thread(new Runnable() {
+
+            public void run() {
+          final Uri contactUri = Uri.withAppendedPath(Contacts.Phones.CONTENT_FILTER_URL,
                 Uri.encode(address));
 
         final Cursor cursor = context.getContentResolver().query(contactUri,
@@ -123,12 +120,18 @@ public class SmsModule extends Module {
         final ImageView image = (ImageView) view.findViewById(R.id.image);
 
         if (cursor.moveToFirst()) {
-            title.setText(Html.fromHtml("<b>" + cursor.getString(cursor
-                    .getColumnIndex(Contacts.Phones.DISPLAY_NAME)) + "</b>"));
-            Uri uri = ContentUris.withAppendedId(People.CONTENT_URI,
+            final Uri uri = ContentUris.withAppendedId(People.CONTENT_URI,
                     cursor.getLong(cursor.getColumnIndex(Contacts.Phones.PERSON_ID)));
+            final String name = cursor.getString(cursor
+                    .getColumnIndex(Contacts.Phones.DISPLAY_NAME));
+            handler.post(new Runnable() {
+
+                        public void run() {
+            title.setText(Html.fromHtml("<b>" + name + "</b>"));
             image.setImageBitmap(Contacts.People.loadContactPhoto(context,
                     uri, R.drawable.blank, null));
+                                    }
+                    });
         } else {
             title.setText(Html.fromHtml("<b>" + address + "</b>"));
         }
@@ -136,7 +139,16 @@ public class SmsModule extends Module {
         cursor.close();
 
         final TextView body = (TextView) view.findViewById(R.id.body);
+
+                    handler.post(new Runnable() {
+
+                        public void run() {
         body.setText(text);
+                        }
+                    });
+
+                  }
+        }).start();
 
         return view;
     }
