@@ -26,10 +26,9 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.LinearLayout;
+
 import java.util.Arrays;
 
 import uk.co.md87.android.contexthome.contexts.*;
@@ -63,7 +62,9 @@ public class ContextHome extends Activity implements Runnable {
         super.onCreate(icicle);
 
         contexts = new ContextType[]{
-            new GlobalContext(), new HourContext(), new PeriodContext()
+            new GlobalContext(), new HourContext(), new PeriodContext(),
+            new ActivityContext(this), new DestinationContext(this),
+            new LocationContext(this)
         };
 
         helper = new DataHelper(this, Arrays.asList(contexts));
